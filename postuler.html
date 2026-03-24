@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Postuler - BHStage</title>
+  <link rel="stylesheet" href="postuler.css">
+</head>
+<body>
+  <main class="page-candidature">
+
+    <header class="barre-haut">
+      <a href="offre.html" class="bouton-retour">←</a>
+      <h1 class="titre-page">Postuler</h1>
+      <a href="menu.html" class="bouton-profil">👤</a>
+    </header>
+
+    <section class="carte-intro">
+      <h2>Stage Développeur Web</h2>
+      <p class="entreprise">WebSolutions</p>
+      <p class="texte-intro">
+        Complète ce formulaire pour envoyer ta candidature à l’entreprise.
+      </p>
+    </section>
+
+    <form class="formulaire-candidature" action="#" method="post">
+      <section class="bloc-formulaire">
+        <h2>Informations personnelles</h2>
+
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" name="nom" placeholder="Ton nom">
+
+        <label for="prenom">Prénom</label>
+        <input type="text" id="prenom" name="prenom" placeholder="Ton prénom">
+
+        <label for="email">Adresse e-mail</label>
+        <input type="email" id="email" name="email" placeholder="tonmail@email.com">
+
+        <label for="telephone">Téléphone</label>
+        <input type="tel" id="telephone" name="telephone" placeholder="06 00 00 00 00">
+      </section>
+
+      <section class="bloc-formulaire">
+        <h2>Candidature</h2>
+
+        <label for="cv">CV</label>
+        <input type="file" id="cv" name="cv">
+
+        <label for="lm">Lettre de motivation</label>
+        <input type="file" id="lm" name="lm">
+
+      </section>
+
+      <section class="actions-bas">
+        <button type="submit" class="bouton-envoyer">Envoyer ma candidature</button>
+      </section>
+    </form>
+
+  </main>
+</body>
+</html>
