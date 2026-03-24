@@ -1,0 +1,182 @@
+/* --- Reset basique --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* --- Layout principal --- */
+/* Centrage de la carte au milieu de l'écran avec Flexbox */
+body {
+    background-color: #f3f4f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* --- Container Formulaire (Version Bureau) --- */
+.login-container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- En-tête & Logo --- */
+.logo-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-img {
+    width: 220px;
+    height: auto;
+    object-fit: contain;
+}
+
+.header-text {
+    margin-bottom: 35px;
+}
+
+.header-text h2 {
+    color: #1e293b;
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.header-text p {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+/* --- Formulaire --- */
+/* C'EST ÇA QUE J'AVAIS OUBLIÉ ! Ça force les éléments à s'empiler en colonne */
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Inputs (Email & Password) --- */
+.input-group {
+    margin-bottom: 25px;
+}
+
+.input-group label {
+    display: block;
+    color: #A8C6FA;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Style épuré : on garde uniquement la bordure du bas */
+.input-group input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+    font-size: 14px;
+    outline: none;
+    background: transparent;
+}
+
+.input-group input::placeholder {
+    color: #cbd5e1;
+}
+
+.input-group input:focus {
+    border-bottom-color: #A8C6FA;
+    transition: 0.3s;
+}
+
+/* Conteneur en relatif pour positionner l'icône oeil en absolu par-dessus */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper i {
+    position: absolute;
+    right: 0;
+    top: 40%;
+    transform: translateY(-50%);
+    color: #cbd5e1;
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: #94a3b8;
+    font-size: 13px;
+    text-decoration: none;
+    margin-bottom: 30px;
+    display: inline-block;
+}
+
+/* --- Bouton d'action --- */
+.btn-submit {
+    background-color: #A8C6FA;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(255, 180, 200, 0.4);
+    width: 100%;
+}
+
+/* --- Liens annexes & Footer --- */
+.signup-link {
+    text-align: center;
+    margin-top: 35px;
+    margin-bottom: 20px;
+}
+
+.signup-link a, .legal-link {
+    color: #A8C6FA;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer-bottom {
+    text-align: center;
+}
+
+/* Masqué sur PC */
+.home-indicator {
+    display: none; 
+}
+
+/* --- RESPONSIVE MOBILE --- */
+/* Si l'écran est petit (< 500px), on passe en mode plein écran (style app native) */
+@media screen and (max-width: 500px) {
+    
+    body {
+        background-color: #ffffff;
+        display: block; /* Annule le centrage du body */
+    }
+
+    .login-container {
+        max-width: 100%;
+        min-height: 100vh;
+        border-radius: 0; /* Suppression des arrondis de la carte */
+        box-shadow: none;
+        padding: 40px 30px;
+    }
+
+    /* Affichage de la barre de navigation iOS virtuelle */
+    .home-indicator {
+        display: inline-block;
+        width: 135px;
+        height: 5px;
+        background-color: #cbd5e1;
+        border-radius: 10px;
+        margin-top: 50px;
+    }
+}
