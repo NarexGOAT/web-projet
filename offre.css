@@ -1,4 +1,3 @@
-/* --- Mise en page spécifique pour les détails d'une offre --- */
 
 .fond-gris {
     background-color: var(--gris-tres-clair);
@@ -22,7 +21,6 @@
     color: var(--bleu-allostage);
 }
 
-/* Grille principale (2 colonnes sur PC) */
 .grille-details {
     display: grid;
     grid-template-columns: 2fr 1fr; /* 2/3 pour le contenu, 1/3 pour la barre latérale */
@@ -30,7 +28,6 @@
     align-items: start;
 }
 
-/* Boîtes blanches de base */
 .boite-blanche {
     background: var(--blanc);
     border: 1px solid var(--gris-clair);
@@ -39,7 +36,6 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.03);
 }
 
-/* --- Colonne de gauche (Détails) --- */
 .en-tete-offre {
     display: flex;
     justify-content: space-between;
@@ -143,7 +139,6 @@
     margin-bottom: 1.5rem;
 }
 
-/* --- Colonne de droite (Barre latérale) --- */
 .barre-laterale {
     display: flex;
     flex-direction: column;
@@ -221,14 +216,13 @@
     font-weight: bold;
 }
 
-/* --- Responsive (Mobile) --- */
 @media (max-width: 992px) {
     .grille-details {
-        grid-template-columns: 1fr; /* Sur petit écran, on passe à une seule colonne */
+        grid-template-columns: 1fr; 
     }
     
     .barre-laterale {
-        position: static; /* Annule l'effet collant sur mobile */
+        position: static; 
     }
 }
 
@@ -238,7 +232,7 @@
     }
     
     .liste-criteres {
-        grid-template-columns: 1fr; /* Les critères s'empilent sur mobile */
+        grid-template-columns: 1fr; 
     }
     
     .en-tete-offre {
