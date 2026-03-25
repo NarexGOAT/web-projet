@@ -1,182 +1,108 @@
-<!doctype html>
-<html lang="fr">
+<!DOCTYPE html>
+<html lang="fr-FR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AlloStage — Accueil</title>
-  <meta name="description" content="BHStage centralise des offres de stage et met en relation les étudiants avec des entreprises partenaires.">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlloStage - 3 Dernières Offres</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <header class="barre-haut">
-    <div class="conteneur barre-haut__interieur">
-      <a class="bhstage" href="index.html">
-        <span class="nom">AlloStage</span>
-      </a>
-
-      <form class="recherche" role="search">
-        <span class="recherche__icone">🔍</span>
-        <input
-          class="recherche__champ"
-          id="recherche-site"
-          type="search"
-          name="q"
-          placeholder="Rechercher une offre, une entreprise...">
-      </form>
-
-      <nav class="actions">
-        <a class="bouton-icone" href="wishlist.html" title="Favoris">❤️</a>
-        <a class="bouton-icone" href="menu.html" title="Profil">👤</a>
-      </nav>
-    </div>  
-  </header>
-
-  <main class="page">
-    <div class="conteneur">
-      <section class="disposition">
-
-        <section class="carte mise-en-avant">
-          <h1 class="mise-en-avant__titre">Des offres adaptées à ton profil, au même endroit.</h1>
-
-          <p class="mise-en-avant__texte">
-            BHStage centralise les offres de stage d’entreprises partenaires et te propose celles
-            qui correspondent à tes compétences. Postule simplement et gagne du temps.
-          </p>
-
-          <nav class="mise-en-avant__actions" aria-label="Actions principales">
-            <a class="bouton bouton--principal" href="liste-offres.html">Voir toutes les offres</a>
-            <a class="bouton bouton--secondaire" href="#dernieres-offres">Voir les dernières</a>
-            <a class="bouton bouton--principal" href="liste-entreprises.html">Voir toutes les entreprises</a>
-
-          </nav>
-
-          <section>
-            <ul class="mise-en-avant__stats">
-              <li>
-                <strong>120+</strong>
-                <span>offres actives</span>
-              </li>
-              <li>
-                <strong>45</strong>
-                <span>entreprises</span>
-              </li>
-              <li>
-                <strong>1 clic</strong>
-                <span>pour postuler</span>
-              </li>
+    <header class="entete">
+        <div class="logo">
+    <a href="index.html">
+        <img src="allostage.png" alt="Accueil AlloStage" class="logo-img">
+    </a>
+</div>
+        <nav class="navigation">
+            <ul>
+                <li><a href="liste-offres.html">Offres de stages</a></li>
+                <li><a href="liste-entreprises.html">Entreprises</a></li>
             </ul>
-          </section>
+        </nav>
+        <div class="actions-entete">
+            <button class="btn-inscription">Inscription</button>
+            <button class="btn-connexion">Connexion</button>
+        </div>
+    </header>
+
+    <main class="contenu">
+        <section class="recherche-hero">
+            <h1>Trouvez le stage parfait avec AlloStage</h1>
+            <p>Découvrez nos meilleures opportunités et lancez votre carrière.</p>
+            <div class="barre-recherche">
+                <input type="text" placeholder="Métier, entreprise, ville...">
+                <button class="btn-principal">Rechercher</button>
+            </div>
         </section>
 
-        <aside class="colonne-droite">
-          <header class="entete-section" id="dernieres-offres">
-            <h2>Dernières offres</h2>
-            <a class="lien" href="liste-offres.html">Tout voir →</a>
-          </header>
+        <section class="section-offres">
+            <div class="entete-offres">
+                <h2>Offres à la une</h2>
+                <a href="#" class="lien-toutes">Voir tout →</a>
+            </div>
 
-          <article class="carte offre">
-            <span class="etiquette">Il y a 3 jours</span>
+            <div class="grille-offres">
+                
+                <article class="carte-offre">
+                    <div class="en-tete-carte">
+                        <span class="badge-nouveau">Nouveau</span>
+                        <button class="btn-favori">🤍</button>
+                    </div>
+                    <h3 class="titre-offre">Développeur Web Front-End</h3>
+                    <p class="entreprise-offre"><strong>TechSolutions SAS</strong> • Paris</p>
+                    <div class="tags-offre">
+                        <span class="tag">📅 6 mois</span>
+                        <span class="tag">🎓 Bac+3/5</span>
+                    </div>
+                    <p class="description">Rejoignez notre équipe technique pour développer nos nouvelles interfaces web en React...</p>
+                    <div class="actions-carte">
+                        <button class="btn-secondaire">Détails</button>
+                        <button class="btn-postuler">Postuler</button>
+                    </div>
+                </article>
 
-            <header class="offre__entete">
-              <h3 class="offre__titre">Stage Développeur Web</h3>
-            </header>
+                <article class="carte-offre">
+                    <div class="en-tete-carte">
+                        <span class="badge-vide"></span> <!-- Espace vide pour l'alignement -->
+                        <button class="btn-favori">🤍</button>
+                    </div>
+                    <h3 class="titre-offre">Assistant Chef de Projet</h3>
+                    <p class="entreprise-offre"><strong>InnovCorp</strong> • Lyon</p>
+                    <div class="tags-offre">
+                        <span class="tag">📅 4 à 6 mois</span>
+                        <span class="tag">📊 Marketing</span>
+                    </div>
+                    <p class="description">Accompagnez notre équipe sur le lancement de la nouvelle gamme de produits et l'analyse de marché...</p>
+                    <div class="actions-carte">
+                        <button class="btn-secondaire">Détails</button>
+                        <button class="btn-postuler">Postuler</button>
+                    </div>
+                </article>
 
-            <p class="offre__description">
-              Rejoins une équipe web et participe au développement de nouvelles fonctionnalités.
-            </p>
+                <article class="carte-offre">
+                    <div class="en-tete-carte">
+                        <span class="badge-urgent">Urgent</span>
+                        <button class="btn-favori">🤍</button>
+                    </div>
+                    <h3 class="titre-offre">Ingénieur Cybersécurité</h3>
+                    <p class="entreprise-offre"><strong>CyberDefense Pro</strong> • Télétravail</p>
+                    <div class="tags-offre">
+                        <span class="tag">📅 6 mois</span>
+                        <span class="tag">🛡️ Sécurité</span>
+                    </div>
+                    <p class="description">Stage de fin d'études : participez à l'audit et à la sécurisation des infrastructures cloud de nos clients...</p>
+                    <div class="actions-carte">
+                        <button class="btn-secondaire">Détails</button>
+                        <button class="btn-postuler">Postuler</button>
+                    </div>
+                </article>
 
-            <dl class="offre__infos">
-              <div class="offre__ligne">
-                <dt>Compétences</dt>
-                <dd>HTML, CSS, PHP</dd>
-              </div>
-              <div class="offre__ligne">
-                <dt>Publiée le</dt>
-                <dd>12/01</dd>
-              </div>
-            </dl>
+            </div>
+        </section>
+    </main>
 
-            <footer class="offre__actions">
-              <a class="bouton bouton--doux" href="offre.html">Voir l’offre</a>
-              <button class="bouton bouton--icone" type="button" title="Ajouter aux favoris">
-                ⭐
-              </button>
-              <p class="entreprise">StudioPixel</p>
-            </footer>
-          </article>
-
-          <article class="carte offre">
-            <span class="etiquette">Il y a 1 jour</span>
-
-            <header class="offre__entete">
-              <h3 class="offre__titre">Stage Intégrateur Front</h3>
-            </header>
-
-            <p class="offre__description">
-              Intègre des maquettes responsive et améliore l’interface utilisateur d’un site existant.
-            </p>
-
-            <dl class="offre__infos">
-              <div class="offre__ligne">
-                <dt>Compétences</dt>
-                <dd>HTML, CSS, JavaScript</dd>
-              </div>
-              <div class="offre__ligne">
-                <dt>Publiée le</dt>
-                <dd>14/01</dd>
-              </div>
-            </dl>
-
-            <footer class="offre__actions">
-              <a class="bouton bouton--doux" href="offre.html">Voir l’offre</a>
-              <button class="bouton bouton--icone" type="button" title="Ajouter aux favoris">
-                ⭐
-              </button>
-              <p class="entreprise">StudioPixel</p>
-            </footer>
-          </article>
-
-          <article class="carte offre">
-            <span class="etiquette">Il y a 1 jour</span>
-
-            <header class="offre__entete">
-              <h3 class="offre__titre">Stage Intégrateur Front</h3>
-            </header>
-
-            <p class="offre__description">
-              Intègre des maquettes responsive et améliore l’interface utilisateur d’un site existant.
-            </p>
-
-            <dl class="offre__infos">
-              <div class="offre__ligne">
-                <dt>Compétences</dt>
-                <dd>HTML, CSS, JavaScript</dd>
-              </div>
-              <div class="offre__ligne">
-                <dt>Publiée le</dt>
-                <dd>14/01</dd>
-              </div>
-            </dl>
-
-            <footer class="offre__actions">
-              <a class="bouton bouton--doux" href="offre.html">Voir l’offre</a>
-              <button class="bouton bouton--icone" type="button" title="Ajouter aux favoris">
-                ⭐
-              </button>
-              <p class="entreprise">StudioPixel</p>
-            </footer>
-          </article>
-          </aside>
-      </section>
-    </div>
-  </main>
-
-  <footer class="pied-page">
-    <div class="conteneur pied-page__interieur">
-      <small>© BHStage</small>
-      <a class="lien" href="mentions.html">Mentions légales</a>
-    </div>
-  </footer>
+    <footer class="pied-de-page">
+        <p>&copy; 2026 AlloStage. Tous droits réservés.</p>
+    </footer>
 </body>
 </html>
