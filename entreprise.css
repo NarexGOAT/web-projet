@@ -1,0 +1,330 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #f3f5f9;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #111827;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page-entreprise {
+  max-width: 1000px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+
+/* Haut de page */
+
+.barre-haut {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 16px;
+  background: #f8f9fc;
+  border-bottom: 1px solid #eceff4;
+}
+
+.bouton-retour,
+.bouton-profil {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #cfd6e2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #111827;
+  font-size: 1.4rem;
+}
+
+.titre-page {
+  margin: 0;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* Présentation */
+
+.presentation-entreprise {
+  padding: 24px 16px;
+  background: #ffffff;
+}
+
+.entete-entreprise {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.logo-entreprise {
+  width: 82px;
+  height: 82px;
+  border-radius: 18px;
+  background: #d9dee8;
+  border: 1px solid #cfd6e2;
+  flex-shrink: 0;
+}
+
+.infos-principales h2 {
+  margin: 0 0 6px;
+  font-size: 1.8rem;
+  line-height: 1.15;
+}
+
+.secteur,
+.localisation {
+  margin: 0 0 6px;
+  color: #5b6472;
+  font-weight: 700;
+}
+
+.texte-intro {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+/* Blocs */
+
+.bloc-description,
+.bloc-valeurs,
+.bloc-offres {
+  padding: 24px 16px;
+  border-top: 12px solid #f5f7fb;
+  background: #ffffff;
+}
+
+.bloc-description h2,
+.bloc-valeurs h2,
+.bloc-offres h2 {
+  margin: 0 0 16px;
+  font-size: 1.2rem;
+}
+
+.bloc-description p {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.65;
+}
+
+/* Grille infos */
+
+.grille-infos {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-top: 12px solid #f5f7fb;
+  background: #ffffff;
+}
+
+.carte-info {
+  padding: 22px 16px;
+  border-bottom: 1px solid #edf1f5;
+}
+
+.carte-info:last-child {
+  border-bottom: none;
+}
+
+.carte-info h3 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+}
+
+.carte-info p {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+/* Etiquettes */
+
+.etiquettes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.etiquettes span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: #f3f4f6;
+  border: 1px solid #d5d9e0;
+  color: #374151;
+  font-size: 0.92rem;
+}
+
+/* Bloc offres */
+
+.entete-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.entete-section p {
+  margin: 0;
+  color: #5b6472;
+  font-weight: 700;
+}
+
+.liste-offres {
+  display: grid;
+  gap: 14px;
+}
+
+.ligne-offre {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid #d9dfeb;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
+}
+
+.ligne-offre__haut {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ligne-offre__haut h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.etiquette-date {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f4e96b;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.description-offre {
+  margin: 0 0 12px;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.details-offre {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.details-offre span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: #f3f4f6;
+  border: 1px solid #d5d9e0;
+  color: #374151;
+  font-size: 0.92rem;
+}
+
+.ligne-offre__actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.bouton-voir {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #9dbbff, #6f9bff);
+  border: 1px solid #8fb1f5;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* Version large */
+
+@media (min-width: 768px) {
+  .page-entreprise {
+    margin: 24px auto;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .grille-infos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .carte-info {
+    border-bottom: 1px solid #edf1f5;
+    border-right: 1px solid #edf1f5;
+  }
+
+  .carte-info:nth-child(3n) {
+    border-right: none;
+  }
+
+  .entete-section {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .ligne-offre {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .ligne-offre__contenu {
+    flex: 1;
+  }
+
+  .ligne-offre__actions {
+    flex-shrink: 0;
+    align-self: flex-end;
+  }
+
+  .ligne-offre__haut {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+.evaluation {
+  margin-left: auto;
+  align-self: flex-start;
+  font-weight: bold;
+}
+}
