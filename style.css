@@ -136,9 +136,25 @@ button { cursor: pointer; font-weight: bold; border-radius: 0.5rem; transition: 
 .description { font-size: 0.9rem; color: var(--texte-moyen); line-height: 1.5; margin-bottom: 1.5rem; flex-grow: 1; }
 
 .actions-carte { display: flex; gap: 1rem; }
-.btn-secondaire { flex: 1; background: none; border: 1px solid var(--gris-clair); color: var(--texte-sombre); padding: 0.6rem; }
+.btn-secondaire { 
+    flex: 1; 
+    background: none; 
+    border: 1px solid var(--gris-clair); 
+    color: var(--texte-sombre); 
+    padding: 0.6rem; 
+    
+    /* --- Les propriétés à rajouter pour les liens --- */
+    text-align: center;       /* Force le texte à se centrer */
+    border-radius: 0.5rem;    /* Remet les jolis bords arrondis */
+    font-weight: bold;        /* Met le texte en gras comme l'autre bouton */
+    box-sizing: border-box;   /* Assure que le padding ne déforme pas la boîte */
+}
 .btn-secondaire:hover { border-color: var(--bleu-allostage); color: var(--bleu-allostage); }
-.btn-postuler { flex: 1; background: var(--degrade-orange); border: none; color: var(--blanc); padding: 0.6rem; }
+.btn-postuler { flex: 1; background: var(--degrade-orange); border: none; color: var(--blanc); padding: 0.6rem; 
+    text-align: center;       /* Force le texte à se centrer */
+    border-radius: 0.5rem;    /* Remet les jolis bords arrondis */
+    font-weight: bold;        /* Met le texte en gras comme l'autre bouton */
+    box-sizing: border-box;}
 .btn-postuler:hover { opacity: 0.9; }
 
 .pied-de-page { text-align: center; padding: 1.5rem; background: var(--gris-tres-clair); border-top: 1px solid var(--gris-clair); color: var(--texte-moyen); }
