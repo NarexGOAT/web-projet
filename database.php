@@ -1,7 +1,7 @@
 <?php
 class Database {
     private $host = "localhost";
-    private $db_name = "nom_de_ta_base"; // <--- METS LE NOM DE TA BDD ICI
+    private $db_name = "stage"; // <--- METS LE NOM DE TA BDD ICI
     private $username = "root";
     private $password = ""; // Sur WSL, c'est souvent vide ou "root"
 
