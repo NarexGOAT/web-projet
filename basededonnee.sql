@@ -9,7 +9,8 @@ CREATE TABLE entreprise (
     description TEXT,
     email VARCHAR(50),
     telephone VARCHAR(20)
-)
+
+);
 
 CREATE TABLE utilisateur (
     id_user INT AUTO_INCREMENT PRIMARY KEY,
@@ -21,7 +22,6 @@ CREATE TABLE utilisateur (
     id_role INT,
     FOREIGN KEY (id_role) REFERENCES role(id_role)
 );
-
 
 CREATE TABLE offre (
     id_offre INT AUTO_INCREMENT PRIMARY KEY,
@@ -42,7 +42,6 @@ CREATE TABLE candidature (
     date_envoi DATETIME DEFAULT CURRENT_TIMESTAMP,
     id_user INT,
     id_offre INT,
-
     FOREIGN KEY (id_user) REFERENCES utilisateur(id_user),
     FOREIGN KEY (id_offre) REFERENCES offre(id_offre)
 );
@@ -52,7 +51,6 @@ CREATE TABLE wishlist (
     id_user INT,
     id_offre INT,
     date_ajout DATETIME DEFAULT CURRENT_TIMESTAMP,
-
     FOREIGN KEY (id_user) REFERENCES utilisateur(id_user),
     FOREIGN KEY (id_offre) REFERENCES offre(id_offre)
 );
@@ -63,8 +61,14 @@ CREATE TABLE evaluation (
     commentaire TEXT,
     id_user INT,
     id_entreprise INT,
-
     FOREIGN KEY (id_user) REFERENCES utilisateur(id_user),
     FOREIGN KEY (id_entreprise) REFERENCES entreprise(id_entreprise)
 );
 
+CREATE TABLE entreprise (
+    id_entreprise INT AUTO_INCREMENT PRIMARY KEY,
+    nom_entreprise VARCHAR(100),
+    description TEXT,
+    email VARCHAR(50),
+    telephone VARCHAR(20)
+);
