@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Liste des offres - BHStage</title>
+  <link rel="stylesheet" href="/public/css/liste-offres.css">
+</head>
+<body>
+  <main class="page-offres">
+
+    <header class="barre-haut">
+      <a href="index.php" class="bouton-retour">←</a>
+      <h1 class="titre-page">Liste des offres</h1>
+      <a href="menu.php" class="bouton-profil">👤</a>
+    </header>
+
+    <section class="zone-intro">
+      <p class="texte-intro">
+        Consulte les offres de stage disponibles et affine ta recherche avec les filtres.
+      </p>
+    </section>
+
+    <section class="zone-filtres">
+      <h2>Filtres</h2>
+
+      <form class="filtres" action="#" method="get">
+        <div class="champ-filtre">
+          <label for="metier">Métier recherché</label>
+          <input type="text" id="metier" name="metier" placeholder="Exemple : développeur web">
+        </div>
+
+        <div class="champ-filtre">
+          <label for="ville">Ville</label>
+          <select id="ville" name="ville">
+            <option selected>Toutes les villes</option>
+            <option>Paris</option>
+            <option>Lyon</option>
+            <option>Marseille</option>
+            <option>Lille</option>
+          </select>
+        </div>
+
+        <div class="champ-filtre">
+          <label for="duree">Durée</label>
+          <select id="duree" name="duree">
+            <option selected>Toutes les durées</option>
+            <option>Moins de 2 mois</option>
+            <option>2 à 4 mois</option>
+            <option>4 à 6 mois</option>
+            <option>Plus de 6 mois</option>
+          </select>
+        </div>
+
+        <div class="champ-filtre">
+          <label for="competence">Compétence</label>
+          <select id="competence" name="competence">
+            <option selected>Toutes les compétences</option>
+            <option>HTML</option>
+            <option>CSS</option>
+            <option>PHP</option>
+            <option>JavaScript</option>
+            <option>SQL</option>
+          </select>
+        </div>
+
+        <div class="champ-filtre">
+          <label for="publication">Date de publication</label>
+          <select id="publication" name="publication">
+            <option selected>Toutes les dates</option>
+            <option>Aujourd’hui</option>
+            <option>Cette semaine</option>
+            <option>Ce mois-ci</option>
+          </select>
+        </div>
+
+        <div class="actions-filtres">
+          <button type="submit" class="bouton-filtrer">Filtrer</button>
+          <button type="reset" class="bouton-reinitialiser">Réinitialiser</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="zone-resultats">
+      <p class="nombre-resultats">12 offres trouvées</p>
+
+      <div class="liste-offres">
+
+        <article class="ligne-offre">
+          <div class="ligne-offre__contenu">
+            <div class="ligne-offre__haut">
+              <h2>Stage Développeur Web</h2>
+              <p class="etiquette-date">Il y a 3 jours</p>
+            </div>
+
+            <p class="entreprise">StudioPixel</p>
+
+            <p class="description">
+              Rejoins une équipe web et participe au développement de nouvelles fonctionnalités.
+            </p>
+
+            <div class="details">
+              <span>📍 Paris</span>
+              <span>⏳ 3 mois</span>
+              <span>💼 Stage</span>
+              <span>🛠 HTML, CSS, PHP</span>
+            </div>
+          </div>
+
+          <div class="ligne-offre__actions">
+            <a href="offre.php" class="bouton-voir">Voir l’offre</a>
+          </div>
+        </article>
+
+        <article class="ligne-offre">
+          <div class="ligne-offre__contenu">
+            <div class="ligne-offre__haut">
+              <h2>Stage Intégrateur Web</h2>
+              <p class="etiquette-date">Il y a 1 jour</p>
+            </div>
+
+            <p class="entreprise">WebSolutions</p>
+
+            <p class="description">
+              Intègre des maquettes et améliore l’interface utilisateur d’un site existant.
+            </p>
+
+            <div class="details">
+              <span>📍 Lyon</span>
+              <span>⏳ 4 mois</span>
+              <span>💼 Stage</span>
+              <span>🛠 HTML, CSS, JavaScript</span>
+            </div>
+          </div>
+
+          <div class="ligne-offre__actions">
+            <a href="offre.php" class="bouton-voir">Voir l’offre</a>
+          </div>
+        </article>
+
+        <article class="ligne-offre">
+          <div class="ligne-offre__contenu">
+            <div class="ligne-offre__haut">
+              <h2>Alternance Développeur Front-End</h2>
+              <p class="etiquette-date">Aujourd’hui</p>
+            </div>
+
+            <p class="entreprise">NovaTech</p>
+
+            <p class="description">
+              Participe à la création d’interfaces modernes et responsive pour une plateforme web.
+            </p>
+
+            <div class="details">
+              <span>📍 Lille</span>
+              <span>⏳ 12 mois</span>
+              <span>💼 Alternance</span>
+              <span>🛠 HTML, CSS, JavaScript</span>
+            </div>
+          </div>
+
+          <div class="ligne-offre__actions">
+            <a href="offre.php" class="bouton-voir">Voir l’offre</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>
