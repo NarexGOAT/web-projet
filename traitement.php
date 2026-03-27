@@ -19,6 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($mot_de_passe === $confirmation) {
 
+            $database = new Database();
+            $conn = $database->getConnection();
+
             echo "Bravo ! L'utilisateur est valide.";
 
             
