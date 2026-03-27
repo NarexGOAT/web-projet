@@ -65,14 +65,3 @@ CREATE TABLE evaluation (
     FOREIGN KEY (id_user) REFERENCES utilisateur(id_user),
     FOREIGN KEY (id_entreprise) REFERENCES entreprise(id_entreprise)
 );
-<<<<<<< HEAD
-=======
-
-CREATE TABLE entreprise (
-    id_entreprise INT AUTO_INCREMENT PRIMARY KEY,
-    nom_entreprise VARCHAR(100),
-    description TEXT,
-    email VARCHAR(50),
-    telephone VARCHAR(20)
-)
->>>>>>> fcb776d8978e6bcfbab746129614189b85cc0064
