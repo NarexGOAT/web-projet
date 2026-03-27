@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             echo "Bravo ! L'utilisateur est valide.";
 
-            // 👉 Étape suivante : insertion en base
+            
 
         } else {
             echo "Erreur : les mots de passe ne correspondent pas.";
