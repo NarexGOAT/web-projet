@@ -1,5 +1,3 @@
-USE stage_db;
-
 CREATE TABLE role (
     id_role INT AUTO_INCREMENT PRIMARY KEY,
     role VARCHAR(50)
@@ -11,6 +9,7 @@ CREATE TABLE entreprise (
     description TEXT,
     email VARCHAR(50),
     telephone VARCHAR(20)
+
 );
 
 CREATE TABLE utilisateur (
