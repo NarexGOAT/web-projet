@@ -64,5 +64,5 @@ CREATE TABLE entreprise (
     nom_entreprise VARCHAR(100),
     description TEXT,
     email VARCHAR(50),
-    telephone INT(20)
+    telephone VARCHAR(20)
 )
