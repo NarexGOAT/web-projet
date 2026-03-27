@@ -1,28 +1,40 @@
 <?php
 
-// 1. On importe le module
 require_once 'Utilisateur.php';
+require_once 'database.php';
 
-// 2. Vérifie si le formulaire est envoyé
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // 3. Récupération des données
-    $email_du_formulaire = $_POST['email'] ?? '';
-    $mdp_du_formulaire = $_POST['mot_de_passe'] ?? '';
+    // Récupération des données
+    $email = $_POST['email'] ?? '';
+    $mot_de_passe = $_POST['mot_de_passe'] ?? '';
+    $confirmation = $_POST['confirm_mot_de_passe'] ?? '';
     $conditions = $_POST['conditions'] ?? null;
 
-    // 4. Création de l'objet
-    $monUtilisateur = new Utilisateur($email_du_formulaire, $mdp_du_formulaire);
+    // Création de l'objet utilisateur
+    $utilisateur = new Utilisateur($email, $mot_de_passe);
 
-    // 5. Vérification
-    if ($monUtilisateur->estValide() && $conditions) {
+    // Vérifications
+    if ($utilisateur->estValide() && $conditions) {
 
-        echo "Bravo ! L'utilisateur est prêt.";
+        if ($mot_de_passe === $confirmation) {
 
-    
+            $database = new Database();
+            $conn = $database->getConnection();
+
+            echo "Bravo ! L'utilisateur est valide.";
+
+            
+
+        } else {
+            echo "Erreur : les mots de passe ne correspondent pas.";
+        }
 
     } else {
-        echo "Erreur : veuillez remplir tous les champs et accepter les conditions.";
+        echo "Erreur : veuillez remplir correctement tous les champs et accepter les conditions.";
     }
+
+} else {
+    echo "Erreur : formulaire non envoyé.";
 }
 ?>
