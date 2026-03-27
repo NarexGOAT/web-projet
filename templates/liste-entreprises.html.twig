@@ -21,167 +21,51 @@
       </p>
     </section>
 
+    {# filtres : tu peux les garder tels quels pour le moment #}
     <section class="zone-filtres">
-      <h2>Filtres</h2>
-
-      <form class="filtres" action="#" method="get">
-        <div class="champ-filtre">
-          <label for="nom">Nom de l’entreprise</label>
-          <input type="text" id="nom" name="nom" placeholder="Exemple : StudioPixel">
-        </div>
-
-        <div class="champ-filtre">
-          <label for="secteur">Secteur</label>
-          <select id="secteur" name="secteur">
-            <option selected>Tous les secteurs</option>
-            <option>Développement web</option>
-            <option>Design</option>
-            <option>Marketing</option>
-            <option>Communication</option>
-            <option>Informatique</option>
-          </select>
-        </div>
-
-        <div class="champ-filtre">
-          <label for="ville">Ville</label>
-          <select id="ville" name="ville">
-            <option selected>Toutes les villes</option>
-            <option>Paris</option>
-            <option>Lyon</option>
-            <option>Marseille</option>
-            <option>Lille</option>
-            <option>Bordeaux</option>
-          </select>
-        </div>
-
-        <div class="champ-filtre">
-          <label for="type">Type d’offres</label>
-          <select id="type" name="type">
-            <option selected>Tous les types</option>
-            <option>Stage</option>
-            <option>Alternance</option>
-            <option>Stage et alternance</option>
-          </select>
-        </div>
-
-        <div class="champ-filtre">
-          <label for="taille">Taille</label>
-          <select id="taille" name="taille">
-            <option selected>Toutes les tailles</option>
-            <option>Petite entreprise</option>
-            <option>Moyenne entreprise</option>
-            <option>Grande entreprise</option>
-          </select>
-        </div>
-
-        <div class="champ-filtre">
-          <label for="offres">Nombre d’offres</label>
-          <select id="offres" name="offres">
-            <option selected>Peu importe</option>
-            <option>1 à 5 offres</option>
-            <option>6 à 10 offres</option>
-            <option>Plus de 10 offres</option>
-          </select>
-        </div>
-
-        <div class="actions-filtres">
-          <button type="submit" class="bouton-filtrer">Filtrer</button>
-          <button type="reset" class="bouton-reinitialiser">Réinitialiser</button>
-        </div>
-      </form>
+      ... (formulaire de filtres identique à ton code actuel) ...
     </section>
 
     <section class="zone-resultats">
-      <p class="nombre-resultats">8 entreprises trouvées</p>
+      <p class="nombre-resultats">
+        {{ nombre_entreprises }} entreprises trouvées
+      </p>
 
       <div class="liste-entreprises">
 
-        <article class="ligne-entreprise">
-          <div class="ligne-entreprise__contenu">
-            <div class="ligne-entreprise__haut">
-              <div class="entreprise-entete">
-                <div class="entreprise-logo"></div>
-                <div>
-                  <h2>StudioPixel</h2>
-                  <p class="secteur">Développement web</p>
+        {% for entreprise in entreprises %}
+          <article class="ligne-entreprise">
+            <div class="ligne-entreprise__contenu">
+              <div class="ligne-entreprise__haut">
+                <div class="entreprise-entete">
+                  <div class="entreprise-logo"></div>
+                  <div>
+                    <h2>{{ entreprise.nom_entreprise }}</h2>
+                    <p class="secteur">Entreprise</p>
+                  </div>
                 </div>
+              </div>
+
+              <p class="description">
+                {{ entreprise.description }}
+              </p>
+
+              <div class="details">
+                <span>📄 Offres à venir</span>
+                <span>👥 Contact : {{ entreprise.email }}</span>
+                <span>📞 {{ entreprise.telephone }}</span>
               </div>
             </div>
 
-            <p class="description">
-              StudioPixel accompagne ses clients dans la création de sites web modernes
-              et propose régulièrement des stages en intégration et développement.
-            </p>
-
-            <div class="details">
-              <span>📍 Paris</span>
-              <span>📄 4 offres</span>
-              <span>👥 Petite entreprise</span>
+            <div class="ligne-entreprise__actions">
+              <a href="entreprise.php?id={{ entreprise.id_entreprise }}" class="bouton-voir">
+                Voir l'entreprise
+              </a>
             </div>
-          </div>
-
-          <div class="ligne-entreprise__actions">
-            <a href="entreprise.php" class="bouton-voir">Voir l'entreprise</a>
-          </div>
-        </article>
-
-        <article class="ligne-entreprise">
-          <div class="ligne-entreprise__contenu">
-            <div class="ligne-entreprise__haut">
-              <div class="entreprise-entete">
-                <div class="entreprise-logo"></div>
-                <div>
-                  <h2>WebSolutions</h2>
-                  <p class="secteur">Informatique</p>
-                </div>
-              </div>
-            </div>
-
-            <p class="description">
-              WebSolutions développe des plateformes web pour des entreprises et recherche
-              des profils motivés en stage et en alternance.
-            </p>
-
-            <div class="details">
-              <span>📍 Lyon</span>
-              <span>📄 7 offres</span>
-              <span>👥 Moyenne entreprise</span>
-            </div>
-          </div>
-
-          <div class="ligne-entreprise__actions">
-            <a href="entreprise.php" class="bouton-voir">Voir l'entreprise</a>
-          </div>
-        </article>
-
-        <article class="ligne-entreprise">
-          <div class="ligne-entreprise__contenu">
-            <div class="ligne-entreprise__haut">
-              <div class="entreprise-entete">
-                <div class="entreprise-logo"></div>
-                <div>
-                  <h2>NovaTech</h2>
-                  <p class="secteur">Développement web</p>
-                </div>
-              </div>
-            </div>
-
-            <p class="description">
-              NovaTech conçoit des interfaces web performantes et forme des étudiants
-              sur des projets concrets tout au long de l’année.
-            </p>
-
-            <div class="details">
-              <span>📍 Lille</span>
-              <span>📄 3 offres</span>
-              <span>👥 Moyenne entreprise</span>
-            </div>
-          </div>
-
-          <div class="ligne-entreprise__actions">
-            <a href="entreprise.php" class="bouton-voir">Voir l'entreprise</a>
-          </div>
-        </article>
+          </article>
+        {% else %}
+          <p>Aucune entreprise pour le moment.</p>
+        {% endfor %}
 
       </div>
     </section>

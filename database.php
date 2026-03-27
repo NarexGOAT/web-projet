@@ -1,9 +1,9 @@
 <?php
 
 $host = 'localhost';
-$dbname = 'stage.db';
+$dbname = 'stage_db';
 $username = 'root';
-$password = '';
+$password = 'TonMdpRootSecurise123!';
 
 try {
     $pdo = new PDO(
