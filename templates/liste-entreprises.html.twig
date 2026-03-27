@@ -21,9 +21,82 @@
       </p>
     </section>
 
-    {# filtres : tu peux les garder tels quels pour le moment #}
     <section class="zone-filtres">
-      ... (formulaire de filtres identique à ton code actuel) ...
+      <h2>Filtres</h2>
+
+      <form class="filtres" action="liste-entreprises.php" method="get">
+        <div class="champ-filtre">
+          <label for="nom">Nom de l’entreprise</label>
+          <input
+            type="text"
+            id="nom"
+            name="nom"
+            placeholder="Exemple : OpenStage"
+            value="{{ filtres.nom ?? '' }}"
+          >
+        </div>
+
+        {# Secteur / Ville / Taille : pas encore en BDD, filtres visuels seulement pour l'instant #}
+        <div class="champ-filtre">
+          <label for="secteur">Secteur</label>
+          <select id="secteur" name="secteur" disabled>
+            <option selected>Tous les secteurs</option>
+            <option>Développement web</option>
+            <option>Design</option>
+            <option>Marketing</option>
+            <option>Communication</option>
+            <option>Informatique</option>
+          </select>
+        </div>
+
+        <div class="champ-filtre">
+          <label for="ville">Ville</label>
+          <select id="ville" name="ville" disabled>
+            <option selected>Toutes les villes</option>
+            <option>Paris</option>
+            <option>Lyon</option>
+            <option>Marseille</option>
+            <option>Lille</option>
+            <option>Bordeaux</option>
+          </select>
+        </div>
+
+        <div class="champ-filtre">
+          <label for="type">Type d’offres</label>
+          <select id="type" name="type" disabled>
+            <option selected>Tous les types</option>
+            <option>Stage</option>
+            <option>Alternance</option>
+            <option>Stage et alternance</option>
+          </select>
+        </div>
+
+        <div class="champ-filtre">
+          <label for="taille">Taille</label>
+          <select id="taille" name="taille" disabled>
+            <option selected>Toutes les tailles</option>
+            <option>Petite entreprise</option>
+            <option>Moyenne entreprise</option>
+            <option>Grande entreprise</option>
+          </select>
+        </div>
+
+        <div class="champ-filtre">
+          <label for="offres">Nombre d’offres</label>
+          {% set fOffres = filtres.offres ?? 'Peu importe' %}
+          <select id="offres" name="offres">
+            <option {{ fOffres == 'Peu importe' ? 'selected' }}>Peu importe</option>
+            <option {{ fOffres == '1 à 5 offres' ? 'selected' }}>1 à 5 offres</option>
+            <option {{ fOffres == '6 à 10 offres' ? 'selected' }}>6 à 10 offres</option>
+            <option {{ fOffres == 'Plus de 10 offres' ? 'selected' }}>Plus de 10 offres</option>
+          </select>
+        </div>
+
+        <div class="actions-filtres">
+          <button type="submit" class="bouton-filtrer">Filtrer</button>
+          <button type="reset" class="bouton-reinitialiser">Réinitialiser</button>
+        </div>
+      </form>
     </section>
 
     <section class="zone-resultats">
@@ -51,8 +124,8 @@
               </p>
 
               <div class="details">
-                <span>📄 Offres à venir</span>
-                <span>👥 Contact : {{ entreprise.email }}</span>
+                <span>📄 {{ entreprise.nb_offres }} offre(s)</span>
+                <span>📧 {{ entreprise.email }}</span>
                 <span>📞 {{ entreprise.telephone }}</span>
               </div>
             </div>
@@ -64,7 +137,7 @@
             </div>
           </article>
         {% else %}
-          <p>Aucune entreprise pour le moment.</p>
+          <p>Aucune entreprise ne correspond à ces filtres.</p>
         {% endfor %}
 
       </div>

@@ -24,15 +24,22 @@
     <section class="zone-filtres">
       <h2>Filtres</h2>
 
-      <form class="filtres" action="#" method="get">
+      <form class="filtres" action="liste-offres.php" method="get">
         <div class="champ-filtre">
           <label for="metier">Métier recherché</label>
-          <input type="text" id="metier" name="metier" placeholder="Exemple : développeur web">
+          <input
+            type="text"
+            id="metier"
+            name="metier"
+            placeholder="Exemple : développeur web"
+            value="{{ filtres.metier ?? '' }}"
+          >
         </div>
 
+        {# Ville : tu la coderas plus tard, on laisse la liste statique pour l'instant #}
         <div class="champ-filtre">
           <label for="ville">Ville</label>
-          <select id="ville" name="ville">
+          <select id="ville" name="ville" disabled>
             <option selected>Toutes les villes</option>
             <option>Paris</option>
             <option>Lyon</option>
@@ -44,33 +51,35 @@
         <div class="champ-filtre">
           <label for="duree">Durée</label>
           <select id="duree" name="duree">
-            <option selected>Toutes les durées</option>
-            <option>Moins de 2 mois</option>
-            <option>2 à 4 mois</option>
-            <option>4 à 6 mois</option>
-            <option>Plus de 6 mois</option>
+            {% set duree = filtres.duree ?? 'Toutes les durées' %}
+            <option {{ duree == 'Toutes les durées' ? 'selected' }}>Toutes les durées</option>
+            <option {{ duree == 'Moins de 2 mois' ? 'selected' }}>Moins de 2 mois</option>
+            <option {{ duree == '2 à 4 mois' ? 'selected' }}>2 à 4 mois</option>
+            <option {{ duree == '4 à 6 mois' ? 'selected' }}>4 à 6 mois</option>
+            <option {{ duree == 'Plus de 6 mois' ? 'selected' }}>Plus de 6 mois</option>
           </select>
         </div>
 
         <div class="champ-filtre">
           <label for="competence">Compétence</label>
+          {% set comp = filtres.competence ?? 'Toutes les compétences' %}
           <select id="competence" name="competence">
-            <option selected>Toutes les compétences</option>
-            <option>HTML</option>
-            <option>CSS</option>
-            <option>PHP</option>
-            <option>JavaScript</option>
-            <option>SQL</option>
-          </select>
-        </div>
+          <option {{ comp == 'Toutes les compétences' ? 'selected' }}>Toutes les compétences</option>
+
+          {% for c in competences %}
+            <option {{ comp == c ? 'selected' }}>{{ c }}</option>
+          {% endfor %}
+  </select>
+</div>
 
         <div class="champ-filtre">
           <label for="publication">Date de publication</label>
+          {% set pub = filtres.publication ?? 'Toutes les dates' %}
           <select id="publication" name="publication">
-            <option selected>Toutes les dates</option>
-            <option>Aujourd’hui</option>
-            <option>Cette semaine</option>
-            <option>Ce mois-ci</option>
+            <option {{ pub == 'Toutes les dates' ? 'selected' }}>Toutes les dates</option>
+            <option {{ pub == 'Aujourd’hui' ? 'selected' }}>Aujourd’hui</option>
+            <option {{ pub == 'Cette semaine' ? 'selected' }}>Cette semaine</option>
+            <option {{ pub == 'Ce mois-ci' ? 'selected' }}>Ce mois-ci</option>
           </select>
         </div>
 
@@ -82,87 +91,47 @@
     </section>
 
     <section class="zone-resultats">
-      <p class="nombre-resultats">12 offres trouvées</p>
+      <p class="nombre-resultats">
+        {{ nombre_offres }} offres trouvées
+      </p>
 
       <div class="liste-offres">
 
-        <article class="ligne-offre">
-          <div class="ligne-offre__contenu">
-            <div class="ligne-offre__haut">
-              <h2>Stage Développeur Web</h2>
-              <p class="etiquette-date">Il y a 3 jours</p>
+        {% for offre in offres %}
+          <article class="ligne-offre">
+            <div class="ligne-offre__contenu">
+              <div class="ligne-offre__haut">
+                <h2>{{ offre.titre }}</h2>
+                <p class="etiquette-date">
+                  Publiée le {{ offre.date_publication|date('d/m/Y') }}
+                </p>
+              </div>
+
+              <p class="entreprise">
+                {{ offre.nom_entreprise ?? 'Entreprise non renseignée' }}
+              </p>
+
+              <p class="description">
+                {{ offre.description }}
+              </p>
+
+              <div class="details">
+                {# Ville : à compléter quand tu auras une colonne pour ça #}
+                <span>⏳ {{ offre.duree_stage }}</span>
+                <span>💼 Stage</span>
+                <span>🛠 {{ offre.competence }}</span>
+              </div>
             </div>
 
-            <p class="entreprise">StudioPixel</p>
-
-            <p class="description">
-              Rejoins une équipe web et participe au développement de nouvelles fonctionnalités.
-            </p>
-
-            <div class="details">
-              <span>📍 Paris</span>
-              <span>⏳ 3 mois</span>
-              <span>💼 Stage</span>
-              <span>🛠 HTML, CSS, PHP</span>
+            <div class="ligne-offre__actions">
+              <a href="offre.php?id={{ offre.id_offre }}" class="bouton-voir">
+                Voir l’offre
+              </a>
             </div>
-          </div>
-
-          <div class="ligne-offre__actions">
-            <a href="offre.php" class="bouton-voir">Voir l’offre</a>
-          </div>
-        </article>
-
-        <article class="ligne-offre">
-          <div class="ligne-offre__contenu">
-            <div class="ligne-offre__haut">
-              <h2>Stage Intégrateur Web</h2>
-              <p class="etiquette-date">Il y a 1 jour</p>
-            </div>
-
-            <p class="entreprise">WebSolutions</p>
-
-            <p class="description">
-              Intègre des maquettes et améliore l’interface utilisateur d’un site existant.
-            </p>
-
-            <div class="details">
-              <span>📍 Lyon</span>
-              <span>⏳ 4 mois</span>
-              <span>💼 Stage</span>
-              <span>🛠 HTML, CSS, JavaScript</span>
-            </div>
-          </div>
-
-          <div class="ligne-offre__actions">
-            <a href="offre.php" class="bouton-voir">Voir l’offre</a>
-          </div>
-        </article>
-
-        <article class="ligne-offre">
-          <div class="ligne-offre__contenu">
-            <div class="ligne-offre__haut">
-              <h2>Alternance Développeur Front-End</h2>
-              <p class="etiquette-date">Aujourd’hui</p>
-            </div>
-
-            <p class="entreprise">NovaTech</p>
-
-            <p class="description">
-              Participe à la création d’interfaces modernes et responsive pour une plateforme web.
-            </p>
-
-            <div class="details">
-              <span>📍 Lille</span>
-              <span>⏳ 12 mois</span>
-              <span>💼 Alternance</span>
-              <span>🛠 HTML, CSS, JavaScript</span>
-            </div>
-          </div>
-
-          <div class="ligne-offre__actions">
-            <a href="offre.php" class="bouton-voir">Voir l’offre</a>
-          </div>
-        </article>
+          </article>
+        {% else %}
+          <p>Aucune offre ne correspond à ces filtres.</p>
+        {% endfor %}
 
       </div>
     </section>
