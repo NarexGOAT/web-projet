@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         echo "Bravo ! L'utilisateur est prêt.";
 
-        // 👉 plus tard : insertion en base
+    
 
     } else {
         echo "Erreur : veuillez remplir tous les champs et accepter les conditions.";
