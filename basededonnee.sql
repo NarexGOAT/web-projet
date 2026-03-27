@@ -1,3 +1,16 @@
+CREATE TABLE role (
+    id_role INT AUTO_INCREMENT PRIMARY KEY,
+    role VARCHAR(50)
+);
+
+CREATE TABLE entreprise (
+    id_entreprise INT AUTO_INCREMENT PRIMARY KEY,
+    nom_entreprise VARCHAR(100),
+    description TEXT,
+    email VARCHAR(50),
+    telephone VARCHAR(20)
+)
+
 CREATE TABLE utilisateur (
     id_user INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100),
@@ -9,10 +22,6 @@ CREATE TABLE utilisateur (
     FOREIGN KEY (id_role) REFERENCES role(id_role)
 );
 
-CREATE TABLE role (
-    id_role INT AUTO_INCREMENT PRIMARY KEY,
-    role VARCHAR(50)
-);
 
 CREATE TABLE offre (
     id_offre INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,10 +68,3 @@ CREATE TABLE evaluation (
     FOREIGN KEY (id_entreprise) REFERENCES entreprise(id_entreprise)
 );
 
-CREATE TABLE entreprise (
-    id_entreprise INT AUTO_INCREMENT PRIMARY KEY,
-    nom_entreprise VARCHAR(100),
-    description TEXT,
-    email VARCHAR(50),
-    telephone VARCHAR(20)
-)
