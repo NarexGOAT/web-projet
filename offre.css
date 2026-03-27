@@ -165,17 +165,17 @@
 }
 
 .btn-postuler-grand {
-    display: block; /* Indispensable si tu utilises une balise <a> */
+    display: block; 
     width: 100%;
-    box-sizing: border-box; /* Assure que le padding ne fait pas déborder le bouton */
+    box-sizing: border-box; 
     background: var(--degrade-orange);
     color: var(--blanc);
     border: none;
     padding: 1rem;
     font-size: 1.1rem;
     font-weight: bold;
-    border-radius: 0.5rem; /* Les jolis bords arrondis */
-    margin-bottom: 1rem; /* L'espace crucial entre les deux boutons ! */
+    border-radius: 0.5rem; 
+    margin-bottom: 1rem; 
     text-align: center;
 }
 
@@ -185,7 +185,7 @@
 }
 
 .btn-wishlist-secondaire {
-    display: block; /* Indispensable si tu utilises une balise <a> */
+    display: block; 
     width: 100%;
     box-sizing: border-box;
     background: transparent;
