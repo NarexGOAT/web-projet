@@ -148,6 +148,8 @@
 }
 
 .carte-action {
+    display: flex;
+    flex-direction: column; /* Force les éléments à s'empiler verticalement */
     text-align: center;
 }
 
@@ -163,14 +165,18 @@
 }
 
 .btn-postuler-grand {
+    display: block; /* Indispensable si tu utilises une balise <a> */
     width: 100%;
+    box-sizing: border-box; /* Assure que le padding ne fait pas déborder le bouton */
     background: var(--degrade-orange);
     color: var(--blanc);
     border: none;
     padding: 1rem;
     font-size: 1.1rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
+    font-weight: bold;
+    border-radius: 0.5rem; /* Les jolis bords arrondis */
+    margin-bottom: 1rem; /* L'espace crucial entre les deux boutons ! */
+    text-align: center;
 }
 
 .btn-postuler-grand:hover {
@@ -179,11 +185,16 @@
 }
 
 .btn-wishlist-secondaire {
+    display: block; /* Indispensable si tu utilises une balise <a> */
     width: 100%;
+    box-sizing: border-box;
     background: transparent;
     border: 2px solid var(--bleu-clair-allostage);
     color: var(--bleu-clair-allostage);
     padding: 0.8rem;
+    font-weight: bold;
+    border-radius: 0.5rem; /* Les jolis bords arrondis */
+    text-align: center;
 }
 
 .btn-wishlist-secondaire:hover {
