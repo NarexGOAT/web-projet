@@ -5,7 +5,7 @@ CREATE TABLE utilisateur (
     email VARCHAR(150) UNIQUE,
     mot_de_passe VARCHAR(255),
     date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
-    id_role,
+    id_role INT,
     FOREIGN KEY (id_role) REFERENCES role(id_role)
 );
 
