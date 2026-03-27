@@ -1,175 +1,137 @@
-<!doctype html>
-<html lang="fr">
+<!DOCTYPE html>
+<html lang="fr-FR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Entreprise - BHStage</title>
-  <link rel="stylesheet" href="entreprise.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Entreprise - TechSolutions SAS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="entreprise.css">
 </head>
 <body>
-  <main class="page-entreprise">
-
-    <header class="barre-haut">
-      <a href="liste-entreprises.html" class="bouton-retour">←</a>
-      <h1 class="titre-page">Entreprise</h1>
-      <a href="menu.html" class="bouton-profil">👤</a>
+    <!-- En-tête AlloStage -->
+    <header class="entete">
+        <div class="logo">
+            <a href="index.html">
+                <img src="logo.png" alt="Accueil AlloStage" class="logo-img" style="height: 70px; object-fit: contain;">
+            </a>
+        </div>
+        <nav class="navigation">
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="offre.html">Offres de stages</a></li>
+                <li><a href="#" class="actif">Entreprises</a></li>
+            </ul>
+        </nav>
+        <div class="actions-entete">
+            <a href="inscription.html" class="btn-secondaire">Inscription</a>
+            <a href="connexion.html" class="btn-principal">Connexion</a>
+        </div>
     </header>
 
-    <section class="presentation-entreprise">
-      <div class="entete-entreprise">
-        <div class="logo-entreprise"></div>
+    <main class="contenu fond-gris">
+        <div class="conteneur-profil">
+            
+            <a href="#" class="lien-retour">← Retour à la liste des entreprises</a>
 
-        <div class="infos-principales">
-          <h2>StudioPixel</h2>
-          <p class="secteur">Développement web</p>
-          <p class="localisation">📍 Paris, France</p>
+            <!-- Bannière et En-tête du profil -->
+            <div class="en-tete-profil boite-blanche">
+                <div class="logo-grand logo-ts">TS</div>
+                <div class="infos-principales">
+                    <h1>TechSolutions SAS</h1>
+                    <p class="secteur-activite">Informatique / Éditeur logiciel</p>
+                    <div class="evaluation">
+                        <span class="etoiles">★★★★☆</span>
+                        <span class="note-chiffre">4.2/5</span>
+                        <a href="#avis" class="lien-avis">(Voir les 42 avis d'étudiants)</a>
+                    </div>
+                </div>
+                <div class="action-profil">
+                    <button class="btn-principal">Évaluer l'entreprise</button>
+                </div>
+            </div>
+
+            <!-- Grille de contenu principal -->
+            <div class="grille-profil">
+                
+                <!-- Colonne de gauche (Présentation et Avis) -->
+                <article class="colonne-gauche">
+                    
+                    <div class="boite-blanche section-texte">
+                        <h2>Présentation de l'entreprise</h2>
+                        <p>TechSolutions est une startup innovante spécialisée dans la création de logiciels SaaS pour les professionnels de la santé. Fondée en 2020, notre mission est de simplifier le quotidien des médecins grâce à des outils intuitifs et sécurisés.</p>
+                        <p>Nous sommes une équipe de 40 passionnés basés en plein cœur de Paris. Chez nous, l'innovation, l'entraide et le code propre sont au centre de tout.</p>
+                        
+                        <h3>Pourquoi nous rejoindre ?</h3>
+                        <ul>
+                            <li>Un environnement de travail moderne et flexible (2 jours de télétravail).</li>
+                            <li>Un véritable accompagnement par un tuteur senior pour vous faire progresser.</li>
+                            <li>Des tickets restaurant et un abonnement transport remboursé à 50%.</li>
+                        </ul>
+                    </div>
+
+                    <div id="avis" class="boite-blanche section-avis">
+                        <h2>Derniers avis des stagiaires</h2>
+                        
+                        <div class="carte-avis">
+                            <div class="en-tete-avis">
+                                <strong>Lucas M.</strong> <span class="etoiles">★★★★★</span>
+                            </div>
+                            <span class="date-avis">Stage de 6 mois • Développeur Web</span>
+                            <p>"Super stage de fin d'études ! L'équipe est jeune et hyper bienveillante. On m'a tout de suite donné de vraies responsabilités. Je recommande à 100%."</p>
+                        </div>
+
+                        <div class="carte-avis">
+                            <div class="en-tete-avis">
+                                <strong>Emma T.</strong> <span class="etoiles">★★★★☆</span>
+                            </div>
+                            <span class="date-avis">Stage de 4 mois • UX/UI Designer</span>
+                            <p>"Très bonne expérience, les locaux sont top et l'ambiance aussi. Le seul bémol est la charge de travail parfois un peu intense en fin de sprint."</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Colonne de droite (Infos pratiques et Offres) -->
+                <aside class="colonne-droite">
+                    
+                    <div class="boite-blanche infos-pratiques">
+                        <h3>Informations pratiques</h3>
+                        <ul class="liste-infos">
+                            <li><strong>📍 Localisation :</strong> Paris (75001)</li>
+                            <li><strong>👥 Taille :</strong> 10 à 50 salariés</li>
+                            <li><strong>🌐 Site web :</strong> <a href="#" class="lien-bleu">techsolutions.fr</a></li>
+                            <li><strong>✉️ Contact :</strong> rh@techsolutions.fr</li>
+                        </ul>
+                    </div>
+
+                    <div class="boite-blanche offres-entreprise">
+                        <h3>Offres de stages (3)</h3>
+                        
+                        <a href="offre.html" class="mini-carte-offre">
+                            <span class="titre-mini-offre">Développeur Web Front-End (H/F)</span>
+                            <span class="tags-mini">📅 6 mois • 🎓 Bac+3/5</span>
+                        </a>
+
+                        <a href="#" class="mini-carte-offre">
+                            <span class="titre-mini-offre">Développeur Back-End Node.js</span>
+                            <span class="tags-mini">📅 6 mois • 🎓 Bac+5</span>
+                        </a>
+
+                        <a href="#" class="mini-carte-offre">
+                            <span class="titre-mini-offre">Assistant(e) Ressources Humaines</span>
+                            <span class="tags-mini">📅 4 mois • 🎓 Bac+3</span>
+                        </a>
+                        
+                        <button class="btn-secondaire pleine-largeur" style="margin-top: 1rem;">Voir toutes les offres</button>
+                    </div>
+
+                </aside>
+
+            </div>
         </div>
+    </main>
 
-        <div class="evaluation" >4,3/5 ⭐</div>
-
-      </div>
-
-      <p class="texte-intro">
-        StudioPixel est une entreprise spécialisée dans la création de sites web modernes,
-        d’interfaces utilisateur et de solutions numériques pour les entreprises.
-      </p>
-    </section>
-
-    <section class="bloc-description">
-      <h2>Présentation</h2>
-      <p>
-        L’entreprise accompagne ses clients dans la conception, le développement et
-        l’amélioration de leurs projets web. Elle propose régulièrement des stages pour
-        permettre aux étudiants de découvrir un environnement professionnel concret,
-        collaboratif et formateur.
-      </p>
-    </section>
-
-    <section class="grille-infos">
-      <article class="carte-info">
-        <h3>Secteur</h3>
-        <p>Développement web</p>
-      </article>
-
-      <article class="carte-info">
-        <h3>Taille</h3>
-        <p>Petite entreprise</p>
-      </article>
-
-      <article class="carte-info">
-        <h3>Type d’offres</h3>
-        <p>Stages</p>
-      </article>
-
-      <article class="carte-info">
-        <h3>Ville</h3>
-        <p>Paris</p>
-      </article>
-
-      <article class="carte-info">
-        <h3>Site internet</h3>
-        <p>www.studiopixel.fr</p>
-      </article>
-
-      <article class="carte-info">
-        <h3>Nombre d’offres</h3>
-        <p>4 offres disponibles</p>
-      </article>
-    </section>
-
-    <section class="bloc-valeurs">
-      <h2>Ce que propose l’entreprise</h2>
-      <div class="etiquettes">
-        <span>Encadrement</span>
-        <span>Projets web</span>
-        <span>Travail en équipe</span>
-        <span>Montée en compétences</span>
-      </div>
-    </section>
-
-    <section class="bloc-offres">
-      <div class="entete-section">
-        <h2>Offres de cette entreprise</h2>
-        <p>4 offres disponibles</p>
-      </div>
-
-      <div class="liste-offres">
-
-        <article class="ligne-offre">
-          <div class="ligne-offre__contenu">
-            <div class="ligne-offre__haut">
-              <h3>Stage Développeur Web</h3>
-              <p class="etiquette-date">Il y a 3 jours</p>
-            </div>
-
-            <p class="description-offre">
-              Rejoins une équipe web et participe au développement de nouvelles fonctionnalités.
-            </p>
-
-            <div class="details-offre">
-              <span>📍 Paris</span>
-              <span>⏳ 3 mois</span>
-              <span>💼 Stage</span>
-              <span>🛠 HTML, CSS, PHP</span>
-            </div>
-          </div>
-
-          <div class="ligne-offre__actions">
-            <a href="offre.html" class="bouton-voir">Voir l’offre</a>
-          </div>
-        </article>
-
-        <article class="ligne-offre">
-          <div class="ligne-offre__contenu">
-            <div class="ligne-offre__haut">
-              <h3>Stage Intégrateur Web</h3>
-              <p class="etiquette-date">Hier</p>
-            </div>
-
-            <p class="description-offre">
-              Intègre des maquettes responsive et participe à l’amélioration des interfaces.
-            </p>
-
-            <div class="details-offre">
-              <span>📍 Paris</span>
-              <span>⏳ 2 mois</span>
-              <span>💼 Stage</span>
-              <span>🛠 HTML, CSS, JavaScript</span>
-            </div>
-          </div>
-
-          <div class="ligne-offre__actions">
-            <a href="offre.html" class="bouton-voir">Voir l’offre</a>
-          </div>
-        </article>
-
-        <article class="ligne-offre">
-          <div class="ligne-offre__contenu">
-            <div class="ligne-offre__haut">
-              <h3>Stage Assistant UX / UI</h3>
-              <p class="etiquette-date">Cette semaine</p>
-            </div>
-
-            <p class="description-offre">
-              Participe à la conception d’interfaces simples, claires et agréables pour les utilisateurs.
-            </p>
-
-            <div class="details-offre">
-              <span>📍 Paris</span>
-              <span>⏳ 4 mois</span>
-              <span>💼 Stage</span>
-              <span>🛠 Figma, maquettage</span>
-            </div>
-          </div>
-
-          <div class="ligne-offre__actions">
-            <a href="offre.html" class="bouton-voir">Voir l’offre</a>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-  </main>
+    <footer class="pied-de-page">
+        <p>&copy; 2026 AlloStage. Tous droits réservés.</p>
+    </footer>
 </body>
 </html>
