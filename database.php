@@ -1,7 +1,7 @@
 <?php
 
 $host = 'localhost';
-$dbname = 'basededonnees.sql';
+$dbname = 'stage.db';
 $username = 'root';
 $password = '';
 
