@@ -1,28 +1,23 @@
 <?php
+// 1. On importe le moule
+require_once 'Utilisateur.php';
 
-class Utilisateur {
-    // Les propriétés (les caractéristiques de l'utilisateur)
-    private $email;
-    private $mot_de_passe;
+// 2. On vérifie si on a bien reçu des données du formulaire
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
+    // 3. On récupère les infos du colis $_POST
+    $email_du_formulaire = $_POST['email'];
+    $mdp_du_formulaire = $_POST['mot_de_passe'];
 
-    // Le "Constructor" : c'est ce qui s'exécute quand on crée un utilisateur
-    public function __construct($mail, $mdp) {
-        $this->email = $mail;
-        $this->mot_de_passe = $mdp;
-    }
+    // 4. On crée notre objet Utilisateur (Instance)
+    $monUtilisateur = new Utilisateur($email_du_formulaire, $mdp_du_formulaire);
 
-    // Une méthode (une action) pour vérifier si les champs ne sont pas vides
-    public function estValide() {
-        if (!empty($this->email) && !empty($this->mot_de_passe)) {
-            return true;
-        }
-        return false;
-    }
-
-    // Un "Getter" pour récupérer l'email proprement
-    public function getEmail() {
-        return $this->email;
+    // 5. On vérifie si tout est bon
+    if ($monUtilisateur->estValide()) {
+        echo "Bravo ! L'objet Utilisateur est prêt pour : " . $monUtilisateur->getEmail();
+        // C'est ici qu'on ajoutera plus tard l'envoi vers la Base de Données
+    } else {
+        echo "Erreur : Veuillez remplir tous les champs.";
     }
 }
-
 ?>
