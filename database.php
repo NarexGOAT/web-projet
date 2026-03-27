@@ -1,18 +1,19 @@
 <?php
+class Database {
+    private $host = "localhost";
+    private $db_name = "nom_de_ta_base"; // <--- METS LE NOM DE TA BDD ICI
+    private $username = "root";
+    private $password = ""; // Sur WSL, c'est souvent vide ou "root"
 
-$host = 'localhost';
-$dbname = 'stage.db';
-$username = 'root';
-$password = '';
-
-try {
-    $pdo = new PDO(
-        "mysql:host=$host;dbname=$dbname;charset=utf8",
-        $username,
-        $password
-    );
-
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Erreur de connexion : " . $e->getMessage());
+    public function getConnection() {
+        try {
+            $conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $conn;
+        } catch (PDOException $e) {
+            echo "Erreur de connexion : " . $e->getMessage();
+            return null;
+        }
+    }
 }
+?>
