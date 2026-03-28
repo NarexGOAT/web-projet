@@ -48,17 +48,16 @@
             <a class="bouton bouton--principal" href="liste-offres.php">Voir toutes les offres</a>
             <a class="bouton bouton--secondaire" href="#dernieres-offres">Voir les dernières</a>
             <a class="bouton bouton--principal" href="liste-entreprises.php">Voir toutes les entreprises</a>
-
           </nav>
 
           <section>
             <ul class="mise-en-avant__stats">
               <li>
-                <strong>120+</strong>
+                <strong>{{ total_offres }}</strong>
                 <span>offres actives</span>
               </li>
               <li>
-                <strong>45</strong>
+                <strong>{{ total_entreprises }}</strong>
                 <span>entreprises</span>
               </li>
               <li>
@@ -75,99 +74,45 @@
             <a class="lien" href="liste-offres.php">Tout voir →</a>
           </header>
 
-          <article class="carte offre">
-            <span class="etiquette">Il y a 3 jours</span>
+          {% for offre in dernieres_offres %}
+            <article class="carte offre">
+              {# Étiquette "il y a X jours" simplifiée #}
+              <span class="etiquette">
+                Publiée le {{ offre.date_publication|date('d/m') }}
+              </span>
 
-            <header class="offre__entete">
-              <h3 class="offre__titre">Stage Développeur Web</h3>
-            </header>
+              <header class="offre__entete">
+                <h3 class="offre__titre">{{ offre.titre }}</h3>
+              </header>
 
-            <p class="offre__description">
-              Rejoins une équipe web et participe au développement de nouvelles fonctionnalités.
-            </p>
+              <p class="offre__description">
+                {{ offre.description|length > 120 ? offre.description|slice(0, 120) ~ '...' : offre.description }}
+              </p>
 
-            <dl class="offre__infos">
-              <div class="offre__ligne">
-                <dt>Compétences</dt>
-                <dd>HTML, CSS, PHP</dd>
-              </div>
-              <div class="offre__ligne">
-                <dt>Publiée le</dt>
-                <dd>12/01</dd>
-              </div>
-            </dl>
+              <dl class="offre__infos">
+                <div class="offre__ligne">
+                  <dt>Compétences</dt>
+                  <dd>{{ offre.competence }}</dd>
+                </div>
+                <div class="offre__ligne">
+                  <dt>Publiée le</dt>
+                  <dd>{{ offre.date_publication|date('d/m') }}</dd>
+                </div>
+              </dl>
 
-            <footer class="offre__actions">
-              <a class="bouton bouton--doux" href="offre.php">Voir l’offre</a>
-              <button class="bouton bouton--icone" type="button" title="Ajouter aux favoris">
-                ⭐
-              </button>
-              <p class="entreprise">StudioPixel</p>
-            </footer>
-          </article>
+              <footer class="offre__actions">
+                <a class="bouton bouton--doux" href="offre.php?id={{ offre.id_offre }}">Voir l’offre</a>
+                <button class="bouton bouton--icone" type="button" title="Ajouter aux favoris">
+                  ⭐
+                </button>
+                <p class="entreprise">{{ offre.nom_entreprise ?? 'Entreprise non renseignée' }}</p>
+              </footer>
+            </article>
+          {% else %}
+            <p>Aucune offre pour le moment.</p>
+          {% endfor %}
 
-          <article class="carte offre">
-            <span class="etiquette">Il y a 1 jour</span>
-
-            <header class="offre__entete">
-              <h3 class="offre__titre">Stage Intégrateur Front</h3>
-            </header>
-
-            <p class="offre__description">
-              Intègre des maquettes responsive et améliore l’interface utilisateur d’un site existant.
-            </p>
-
-            <dl class="offre__infos">
-              <div class="offre__ligne">
-                <dt>Compétences</dt>
-                <dd>HTML, CSS, JavaScript</dd>
-              </div>
-              <div class="offre__ligne">
-                <dt>Publiée le</dt>
-                <dd>14/01</dd>
-              </div>
-            </dl>
-
-            <footer class="offre__actions">
-              <a class="bouton bouton--doux" href="offre.php">Voir l’offre</a>
-              <button class="bouton bouton--icone" type="button" title="Ajouter aux favoris">
-                ⭐
-              </button>
-              <p class="entreprise">StudioPixel</p>
-            </footer>
-          </article>
-
-          <article class="carte offre">
-            <span class="etiquette">Il y a 1 jour</span>
-
-            <header class="offre__entete">
-              <h3 class="offre__titre">Stage Intégrateur Front</h3>
-            </header>
-
-            <p class="offre__description">
-              Intègre des maquettes responsive et améliore l’interface utilisateur d’un site existant.
-            </p>
-
-            <dl class="offre__infos">
-              <div class="offre__ligne">
-                <dt>Compétences</dt>
-                <dd>HTML, CSS, JavaScript</dd>
-              </div>
-              <div class="offre__ligne">
-                <dt>Publiée le</dt>
-                <dd>14/01</dd>
-              </div>
-            </dl>
-
-            <footer class="offre__actions">
-              <a class="bouton bouton--doux" href="offre.php">Voir l’offre</a>
-              <button class="bouton bouton--icone" type="button" title="Ajouter aux favoris">
-                ⭐
-              </button>
-              <p class="entreprise">StudioPixel</p>
-            </footer>
-          </article>
-          </aside>
+        </aside>
       </section>
     </div>
   </main>

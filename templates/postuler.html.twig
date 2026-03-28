@@ -10,20 +10,25 @@
   <main class="page-candidature">
 
     <header class="barre-haut">
-      <a href="offre.php" class="bouton-retour">←</a>
+      <a href="offre.php?id={{ offre.id_offre }}" class="bouton-retour">←</a>
       <h1 class="titre-page">Postuler</h1>
       <a href="menu.php" class="bouton-profil">👤</a>
     </header>
 
     <section class="carte-intro">
-      <h2>Stage Développeur Web</h2>
-      <p class="entreprise">WebSolutions</p>
+      <h2>{{ offre.titre }}</h2>
+      <p class="entreprise">
+        {{ offre.nom_entreprise ?? 'Entreprise' }}
+        {% if offre.ville %}
+          • {{ offre.ville }}
+        {% endif %}
+      </p>
       <p class="texte-intro">
         Complète ce formulaire pour envoyer ta candidature à l’entreprise.
       </p>
     </section>
 
-    <form class="formulaire-candidature" action="#" method="post">
+    <form class="formulaire-candidature" action="#" method="post" enctype="multipart/form-data">
       <section class="bloc-formulaire">
         <h2>Informations personnelles</h2>
 
@@ -48,7 +53,6 @@
 
         <label for="lm">Lettre de motivation</label>
         <input type="file" id="lm" name="lm">
-
       </section>
 
       <section class="actions-bas">
