@@ -1,280 +1,203 @@
-* {
-  box-sizing: border-box;
-}
+/* --- Mise en page spécifique pour la liste des offres --- */
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background: #f3f5f9;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #111827;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.page-offres {
-  max-width: 1000px;
-  min-height: 100vh;
-  margin: 0 auto;
-  background: #ffffff;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03);
-}
-
-.barre-haut {
-  display: grid;
-  grid-template-columns: 44px 1fr 44px;
-  align-items: center;
-  gap: 12px;
-  padding: 18px 16px;
-  background: #f8f9fc;
-  border-bottom: 1px solid #eceff4;
-}
-
-.bouton-retour,
-.bouton-profil {
-  width: 44px;
-  height: 44px;
-  border: 1px solid #cfd6e2;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ffffff;
-  color: #111827;
-  font-size: 1.4rem;
-}
-
-.titre-page {
-  margin: 0;
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.zone-intro {
-  padding: 20px 16px 10px;
-}
-
-.texte-intro {
-  margin: 0;
-  color: #5b6472;
-  line-height: 1.5;
-}
-
-.zone-filtres {
-  margin: 0 16px 20px;
-  padding: 18px;
-  border: 1px solid #d9dfeb;
-  border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
-}
-
-.zone-filtres h2 {
-  margin: 0 0 16px;
-  font-size: 1.15rem;
-}
-
-.filtres {
-  display: grid;
-  gap: 14px;
-}
-
-.champ-filtre label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 700;
-  font-size: 0.95rem;
-}
-
-.champ-filtre input,
-.champ-filtre select {
-  width: 100%;
-  height: 46px;
-  padding: 0 12px;
-  border: 1px solid #cfd6e2;
-  border-radius: 12px;
-  background: #ffffff;
-  font-size: 1rem;
-  color: #111827;
-}
-
-.actions-filtres {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 4px;
-}
-
-.bouton-filtrer,
-.bouton-reinitialiser {
-  min-height: 46px;
-  padding: 0 18px;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.bouton-filtrer {
-  border: 1px solid #8fb1f5;
-  background: linear-gradient(135deg, #9dbbff, #6f9bff);
-  color: #0f172a;
-}
-
-.bouton-reinitialiser {
-  border: 1px solid #cfd6e2;
-  background: #ffffff;
-  color: #374151;
-}
-
-.zone-resultats {
-  padding: 0 16px 28px;
-}
-
-.nombre-resultats {
-  margin: 0 0 14px;
-  color: #5b6472;
-  font-weight: 700;
-}
-
-.liste-offres {
-  display: grid;
-  gap: 14px;
-}
-
-.ligne-offre {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 18px;
-  border: 1px solid #d9dfeb;
-  border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
-}
-
-.ligne-offre__haut {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.ligne-offre__haut h2 {
-  margin: 0;
-  font-size: 1.3rem;
-  line-height: 1.2;
-}
-
-.etiquette-date {
-  margin: 0;
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: #f4e96b;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #111827;
-}
-
-.entreprise {
-  margin: 0 0 10px;
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: #f8fafc;
-  border: 1px solid #d5d9e0;
-  color: #374151;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-
-.description {
-  margin: 0 0 12px;
-  color: #4b5563;
-  line-height: 1.5;
-}
-
-.details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.details span {
-  display: inline-flex;
-  align-items: center;
-  min-height: 34px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  background: #f3f4f6;
-  border: 1px solid #d5d9e0;
-  color: #374151;
-  font-size: 0.92rem;
-}
-
-.ligne-offre__actions {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.bouton-voir {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 46px;
-  padding: 0 16px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #9dbbff, #6f9bff);
-  border: 1px solid #8fb1f5;
-  color: #0f172a;
-  font-weight: 700;
-}
-
-@media (min-width: 768px) {
-  .page-offres {
-    margin: 24px auto;
-    border-radius: 16px;
-    overflow: hidden;
-  }
-
-  .filtres {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .actions-filtres {
-    grid-column: 1 / -1;
-  }
-
-  .ligne-offre {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .ligne-offre__contenu {
+.fond-gris {
+    background-color: var(--gris-tres-clair);
+    padding: 2rem;
     flex: 1;
-  }
+}
 
-  .ligne-offre__actions {
-    flex-shrink: 0;
-    align-self: flex-end;
-  }
+/* --- En-tête de recherche --- */
+.en-tete-recherche {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto 2rem auto;
+}
 
-  .ligne-offre__haut {
-    flex-direction: row;
-    align-items: center;
+.en-tete-recherche h1 {
+    color: var(--bleu-allostage);
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.en-tete-recherche p {
+    color: var(--texte-moyen);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.barre-recherche-avancee {
+    display: flex;
+    gap: 0; /* On colle les éléments pour faire un gros bloc uni */
+    background: var(--blanc);
+    border-radius: 0.8rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--gris-clair);
+    overflow: hidden; /* Empêche les bords carrés des inputs de dépasser de la bordure arrondie */
+}
+
+.barre-recherche-avancee input,
+.barre-recherche-avancee select {
+    padding: 1rem 1.2rem;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    outline: none;
+    color: var(--texte-sombre);
+}
+
+.barre-recherche-avancee input {
+    border-right: 1px solid var(--gris-clair);
+}
+
+.input-metier { flex: 2; }
+.input-lieu { flex: 1.5; }
+.select-duree { flex: 1; border-right: 1px solid var(--gris-clair); cursor: pointer; }
+
+.barre-recherche-avancee .btn-principal {
+    border-radius: 0; /* On enlève l'arrondi pour qu'il colle parfaitement à la barre */
+    padding: 1rem 2rem;
+}
+
+.resultats-tri {
+    display: flex;
     justify-content: space-between;
-  }
+    align-items: center;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--texte-moyen);
+}
+
+.tri select {
+    border: none;
+    background: transparent;
+    color: var(--bleu-allostage);
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+/* --- Grille des offres --- */
+.conteneur-liste {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* On s'assure que la grille garde bien 3 colonnes et gère les multiples lignes */
+.grille-offres {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 3rem; /* Espace avant la pagination */
+}
+
+/* On corrige le bouton postuler transformé en lien (comme on l'a fait pour Détails) */
+.btn-postuler-lien {
+    display: block;
+    flex: 1;
+    background: var(--degrade-orange);
+    color: var(--blanc);
+    padding: 0.6rem;
+    text-align: center;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.btn-postuler-lien:hover {
+    opacity: 0.9;
+}
+
+/* --- Pagination --- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.page-lien {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 0.8rem;
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    border-radius: 0.5rem;
+    color: var(--texte-sombre);
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.page-lien:hover:not(.desactive) {
+    border-color: var(--bleu-clair-allostage);
+    color: var(--bleu-allostage);
+    background-color: var(--fond-panneau);
+}
+
+/* La page sur laquelle on se trouve actuellement */
+.page-lien.actif {
+    background: var(--bleu-allostage);
+    color: var(--blanc);
+    border-color: var(--bleu-allostage);
+}
+
+/* Quand on est sur la page 1, le bouton précédent est désactivé visuellement */
+.page-lien.desactive {
+    color: var(--gris-clair);
+    cursor: not-allowed;
+    background: var(--gris-tres-clair);
+}
+
+.page-points {
+    color: var(--texte-moyen);
+    font-weight: bold;
+    padding: 0 0.5rem;
+}
+
+/* --- Responsive --- */
+@media (max-width: 992px) {
+    .grille-offres {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .barre-recherche-avancee {
+        flex-direction: column;
+        background: transparent;
+        box-shadow: none;
+        border: none;
+        gap: 0.5rem;
+    }
+
+    .barre-recherche-avancee input,
+    .barre-recherche-avancee select,
+    .barre-recherche-avancee .btn-principal {
+        width: 100%;
+        border: 1px solid var(--gris-clair);
+        border-radius: 0.5rem;
+        background: var(--blanc);
+    }
+
+    .resultats-tri {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .grille-offres {
+        grid-template-columns: 1fr;
+    }
+    
+    .pagination {
+        flex-wrap: wrap; /* Permet aux numéros de passer à la ligne sur tout petit écran */
+    }
 }
