@@ -36,22 +36,21 @@
           >
         </div>
 
-        {# Ville : tu la coderas plus tard, on laisse la liste statique pour l'instant #}
         <div class="champ-filtre">
           <label for="ville">Ville</label>
-          <select id="ville" name="ville" disabled>
-            <option selected>Toutes les villes</option>
-            <option>Paris</option>
-            <option>Lyon</option>
-            <option>Marseille</option>
-            <option>Lille</option>
+          {% set v = filtres.ville ?? 'Toutes les villes' %}
+          <select id="ville" name="ville">
+            <option {{ v == 'Toutes les villes' ? 'selected' }}>Toutes les villes</option>
+            {% for vi in villes %}
+              <option {{ v == vi ? 'selected' }}>{{ vi }}</option>
+            {% endfor %}
           </select>
         </div>
 
         <div class="champ-filtre">
           <label for="duree">Durée</label>
+          {% set duree = filtres.duree ?? 'Toutes les durées' %}
           <select id="duree" name="duree">
-            {% set duree = filtres.duree ?? 'Toutes les durées' %}
             <option {{ duree == 'Toutes les durées' ? 'selected' }}>Toutes les durées</option>
             <option {{ duree == 'Moins de 2 mois' ? 'selected' }}>Moins de 2 mois</option>
             <option {{ duree == '2 à 4 mois' ? 'selected' }}>2 à 4 mois</option>
@@ -64,13 +63,12 @@
           <label for="competence">Compétence</label>
           {% set comp = filtres.competence ?? 'Toutes les compétences' %}
           <select id="competence" name="competence">
-          <option {{ comp == 'Toutes les compétences' ? 'selected' }}>Toutes les compétences</option>
-
-          {% for c in competences %}
-            <option {{ comp == c ? 'selected' }}>{{ c }}</option>
-          {% endfor %}
-  </select>
-</div>
+            <option {{ comp == 'Toutes les compétences' ? 'selected' }}>Toutes les compétences</option>
+            {% for c in competences %}
+              <option {{ comp == c ? 'selected' }}>{{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
         <div class="champ-filtre">
           <label for="publication">Date de publication</label>
@@ -109,6 +107,9 @@
 
               <p class="entreprise">
                 {{ offre.nom_entreprise ?? 'Entreprise non renseignée' }}
+                {% if offre.ville %}
+                  • {{ offre.ville }}
+                {% endif %}
               </p>
 
               <p class="description">
@@ -116,9 +117,8 @@
               </p>
 
               <div class="details">
-                {# Ville : à compléter quand tu auras une colonne pour ça #}
-                <span>⏳ {{ offre.duree_stage }}</span>
-                <span>💼 Stage</span>
+                <span>⏳ {{ offre.duree_stage }} semaines</span>
+                <span>💼 {{ offre.type_offre ?? 'Stage' }}</span>
                 <span>🛠 {{ offre.competence }}</span>
               </div>
             </div>

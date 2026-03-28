@@ -7,9 +7,11 @@ CREATE TABLE entreprise (
     id_entreprise INT AUTO_INCREMENT PRIMARY KEY,
     nom_entreprise VARCHAR(100),
     description TEXT,
+    domaine VARCHAR(100),
+    ville VARCHAR(100),
+    taille INT(5000),
     email VARCHAR(50),
     telephone VARCHAR(20)
-
 );
 
 CREATE TABLE utilisateur (
@@ -29,7 +31,8 @@ CREATE TABLE offre (
     description TEXT,
     remuneration DECIMAL(10,2),
     date_publication DATETIME DEFAULT CURRENT_TIMESTAMP,
-    duree_stage VARCHAR(50),
+    duree_stage int(100),
+    type_offre VARCHAR(50),
     id_entreprise INT,
     competence VARCHAR(100),
     FOREIGN KEY (id_entreprise) REFERENCES entreprise(id_entreprise)

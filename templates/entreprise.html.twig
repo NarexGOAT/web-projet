@@ -21,11 +21,21 @@
 
         <div class="infos-principales">
           <h2>{{ entreprise.nom_entreprise }}</h2>
-          <p class="secteur">Entreprise</p>
-          <p class="localisation">📍 (à compléter plus tard)</p>
+          <p class="secteur">
+            {{ entreprise.domaine is defined and entreprise.domaine ? entreprise.domaine : 'Secteur non renseigné' }}
+          </p>
+          <p class="localisation">
+            📍 {{ entreprise.ville is defined and entreprise.ville ? entreprise.ville : 'Ville non renseignée' }}
+          </p>
         </div>
 
-        <div class="evaluation">4,3/5 ⭐</div>
+        <div class="evaluation">
+          {% if moyenne_note is not null %}
+            {{ moyenne_note|number_format(1, ',', ' ') }}/5 ⭐
+          {% else %}
+            Pas encore d’évaluation
+          {% endif %}
+        </div>
       </div>
 
       <p class="texte-intro">
@@ -65,8 +75,8 @@
               </p>
 
               <div class="details-offre">
-                <span>⏳ {{ offre.duree_stage }}</span>
-                <span>💼 Stage</span>
+                <span>⏳ {{ offre.duree_stage }} semaines</span>
+                <span>💼 {{ offre.type_offre ?? 'Stage' }}</span>
                 <span>🛠 {{ offre.competence }}</span>
               </div>
             </div>

@@ -17,7 +17,7 @@
 
     <section class="zone-intro">
       <p class="texte-intro">
-        Découvre les entreprises partenaires qui proposent des stages.
+        Découvre les entreprises partenaires qui proposent des stages et alternances.
       </p>
     </section>
 
@@ -36,49 +36,37 @@
           >
         </div>
 
-        {# Secteur / Ville / Taille : pas encore en BDD, filtres visuels seulement pour l'instant #}
         <div class="champ-filtre">
-          <label for="secteur">Secteur</label>
-          <select id="secteur" name="secteur" disabled>
-            <option selected>Tous les secteurs</option>
-            <option>Développement web</option>
-            <option>Design</option>
-            <option>Marketing</option>
-            <option>Communication</option>
-            <option>Informatique</option>
+          <label for="domaine">Domaine</label>
+          {% set dom = filtres.domaine ?? 'Tous les domaines' %}
+          <select id="domaine" name="domaine">
+            <option {{ dom == 'Tous les domaines' ? 'selected' }}>Tous les domaines</option>
+            {% for d in domaines %}
+              <option {{ dom == d ? 'selected' }}>{{ d }}</option>
+            {% endfor %}
           </select>
         </div>
 
         <div class="champ-filtre">
           <label for="ville">Ville</label>
-          <select id="ville" name="ville" disabled>
-            <option selected>Toutes les villes</option>
-            <option>Paris</option>
-            <option>Lyon</option>
-            <option>Marseille</option>
-            <option>Lille</option>
-            <option>Bordeaux</option>
-          </select>
-        </div>
-
-        <div class="champ-filtre">
-          <label for="type">Type d’offres</label>
-          <select id="type" name="type" disabled>
-            <option selected>Tous les types</option>
-            <option>Stage</option>
-            <option>Alternance</option>
-            <option>Stage et alternance</option>
+          {% set v = filtres.ville ?? 'Toutes les villes' %}
+          <select id="ville" name="ville">
+            <option {{ v == 'Toutes les villes' ? 'selected' }}>Toutes les villes</option>
+            {% for vi in villes %}
+              <option {{ v == vi ? 'selected' }}>{{ vi }}</option>
+            {% endfor %}
           </select>
         </div>
 
         <div class="champ-filtre">
           <label for="taille">Taille</label>
-          <select id="taille" name="taille" disabled>
-            <option selected>Toutes les tailles</option>
-            <option>Petite entreprise</option>
-            <option>Moyenne entreprise</option>
-            <option>Grande entreprise</option>
-          </select>
+            {% set ta = filtres.taille ?? 'Toutes les tailles' %}
+            <select id="taille" name="taille">
+              <option {{ ta == 'Toutes les tailles' ? 'selected' }}>Toutes les tailles</option>
+              <option {{ ta == 'Petite entreprise' ? 'selected' }}>Petite entreprise</option>
+              <option {{ ta == 'PME' ? 'selected' }}>PME</option>
+              <option {{ ta == 'Grande entreprise' ? 'selected' }}>Grande entreprise</option>
+            </select>
         </div>
 
         <div class="champ-filtre">
@@ -86,6 +74,7 @@
           {% set fOffres = filtres.offres ?? 'Peu importe' %}
           <select id="offres" name="offres">
             <option {{ fOffres == 'Peu importe' ? 'selected' }}>Peu importe</option>
+            <option {{ fOffres == '0 offre' ? 'selected' }}>0 offre</option>
             <option {{ fOffres == '1 à 5 offres' ? 'selected' }}>1 à 5 offres</option>
             <option {{ fOffres == '6 à 10 offres' ? 'selected' }}>6 à 10 offres</option>
             <option {{ fOffres == 'Plus de 10 offres' ? 'selected' }}>Plus de 10 offres</option>
@@ -94,7 +83,7 @@
 
         <div class="actions-filtres">
           <button type="submit" class="bouton-filtrer">Filtrer</button>
-          <button type="reset" class="bouton-reinitialiser">Réinitialiser</button>
+          <a href="liste-entreprises.php" class="bouton-reinitialiser">Réinitialiser</a>
         </div>
       </form>
     </section>
@@ -105,7 +94,6 @@
       </p>
 
       <div class="liste-entreprises">
-
         {% for entreprise in entreprises %}
           <article class="ligne-entreprise">
             <div class="ligne-entreprise__contenu">
@@ -114,7 +102,7 @@
                   <div class="entreprise-logo"></div>
                   <div>
                     <h2>{{ entreprise.nom_entreprise }}</h2>
-                    <p class="secteur">Entreprise</p>
+                    <p class="secteur">{{ entreprise.domaine }}</p>
                   </div>
                 </div>
               </div>
@@ -124,6 +112,18 @@
               </p>
 
               <div class="details">
+                <span>📍 {{ entreprise.ville }}</span>
+                <span>🏢
+                  {% if entreprise.taille is null %}
+                    Taille non renseignée
+                  {% elseif entreprise.taille < 50 %}
+                     Petite entreprise ({{ entreprise.taille }} salariés)
+                  {% elseif entreprise.taille < 250 %}
+                    PME ({{ entreprise.taille }} salariés)
+                  {% else %}
+                    Grande entreprise ({{ entreprise.taille }} salariés)
+                  {% endif %}
+                </span>
                 <span>📄 {{ entreprise.nb_offres }} offre(s)</span>
                 <span>📧 {{ entreprise.email }}</span>
                 <span>📞 {{ entreprise.telephone }}</span>
@@ -139,7 +139,6 @@
         {% else %}
           <p>Aucune entreprise ne correspond à ces filtres.</p>
         {% endfor %}
-
       </div>
     </section>
 

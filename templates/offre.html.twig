@@ -22,7 +22,9 @@
 
         <div class="entreprise-texte">
           <h2>{{ offre.nom_entreprise ?? 'Entreprise' }}</h2>
-          <p class="localisation">📍 Ville à compléter</p>
+          <p class="localisation">
+            📍 {{ offre.ville ?? 'Ville non renseignée' }}
+          </p>
         </div>
       </div>
 
@@ -41,7 +43,7 @@
     <section class="grille-infos">
       <article class="carte-info">
         <h3>Durée</h3>
-        <p>📅 {{ offre.duree_stage }}</p>
+        <p>📅 {{ offre.duree_stage }} semaines</p>
       </article>
 
       <article class="carte-info">
@@ -60,7 +62,7 @@
     <section class="bloc-profil">
       <h2>Profil recherché</h2>
       <p>
-        Profil à décrire (ajoute une colonne plus tard si tu veux le stocker en base).
+        Compétences attendues : {{ offre.competence }}.
       </p>
     </section>
 

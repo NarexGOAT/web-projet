@@ -5,7 +5,7 @@ require_once __DIR__ . '/database.php';
 // id de l'offre dans l'URL: offre.php?id=...
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
-$sql = 'SELECT o.*, e.nom_entreprise 
+$sql = 'SELECT o.*, e.nom_entreprise, e.ville
         FROM offre o
         LEFT JOIN entreprise e ON o.id_entreprise = e.id_entreprise
         WHERE o.id_offre = :id';
