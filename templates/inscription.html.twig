@@ -21,38 +21,69 @@
         <p>Créez votre compte pour accéder aux offres.</p>
     </div>
 
+    {% if erreurs is defined and erreurs %}
+        <ul class="liste-erreurs">
+    {% for e in erreurs %}
+      <li>{{ e }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
     <form class="login-form" action="index.php?page=inscription" method="post">
-        <div class="input-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Votre adresse mail" required>
-        </div>
+    <div class="input-group">
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" name="nom" placeholder="Votre nom" required
+               value="{{ old.nom ?? '' }}">
+    </div>
 
-        <div class="input-group">
-            <label for="password">Mot de passe</label>
-            <div class="password-wrapper">
-                <input type="password" id="password" name="mot_de_passe" placeholder="Votre mot de passe" required>
-            </div>
-        </div>
+    <div class="input-group">
+        <label for="prenom">Prénom</label>
+        <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" required
+               value="{{ old.prenom ?? '' }}">
+    </div>
 
-        <div class="input-group">
-            <label for="password_confirm">Confirmer le mot de passe</label>
-            <div class="password-wrapper">
-                <input type="password" id="password_confirm" name="mot_de_passe_confirm" placeholder="Confirmer votre mot de passe" required>
-            </div>
-        </div>
+    <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Votre adresse mail" required
+               value="{{ old.email ?? '' }}">
+    </div>
 
-        <div class="checkbox-group">
-            <input type="checkbox" id="conditions" name="conditions" required>
-            <label for="conditions">
-                J'accepte les <a href="index.php?page=conditions">Conditions d'utilisation</a>
-                et la <a href="index.php?page=politique">Politique de confidentialité</a>
-            </label>
-        </div>
+    <div class="input-group">
+        <label for="role">Type de compte</label>
+        {% set selectedRole = old.id_role ?? 1 %}
+        <select id="role" name="id_role" required>
+            <option value="1" {{ selectedRole == 1 ? 'selected' : '' }}>Étudiant</option>
+            <option value="2" {{ selectedRole == 2 ? 'selected' : '' }}>Recruteur</option>
+            <option value="3" {{ selectedRole == 3 ? 'selected' : '' }}>Admin</option>
+        </select>
+    </div>
 
-        <button type="submit" class="btn-submit">
-            Continuer
-        </button>
-    </form>
+    <div class="input-group">
+        <label for="password">Mot de passe</label>
+        <div class="password-wrapper">
+            <input type="password" id="password" name="mot_de_passe" placeholder="Votre mot de passe" required>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label for="password_confirm">Confirmer le mot de passe</label>
+        <div class="password-wrapper">
+            <input type="password" id="password_confirm" name="mot_de_passe_confirm" placeholder="Confirmer votre mot de passe" required>
+        </div>
+    </div>
+
+    <div class="checkbox-group">
+        <input type="checkbox" id="conditions" name="conditions" required>
+        <label for="conditions">
+            J'accepte les <a href="index.php?page=conditions">Conditions d'utilisation</a>
+            et la <a href="index.php?page=politique">Politique de confidentialité</a>
+        </label>
+    </div>
+
+    <button type="submit" class="btn-submit">
+        Continuer
+    </button>
+</form>
 
     <div class="signup-link">
         <p>Vous avez déjà un compte ? <a href="index.php?page=connexion">Se connecter</a></p>
