@@ -3,58 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer une entreprise - BHStage</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Créer une entreprise - AlloStage</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="creer-entreprise.css">
 </head>
-
 <body>
-
-<div class="login-container">
-
-    <div class="logo-section">
-        <img src="allostage.png" alt="Logo BHStage" class="logo-img">
-    </div>
-
-    <div class="header-text">
-        <h2>Créer une entreprise</h2>
-        <p>Ajoutez une entreprise à la plateforme pour publier des offres de stage.</p>
-    </div>
-
-    <form class="login-form" action="#" method="POST">
-
-        <div class="input-group">
-            <label for="nom_entreprise">Nom de l'entreprise</label>
-            <input type="text" id="nom_entreprise" name="nom_entreprise" placeholder="Nom de l'entreprise" required>
+    <header class="entete">
+        <div class="logo">
+            <a href="index.html">
+                <img src="allostage.png" alt="Accueil AlloStage" class="logo-img" style="height: 70px; object-fit: contain;">
+            </a>
         </div>
-
-        <div class="input-group">
-            <label for="description">Description</label>
-            <textarea id="description" name="description" placeholder="Décrivez l'entreprise" rows="4" required></textarea>
+        <nav class="navigation">
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="liste-offres.php">Offres de stages</a></li>
+                <li><a href="liste-entreprises.php" class="actif">Entreprises</a></li>
+            </ul>
+        </nav>
+        <div class="actions-entete">
+            <span class="texte-admin">Espace Administrateur</span>
         </div>
+    </header>
 
-        <div class="input-group">
-            <label for="email">Email de contact</label>
-            <input type="email" id="email" name="email" placeholder="Adresse email" required>
+    <main class="contenu fond-gris">
+        <div class="conteneur-formulaire">
+
+            <div class="boite-blanche">
+                <div class="en-tete-formulaire">
+                    <h1>Ajouter une entreprise</h1>
+                    <p>Remplissez les informations ci-dessous pour référencer un nouveau partenaire.</p>
+                </div>
+
+                <form action="traitement-entreprise.php" method="POST" enctype="multipart/form-data" class="formulaire-creation">
+                    
+                    <div class="grille-formulaire">
+                        <!-- Nom de l'entreprise (nom_entreprise) -->
+                        <div class="groupe-champ pleine-largeur">
+                            <label for="nom_entreprise">Nom de l'entreprise *</label>
+                            <input type="text" id="nom_entreprise" name="nom_entreprise" class="champ-saisie" placeholder="Ex: TechSolutions SAS" required>
+                        </div>
+
+                        <!-- Domaine (domaine) -->
+                        <div class="groupe-champ">
+                            <label for="domaine">Domaine d'activité *</label>
+                            <input type="text" id="domaine" name="domaine" class="champ-saisie" placeholder="Ex: Informatique, Cybersécurité..." required>
+                        </div>
+                        
+                        <!-- Taille (taille) - Modifié en input number pour coller au type INT -->
+                        <div class="groupe-champ">
+                            <label for="taille">Taille (nombre de salariés) *</label>
+                            <input type="number" id="taille" name="taille" class="champ-saisie" placeholder="Ex: 45" min="1" required>
+                        </div>
+
+                        <!-- Ville (ville) -->
+                        <div class="groupe-champ">
+                            <label for="ville">Ville (Siège social) *</label>
+                            <input type="text" id="ville" name="ville" class="champ-saisie" placeholder="Ex: Paris" required>
+                        </div>
+
+                        <!-- Téléphone (telephone) -->
+                        <div class="groupe-champ">
+                            <label for="telephone">Téléphone</label>
+                            <input type="tel" id="telephone" name="telephone" class="champ-saisie" placeholder="Ex: 01 23 45 67 89">
+                        </div>
+
+                        <!-- Email (email) -->
+                        <div class="groupe-champ pleine-largeur">
+                            <label for="email">Adresse e-mail de contact *</label>
+                            <input type="email" id="email" name="email" class="champ-saisie" placeholder="Ex: contact@entreprise.fr" required>
+                        </div>
+
+                        <!-- Description (description) -->
+                        <div class="groupe-champ pleine-largeur">
+                            <label for="description">Description de l'entreprise *</label>
+                            <textarea id="description" name="description" class="champ-saisie zone-texte" rows="5" placeholder="Présentez brièvement l'entreprise, ses valeurs, son activité..." required></textarea>
+                        </div>
+
+                        <!-- Upload du Logo (Optionnel par rapport à la BDD actuelle) -->
+                        <div class="groupe-champ pleine-largeur section-upload">
+                            <label for="logo">Logo de l'entreprise</label>
+                            <p class="texte-aide">Formats acceptés : JPG, PNG (Max 2 Mo).</p>
+                            <input type="file" id="logo" name="logo" accept="image/png, image/jpeg" class="champ-fichier">
+                        </div>
+                    </div>
+
+                    <div class="actions-formulaire">
+                        <button type="reset" class="btn-secondaire">Annuler</button>
+                        <button type="submit" class="btn-principal btn-large">Créer l'entreprise</button>
+                    </div>
+
+                </form>
+            </div>
         </div>
+    </main>
 
-        <div class="input-group">
-            <label for="telephone">Téléphone</label>
-            <input type="text" id="telephone" name="telephone" placeholder="Numéro de téléphone" required>
-        </div>
-
-        <button type="submit" class="btn-submit">
-            Créer l'entreprise
-        </button>
-
-    </form>
-
-    <div class="footer-bottom">
-        <a href="index.html" class="legal-link">← Retour à l'accueil</a>
-    </div>
-
-</div>
-
+    <footer class="pied-de-page">
+        <p>&copy; 2026 AlloStage. Tous droits réservés.</p>
+    </footer>
 </body>
 </html>
