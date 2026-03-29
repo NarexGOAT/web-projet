@@ -6,10 +6,8 @@
     <title>Inscription - BHStage</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="/public/css/inscription.css">
 </head>
-
 <body>
 
 <div class="login-container">
@@ -23,47 +21,45 @@
         <p>Créez votre compte pour accéder aux offres.</p>
     </div>
 
-    <form class="login-form">
-
+    <form class="login-form" action="index.php?page=inscription" method="post">
         <div class="input-group">
-            <label>Email</label>
-            <input type="email" placeholder="Votre adresse mail" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Votre adresse mail" required>
         </div>
 
         <div class="input-group">
-            <label>Mot de passe</label>
+            <label for="password">Mot de passe</label>
             <div class="password-wrapper">
-                <input type="password" placeholder="Votre mot de passe" required>
+                <input type="password" id="password" name="mot_de_passe" placeholder="Votre mot de passe" required>
             </div>
         </div>
 
         <div class="input-group">
-            <label>Confirmer le mot de passe</label>
+            <label for="password_confirm">Confirmer le mot de passe</label>
             <div class="password-wrapper">
-                <input type="password" placeholder="Confirmer votre mot de passe" required>
+                <input type="password" id="password_confirm" name="mot_de_passe_confirm" placeholder="Confirmer votre mot de passe" required>
             </div>
         </div>
 
         <div class="checkbox-group">
-            <input type="checkbox" id="conditions" required>
+            <input type="checkbox" id="conditions" name="conditions" required>
             <label for="conditions">
-                J'accepte les <a href="conditions.php">Conditions d'utilisation</a>
-                et la <a href="politique.php">Politique de confidentialité</a>
+                J'accepte les <a href="index.php?page=conditions">Conditions d'utilisation</a>
+                et la <a href="index.php?page=politique">Politique de confidentialité</a>
             </label>
         </div>
 
         <button type="submit" class="btn-submit">
             Continuer
         </button>
-
     </form>
 
     <div class="signup-link">
-        <p>Vous avez déjà un compte ? <a href="connexion.php">Se connecter</a></p>
+        <p>Vous avez déjà un compte ? <a href="index.php?page=connexion">Se connecter</a></p>
     </div>
 
     <div class="footer-bottom">
-        <a href="mentions.php" class="legal-link">Mentions légales</a>
+        <a href="index.php?page=mentions" class="legal-link">Mentions légales</a>
     </div>
 
 </div>

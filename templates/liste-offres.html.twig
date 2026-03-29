@@ -12,7 +12,7 @@
     <header class="barre-haut">
       <a href="index.php" class="bouton-retour">←</a>
       <h1 class="titre-page">Liste des offres</h1>
-      <a href="menu.php" class="bouton-profil">👤</a>
+      <a href="index.php?page=menu" class="bouton-profil">👤</a>
     </header>
 
     <section class="zone-intro">
@@ -24,7 +24,8 @@
     <section class="zone-filtres">
       <h2>Filtres</h2>
 
-      <form class="filtres" action="liste-offres.php" method="get">
+      <form class="filtres" action="index.php" method="get">
+  <input type="hidden" name="page" value="offres">
         <div class="champ-filtre">
           <label for="metier">Métier recherché</label>
           <input
@@ -108,7 +109,7 @@
               <p class="entreprise">
                 {{ offre.nom_entreprise ?? 'Entreprise non renseignée' }}
                 {% if offre.ville %}
-                  • {{ offre.ville }}
+                    {{ offre.ville }}
                 {% endif %}
               </p>
 
@@ -124,7 +125,7 @@
             </div>
 
             <div class="ligne-offre__actions">
-              <a href="offre.php?id={{ offre.id_offre }}" class="bouton-voir">
+              <a href="index.php?page=offre&id={{ offre.id_offre }}" class="bouton-voir">
                 Voir l’offre
               </a>
             </div>

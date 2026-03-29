@@ -10,9 +10,9 @@
   <main class="page-candidature">
 
     <header class="barre-haut">
-      <a href="offre.php?id={{ offre.id_offre }}" class="bouton-retour">←</a>
+      <a href="index.php?page=offre&id={{ offre.id_offre }}" class="bouton-retour">←</a>
       <h1 class="titre-page">Postuler</h1>
-      <a href="menu.php" class="bouton-profil">👤</a>
+      <a href="index.php?page=menu" class="bouton-profil">👤</a>
     </header>
 
     <section class="carte-intro">
@@ -28,7 +28,12 @@
       </p>
     </section>
 
-    <form class="formulaire-candidature" action="#" method="post" enctype="multipart/form-data">
+    <form
+      class="formulaire-candidature"
+      action="index.php?page=postuler&id={{ offre.id_offre }}"
+      method="post"
+      enctype="multipart/form-data"
+    >
       <section class="bloc-formulaire">
         <h2>Informations personnelles</h2>
 

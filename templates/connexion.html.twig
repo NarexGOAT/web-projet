@@ -20,8 +20,7 @@
             <p>Salut ! Ravi de vous revoir.</p>
         </div>
 
-        <form action="traitement.php" method="post" class="login-form">
-            
+        <form action="index.php?page=connexion" method="post" class="login-form">
             <div class="input-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Votre adresse mail" required>
@@ -35,18 +34,17 @@
                 </div>
             </div>
 
-            <a href="oubli.php" class="forgot-password">Mot de passe oublié ?</a>
+            <a href="index.php?page=oubli" class="forgot-password">Mot de passe oublié ?</a>
 
             <button type="submit" class="btn-submit">Se connecter</button>
-
         </form>
 
         <div class="signup-link">
-            <p>Vous n'avez pas de compte ? <a href="inscription.php">S'inscrire</a></p>
+            <p>Vous n'avez pas de compte ? <a href="index.php?page=inscription">S'inscrire</a></p>
         </div>
 
         <div class="footer-bottom">
-            <a href="mentions.php" class="legal-link">Mentions légales</a>
+            <a href="index.php?page=mentions" class="legal-link">Mentions légales</a>
         </div>
     </div>
 

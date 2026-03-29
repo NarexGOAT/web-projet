@@ -12,7 +12,7 @@
     <header class="barre-haut">
       <a href="index.php" class="bouton-retour">←</a>
       <h1 class="titre-page">Liste des entreprises</h1>
-      <a href="menu.php" class="bouton-profil">👤</a>
+      <a href="index.php?page=menu" class="bouton-profil">👤</a>
     </header>
 
     <section class="zone-intro">
@@ -24,7 +24,8 @@
     <section class="zone-filtres">
       <h2>Filtres</h2>
 
-      <form class="filtres" action="liste-entreprises.php" method="get">
+      <form class="filtres" action="index.php" method="get">
+        <input type="hidden" name="page" value="entreprises">
         <div class="champ-filtre">
           <label for="nom">Nom de l’entreprise</label>
           <input
@@ -83,7 +84,7 @@
 
         <div class="actions-filtres">
           <button type="submit" class="bouton-filtrer">Filtrer</button>
-          <a href="liste-entreprises.php" class="bouton-reinitialiser">Réinitialiser</a>
+          <a href="index.php?page=entreprises" class="bouton-reinitialiser">Réinitialiser</a>
         </div>
       </form>
     </section>
@@ -131,7 +132,7 @@
             </div>
 
             <div class="ligne-entreprise__actions">
-              <a href="entreprise.php?id={{ entreprise.id_entreprise }}" class="bouton-voir">
+              <a href="index.php?page=entreprise&id={{ entreprise.id_entreprise }}" class="bouton-voir">
                 Voir l'entreprise
               </a>
             </div>

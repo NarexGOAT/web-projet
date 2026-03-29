@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -15,24 +16,24 @@
             <h2>Réinitialiser votre mot de passe</h2>
         </div>
 
-        <form action="nouveau-mdp.php" class="login-form">
+        <form action="index.php?page=oubli" method="post" class="login-form">
             
             <div class="input-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Votre adresse mail" required>
+                <input type="email" id="email" name="email" placeholder="Votre adresse mail" required>
             </div>
 
             <div class="input-group">
                 <label for="code">Code de vérification</label>
-                <input type="text" id="code" placeholder="Votre code de vérification" required>
+                <input type="text" id="code" name="code" placeholder="Votre code de vérification" required>
             </div>
 
             <div class="checkbox-group">
-                <input type="checkbox" id="confirm-reset" required>
+                <input type="checkbox" id="confirm-reset" name="confirm_reset" required>
                 <label for="confirm-reset">Réinitialiser mon mot de passe pour en créer un nouveau.</label>
             </div>
 
-            <button type="submit" class="btn-submit">Continue</button>
+            <button type="submit" class="btn-submit">Continuer</button>
 
         </form>
 

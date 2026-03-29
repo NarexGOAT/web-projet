@@ -27,7 +27,7 @@
 
       <nav class="actions">
         <a class="bouton-icone" href="wishlist.php" title="Favoris">❤️</a>
-        <a class="bouton-icone" href="menu.php" title="Profil">👤</a>
+        <a href="index.php?page=menu" class="bouton-profil">👤</a>
       </nav>
     </div>  
   </header>
@@ -45,9 +45,9 @@
           </p>
 
           <nav class="mise-en-avant__actions" aria-label="Actions principales">
-            <a class="bouton bouton--principal" href="liste-offres.php">Voir toutes les offres</a>
+            <a class="bouton bouton--principal" href="index.php?page=offres">Voir toutes les offres</a>
             <a class="bouton bouton--secondaire" href="#dernieres-offres">Voir les dernières</a>
-            <a class="bouton bouton--principal" href="liste-entreprises.php">Voir toutes les entreprises</a>
+            <a class="bouton bouton--principal" href="index.php?page=entreprises">Voir toutes les entreprises</a>
           </nav>
 
           <section>
@@ -71,7 +71,7 @@
         <aside class="colonne-droite">
           <header class="entete-section" id="dernieres-offres">
             <h2>Dernières offres</h2>
-            <a class="lien" href="liste-offres.php">Tout voir →</a>
+            <a class="lien" href="index.php?page=offres">Tout voir →</a>
           </header>
 
           {% for offre in dernieres_offres %}
@@ -101,7 +101,7 @@
               </dl>
 
               <footer class="offre__actions">
-                <a class="bouton bouton--doux" href="offre.php?id={{ offre.id_offre }}">Voir l’offre</a>
+                <a class="bouton bouton--doux" href="index.php?page=offre&id={{ offre.id_offre }}">Voir l’offre</a>
                 <button class="bouton bouton--icone" type="button" title="Ajouter aux favoris">
                   ⭐
                 </button>
@@ -120,7 +120,7 @@
   <footer class="pied-page">
     <div class="conteneur pied-page__interieur">
       <small>© BHStage</small>
-      <a class="lien" href="mentions.php">Mentions légales</a>
+      <a href="index.php?page=mentions">Mentions légales</a>
     </div>
   </footer>
 </body>

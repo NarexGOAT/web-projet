@@ -10,9 +10,9 @@
   <main class="page-entreprise">
 
     <header class="barre-haut">
-      <a href="liste-entreprises.php" class="bouton-retour">←</a>
+      <a href="index.php?page=entreprises" class="bouton-retour">←</a>
       <h1 class="titre-page">Entreprise</h1>
-      <a href="menu.php" class="bouton-profil">👤</a>
+      <a href="index.php?page=menu" class="bouton-profil">👤</a>
     </header>
 
     <section class="presentation-entreprise">
@@ -82,7 +82,7 @@
             </div>
 
             <div class="ligne-offre__actions">
-              <a href="offre.php?id={{ offre.id_offre }}" class="bouton-voir">Voir l’offre</a>
+              <a href="index.php?page=offre&id={{ offre.id_offre }}" class="bouton-voir">Voir l’offre</a>
             </div>
           </article>
         {% else %}
