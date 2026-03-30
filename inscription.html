@@ -70,5 +70,39 @@
 
 </div>
 
+<script>
+        // ==========================================
+        // 1. GESTION DU PREMIER OEIL (Mot de passe)
+        // ==========================================
+        const iconeOeil1 = document.getElementById('icone-oeil-1');
+        const champMdp1 = document.getElementById('mot_de_passe');
+
+        iconeOeil1.addEventListener('click', function () {
+            // On vérifie si c'est caché ou visible
+            const type = champMdp1.getAttribute('type') === 'password' ? 'text' : 'password';
+            champMdp1.setAttribute('type', type);
+
+            // On change l'icône : oeil normal <-> oeil barré
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // ==========================================
+        // 2. GESTION DU DEUXIÈME OEIL (Confirmation)
+        // ==========================================
+        const iconeOeil2 = document.getElementById('icone-oeil-2');
+        const champMdp2 = document.getElementById('confirm_mot_de_passe');
+
+        iconeOeil2.addEventListener('click', function () {
+            // On vérifie si c'est caché ou visible
+            const type = champMdp2.getAttribute('type') === 'password' ? 'text' : 'password';
+            champMdp2.setAttribute('type', type);
+
+            // On change l'icône : oeil normal <-> oeil barré
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+
 </body>
 </html>
