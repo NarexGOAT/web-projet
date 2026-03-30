@@ -74,13 +74,27 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn btn-cancel" onclick="history.back()">Annuler</button>
-                    <button type="submit" class="btn btn-submit">Enregistrer les modifications</button>
+                    <button type="button" class="btn btn-delete" onclick="confirmDeleteEntreprise()">
+                        Supprimer
+                    </button>
+
+                    <div class="right-actions">
+                        <button type="button" class="btn btn-cancel" onclick="history.back()">Annuler</button>
+                        <button type="submit" class="btn btn-submit">Enregistrer les modifications</button>
+                    </div>
                 </div>
 
             </form>
         </section>
     </main>
+
+    <script>
+        function confirmDeleteEntreprise() {
+            if (confirm("Êtes-vous sûr de vouloir supprimer cette entreprise ?")) {
+                alert("Suppression confirmée (à relier au backend).");
+            }
+        }
+    </script>
 
 </body>
 </html>
