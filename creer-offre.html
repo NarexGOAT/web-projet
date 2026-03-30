@@ -5,76 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer une offre de stage - BHStage</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="creer-offre.css">
 </head>
-
 <body>
 
-<div class="login-container">
-
-    <div class="logo-section">
-        <img src="allostage.png" alt="Logo BHStage" class="logo-img">
-    </div>
-
-    <div class="header-text">
-        <h2>Créer une offre de stage</h2>
-        <p>Ajoutez une nouvelle offre de stage à la plateforme.</p>
-    </div>
-
-    <form class="login-form" action="#" method="POST">
-
-        <div class="input-group">
-            <label for="titre">Titre de l'offre</label>
-            <input type="text" id="titre" name="titre" placeholder="Ex : Développeur web stagiaire" required>
+    <header class="topbar">
+        <div class="topbar-left">
+            <img src="allostage.png" alt="Logo AlloStage" class="logo">
         </div>
 
-        <div class="input-group">
-            <label for="description">Description</label>
-            <textarea id="description" name="description" placeholder="Décrivez l'offre de stage" rows="4" required></textarea>
+        <nav class="topbar-nav">
+            <a href="index.html">Accueil</a>
+            <a href="liste-offres.html" class="active">Offres de stages</a>
+            <a href="liste-entreprises.html">Entreprises</a>
+        </nav>
+
+        <div class="topbar-right">
+            <a href="#" class="admin-btn">Espace Administrateur</a>
         </div>
+    </header>
 
-        <div class="input-group">
-            <label for="competence">Compétence recherchée</label>
-            <input type="text" id="competence" name="competence" placeholder="Ex : PHP, SQL, JavaScript" required>
-        </div>
+    <main class="page-wrapper">
+        <section class="form-card">
 
-        <div class="input-group">
-            <label for="duree_stage">Durée du stage</label>
-            <input type="number" id="duree_stage" name="duree_stage" placeholder="Ex : 6" required>
-        </div>
+            <div class="form-header">
+                <h1>Ajouter une offre de stage</h1>
+                <p>Remplissez les informations ci-dessous pour publier une nouvelle offre.</p>
+            </div>
 
-        <div class="input-group">
-            <label for="type_offre">Type d'offre</label>
-            <input type="text" id="type_offre" name="type_offre" placeholder="Ex : Stage, Alternance" required>
-        </div>
+            <form class="offer-form" action="#" method="POST">
 
-        <div class="input-group">
-            <label for="id_entreprise">Entreprise</label>
-            <select id="id_entreprise" name="id_entreprise" required>
-                <option value="">Sélectionnez une entreprise</option>
-                <option value="1">Entreprise 1</option>
-                <option value="2">Entreprise 2</option>
-                <option value="3">Entreprise 3</option>
-            </select>
-        </div>
+                <div class="form-group full-width">
+                    <label for="titre">Titre de l'offre *</label>
+                    <input type="text" id="titre" name="titre" placeholder="Ex: Développeur Full Stack stagiaire" required>
+                </div>
 
-        <div class="input-group">
-            <label for="remuneration">Rémunération</label>
-            <input type="number" id="remuneration" name="remuneration" placeholder="Ex : 600" step="0.01" required>
-        </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="competence">Compétence recherchée *</label>
+                        <input type="text" id="competence" name="competence" placeholder="Ex: PHP, SQL, Angular..." required>
+                    </div>
 
-        <button type="submit" class="btn-submit">
-            Créer l'offre
-        </button>
+                    <div class="form-group">
+                        <label for="type_offre">Type d'offre *</label>
+                        <input type="text" id="type_offre" name="type_offre" placeholder="Ex: Stage, Alternance" required>
+                    </div>
 
-    </form>
+                    <div class="form-group">
+                        <label for="duree_stage">Durée du stage *</label>
+                        <input type="number" id="duree_stage" name="duree_stage" placeholder="Ex: 6" required>
+                    </div>
 
-    <div class="footer-bottom">
-        <a href="index.html" class="legal-link">← Retour à l'accueil</a>
-    </div>
+                    <div class="form-group">
+                        <label for="remuneration">Rémunération *</label>
+                        <input type="number" id="remuneration" name="remuneration" step="0.01" placeholder="Ex: 600" required>
+                    </div>
 
-</div>
+                    <div class="form-group full-grid">
+                        <label for="id_entreprise">Entreprise *</label>
+                        <select id="id_entreprise" name="id_entreprise" required>
+                            <option value="">Sélectionner une entreprise</option>
+                            <option value="1">Entreprise 1</option>
+                            <option value="2">Entreprise 2</option>
+                            <option value="3">Entreprise 3</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="description">Description de l'offre *</label>
+                    <textarea id="description" name="description" rows="7" placeholder="Décrivez les missions, le profil recherché, les outils utilisés..." required></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel">Annuler</button>
+                    <button type="submit" class="btn btn-submit">Créer l'offre</button>
+                </div>
+
+            </form>
+        </section>
+    </main>
 
 </body>
 </html>
