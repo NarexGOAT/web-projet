@@ -50,5 +50,20 @@
         </div>
     </div>
 
+    <script>
+        const iconeOeil = document.getElementById('icone-oeil');
+        const champMdp = document.getElementById('password'); // On cible ton id="password" de la ligne 34
+
+        iconeOeil.addEventListener('click', function () {
+            // On vérifie si c'est caché ou visible
+            const type = champMdp.getAttribute('type') === 'password' ? 'text' : 'password';
+            champMdp.setAttribute('type', type);
+
+            // On change l'icône : oeil normal <-> oeil barré
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+
 </body>
 </html>
