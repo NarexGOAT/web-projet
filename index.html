@@ -22,9 +22,7 @@
                 <li><a href="candidatures.html">Mes Candidatures</a></li>
             </ul>
         </nav>
-        <div class="actions-entete">
-            <a href="inscription.html" class="btn-inscription">Inscription</a>
-            <a href="connexion.html" class="btn-connexion">Connexion</a>
+        <div class="actions-entete" id="zone-utilisateur">
 </div>
         </div>
     </header>
@@ -110,3 +108,42 @@
     </footer>
 </body>
 </html>
+
+<script>
+const zone = document.getElementById("zone-utilisateur");
+
+// simulation utilisateur connecté
+const utilisateur = JSON.parse(localStorage.getItem("user"));
+
+if (utilisateur) {
+
+    let lien = "#";
+    let texte = "";
+
+    if (utilisateur.role === "etudiant") {
+        lien = "etudiant.html";
+        texte = "Espace Étudiant";
+    }
+
+    if (utilisateur.role === "admin") {
+        lien = "gestion-etudiants.html";
+        texte = "Espace Admin";
+    }
+
+    if (utilisateur.role === "pilote") {
+        lien = "gestion-pilotes.html";
+        texte = "Espace Pilote";
+    }
+
+    zone.innerHTML = `
+        <a href="${lien}" class="btn-principal">${texte}</a>
+    `;
+
+} else {
+
+    zone.innerHTML = `
+        <a href="inscription.html" class="btn-inscription">Inscription</a>
+        <a href="connexion.html" class="btn-connexion">Connexion</a>
+    `;
+}
+</script>
