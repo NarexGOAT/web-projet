@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Wish-list - BHStage</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/wishlist.css">
+</head>
+<body>
+    <header class="entete">
+        <div class="logo">
+            <a href="index.php">
+                <img src="allostage.png" alt="Accueil BHStage" class="logo-img" style="height: 70px; object-fit: contain;">
+            </a>
+        </div>
+        <nav class="navigation">
+            <ul>
+                <li><a href="index.php">Accueil</a></li>
+                <li><a href="index.php?page=offres">Offres de stages</a></li>
+                <li><a href="index.php?page=entreprises">Entreprises</a></li>
+                <li><a href="index.php?page=wishlist" class="actif">Ma Wish-list</a></li>
+            </ul>
+        </nav>
+        <div class="actions-entete">
+            <a href="index.php?page=menu" class="btn-secondaire">Mon Profil</a>
+        </div>
+    </header>
+
+    <main class="contenu fond-gris">
+        
+        <section class="en-tete-recherche">
+            <h1>Ma Wish-list ❤️</h1>
+            <p>Retrouvez ici toutes les offres de stage que vous avez sauvegardées pour y postuler plus tard.</p>
+        </section>
+
+        <section class="conteneur-liste">
+            
+            {% if offres is empty %}
+                <p>Vous n'avez pas encore d'offres dans votre wish-list.</p>
+            {% else %}
+                <div class="grille-offres">
+                    {% for offre in offres %}
+                        <article class="carte-offre">
+                            <div class="en-tete-carte">
+                                <span class="badge-vide"></span>
+                                <a class="btn-favori" 
+                                   title="Retirer de la wish-list"
+                                   href="index.php?page=wishlist-supprimer&id={{ offre.id_offre }}">
+                                    ❤️
+                                </a>
+                            </div>
+
+                            <h3 class="titre-offre">{{ offre.titre }}</h3>
+                            <p class="entreprise-offre">
+                                <strong>{{ offre.nom_entreprise ?? 'Entreprise' }}</strong>
+                                {% if offre.ville %}
+                                  • {{ offre.ville }}
+                                {% endif %}
+                            </p>
+
+                            <div class="tags-offre">
+                                <span class="tag">📅 {{ offre.duree_stage }} semaines</span>
+                                {% if offre.competence %}
+                                    <span class="tag">🛠 {{ offre.competence }}</span>
+                                {% endif %}
+                            </div>
+
+                            <p class="description">{{ offre.description }}</p>
+
+                            <div class="actions-carte">
+                                <a href="index.php?page=offre&id={{ offre.id_offre }}" class="btn-secondaire">Détails</a>
+                                <a href="index.php?page=postuler&id={{ offre.id_offre }}" class="btn-postuler-lien">Postuler</a>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        </section>
+    </main>
+
+    <footer class="pied-de-page">
+        <p>&copy; 2026 BHStage. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>

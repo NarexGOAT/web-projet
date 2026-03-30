@@ -26,7 +26,7 @@
       </form>
 
       <nav class="actions">
-        <a class="bouton-icone" href="wishlist.php" title="Favoris">❤️</a>
+        <a class="bouton-icone" href="index.php?page=wishlist" title="Favoris">❤️</a>
         <a href="index.php?page=menu" class="bouton-profil">👤</a>
       </nav>
     </div>  
@@ -101,12 +101,24 @@
               </dl>
 
               <footer class="offre__actions">
-                <a class="bouton bouton--doux" href="index.php?page=offre&id={{ offre.id_offre }}">Voir l’offre</a>
-                <button class="bouton bouton--icone" type="button" title="Ajouter aux favoris">
-                  ⭐
-                </button>
-                <p class="entreprise">{{ offre.nom_entreprise ?? 'Entreprise non renseignée' }}</p>
-              </footer>
+  <a class="bouton bouton--doux" href="index.php?page=offre&id={{ offre.id_offre }}">Voir l’offre</a>
+
+  {% if session.user_id is defined %}
+    <a class="bouton bouton--icone"
+       href="index.php?page=wishlist-ajouter&id={{ offre.id_offre }}"
+       title="Ajouter à la wish-list">
+      ⭐
+    </a>
+  {% else %}
+    <a class="bouton bouton--icone"
+       href="index.php?page=connexion"
+       title="Se connecter pour ajouter à la wish-list">
+      ⭐
+    </a>
+  {% endif %}
+
+  <p class="entreprise">{{ offre.nom_entreprise ?? 'Entreprise non renseignée' }}</p>
+</footer>
             </article>
           {% else %}
             <p>Aucune offre pour le moment.</p>

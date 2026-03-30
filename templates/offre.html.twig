@@ -67,8 +67,18 @@
     </section>
 
     <section class="actions-bas">
-      <a href="index.php?page=postuler&id={{ offre.id_offre }}" class="bouton-postuler">Postuler</a>
-    </section>
+  <a href="index.php?page=postuler&id={{ offre.id_offre }}" class="bouton-postuler">Postuler</a>
+
+  {% if session.user_id is defined %}
+    <a href="index.php?page=wishlist-ajouter&id={{ offre.id_offre }}" class="bouton-wishlist">
+      Ajouter à ma wish-list
+    </a>
+  {% else %}
+    <a href="index.php?page=connexion" class="bouton-wishlist">
+      Se connecter pour ajouter à la wish-list
+    </a>
+  {% endif %}
+</section>
 
   </main>
 </body>

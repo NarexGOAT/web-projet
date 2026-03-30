@@ -7,6 +7,7 @@ require_once __DIR__ . '/../src/Controller/OffreController.php';
 require_once __DIR__ . '/../src/Controller/CandidatureControlleur.php';
 require_once __DIR__ . '/../src/Controller/EntrepriseController.php';
 require_once __DIR__ . '/../src/Controller/AuthController.php';
+require_once __DIR__ . '/../src/Controller/WishlistController.php';
 
 $page = $_GET['page'] ?? 'home';
 
@@ -89,4 +90,21 @@ switch ($page) {
         session_destroy();
         header('Location: index.php');
         exit;
+
+    case 'wishlist':
+        $controller = new WishlistController($pdo, $twig);
+        $controller->liste();
+        break;
+
+    case 'wishlist-ajouter':
+        $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+        $controller = new WishlistController($pdo, $twig);
+        $controller->ajouter($id);
+        break;
+
+    case 'wishlist-supprimer':
+        $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+        $controller = new WishlistController($pdo, $twig);
+        $controller->supprimer($id);
+        break;
 }
