@@ -41,7 +41,6 @@ $totalDesPages = $pagination->getTotalPages();
             <ul>
                 <li><a href="index.html">Accueil</a></li>
                 <li><a href="liste-offres.php">Offres de stages</a></li>
-                <!-- On met "Entreprises" en actif -->
                 <li><a href="liste-entreprises.php" class="actif">Entreprises</a></li>
             </ul>
         </nav>
@@ -72,11 +71,10 @@ $totalDesPages = $pagination->getTotalPages();
         <section class="conteneur-entreprises">
             <div class="grille-entreprises">
                 
-                <!-- LA BOUCLE PHP QUI GÉNÈRE LES CARTES ENTREPRISES -->
+
                 <?php foreach ($entreprisesDeLaPage as $entreprise): ?>
                     <article class="carte-annuaire boite-blanche">
                         <div class="haut-carte">
-                            <!-- Le PHP génère la bonne couleur (logo_css) et les bonnes initiales (logo_txt) -->
                             <div class="logo-entreprise-carre <?= htmlspecialchars($entreprise['logo_css']) ?>">
                                 <?= htmlspecialchars($entreprise['logo_txt']) ?>
                             </div>
@@ -96,7 +94,6 @@ $totalDesPages = $pagination->getTotalPages();
                         </div>
                         <div class="actions-annuaire">
                             
-                            <!-- Logique d'affichage dynamique pour le texte des offres -->
                             <?php if ($entreprise['offres'] == 0): ?>
                                 <span class="compteur-offres text-vide">Aucune offre</span>
                             <?php elseif ($entreprise['offres'] >= 3): ?>
@@ -112,7 +109,6 @@ $totalDesPages = $pagination->getTotalPages();
                 
             </div>
 
-            <!-- LA PAGINATION DYNAMIQUE (Identique aux offres) -->
             <nav class="pagination" aria-label="Pagination des entreprises">
                 
                 <?php if ($pageActuelle > 1): ?>
