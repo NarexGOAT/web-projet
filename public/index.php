@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../config/twig.php';
 require_once __DIR__ . '/../src/Controller/HomeController.php';
@@ -83,4 +84,9 @@ switch ($page) {
     case 'politique':
         echo $twig->render('politique.html.twig');
         break;
+
+    case 'logout':
+        session_destroy();
+        header('Location: index.php');
+        exit;
 }

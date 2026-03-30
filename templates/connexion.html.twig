@@ -20,10 +20,18 @@
             <p>Salut ! Ravi de vous revoir.</p>
         </div>
 
+        {% if erreurs is defined and erreurs %}
+            <ul class="liste-erreurs">
+            {% for e in erreurs %}
+                <li>{{ e }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
         <form action="index.php?page=connexion" method="post" class="login-form">
             <div class="input-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Votre adresse mail" required>
+                <input type="email" id="email" name="email" placeholder="Votre adresse mail" required value="{{ old.email ?? '' }}">
             </div>
 
             <div class="input-group">

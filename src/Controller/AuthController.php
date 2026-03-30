@@ -12,14 +12,51 @@ class AuthController
     }
 
     public function connexion(): void
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            header('Location: index.php');
-            exit;
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = trim($_POST['email'] ?? '');
+        $mdp   = $_POST['mot_de_passe'] ?? '';
+
+        $erreurs = [];
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $erreurs[] = 'Email invalide.';
+        }
+        if ($mdp === '') {
+            $erreurs[] = 'Le mot de passe est obligatoire.';
         }
 
-        echo $this->twig->render('connexion.html.twig');
+        if (empty($erreurs)) {
+            $sql = "SELECT * FROM utilisateur WHERE email = :email";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['email' => $email]);
+            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            if (!$user || !password_verify($mdp, $user['mot_de_passe'])) {
+                $erreurs[] = 'Identifiants incorrects.';
+            } else {
+                $_SESSION['user_id']    = $user['id_user'];
+                $_SESSION['user_nom']   = $user['nom'];
+                $_SESSION['user_prenom']= $user['prenom'];
+                $_SESSION['user_email'] = $user['email'];
+                $_SESSION['user_role']  = $user['id_role'];
+
+                header('Location: index.php');
+                exit;
+            }
+        }
+
+        echo $this->twig->render('connexion.html.twig', [
+            'erreurs' => $erreurs,
+            'old' => [
+                'email' => $email,
+            ],
+        ]);
+        return;
     }
+
+    echo $this->twig->render('connexion.html.twig');
+}
 
     public function inscription(): void
 {

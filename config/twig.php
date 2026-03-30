@@ -9,3 +9,5 @@ $twig = new Environment($loader, [
     'cache' => false,
     'auto_reload' => true,
 ]);
+
+$twig->addGlobal('session', $_SESSION);

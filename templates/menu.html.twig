@@ -29,8 +29,15 @@
     </nav>
 
     <div class="actions-menu">
-      <a class="bouton bouton--principal" href="index.php?page=connexion">Se connecter</a>
-      <a class="bouton bouton--doux" href="index.php?page=inscription">S’inscrire</a>
+      {% if session.user_id is defined %}
+      <p class="bonjour-texte">
+      Bonjour {{ session.user_prenom|e }}
+      </p>
+      <a class="bouton bouton--principal" href="index.php?page=logout">Se déconnecter</a>
+      {% else %}
+        <a class="bouton bouton--principal" href="index.php?page=connexion">Se connecter</a>
+        <a class="bouton bouton--doux" href="index.php?page=inscription">S’inscrire</a>
+      {% endif %}
     </div>
   </aside>
 
