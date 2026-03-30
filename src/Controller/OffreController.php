@@ -118,8 +118,24 @@ class OffreController
             return;
         }
 
+        $dejaCandidature = false;
+        if (!empty($_SESSION['user_id'])) {
+            $idUser = (int) $_SESSION['user_id'];
+
+            $sqlCheck = "
+                SELECT id_candidature 
+                FROM candidature
+                WHERE id_user = :id_user AND id_offre = :id_offre
+                LIMIT 1";
+            $stmtCheck = $this->pdo->prepare($sqlCheck);
+            $stmtCheck->execute([
+                'id_user'  => $idUser,
+                'id_offre' => $id,]);
+            $dejaCandidature = (bool) $stmtCheck->fetch();
+        }
+
         echo $this->twig->render('offre.html.twig', [
-            'offre' => $offre,
-        ]);
+            'offre'            => $offre,
+            'deja_candidature' => $dejaCandidature,]);
     }
 }

@@ -67,13 +67,27 @@
     </section>
 
     <section class="actions-bas">
-  <a href="index.php?page=postuler&id={{ offre.id_offre }}" class="bouton-postuler">Postuler</a>
-
   {% if session.user_id is defined %}
+    {% if deja_candidature %}
+      <p class="message-candidature">
+        Vous avez déjà postulé à cette offre.
+      </p>
+      <a href="index.php?page=candidatures" class="bouton-postuler">
+        Voir mes candidatures
+      </a>
+    {% else %}
+      <a href="index.php?page=postuler&id={{ offre.id_offre }}" class="bouton-postuler">
+        Postuler
+      </a>
+    {% endif %}
+
     <a href="index.php?page=wishlist-ajouter&id={{ offre.id_offre }}" class="bouton-wishlist">
       Ajouter à ma wish-list
     </a>
   {% else %}
+    <a href="index.php?page=connexion" class="bouton-postuler">
+      Se connecter pour postuler
+    </a>
     <a href="index.php?page=connexion" class="bouton-wishlist">
       Se connecter pour ajouter à la wish-list
     </a>

@@ -70,7 +70,16 @@
 
                             <div class="actions-carte">
                                 <a href="index.php?page=offre&id={{ offre.id_offre }}" class="btn-secondaire">Détails</a>
-                                <a href="index.php?page=postuler&id={{ offre.id_offre }}" class="btn-postuler-lien">Postuler</a>
+
+                            {% if offre.id_offre in idsCandidatures %}
+                                <a href="index.php?page=candidatures" class="btn-postuler-lien">
+                                    Voir mes candidatures
+                                </a>
+                            {% else %}
+                                <a href="index.php?page=postuler&id={{ offre.id_offre }}" class="btn-postuler-lien">
+                                    Postuler
+                                </a>
+                            {% endif %}
                             </div>
                         </article>
                     {% endfor %}

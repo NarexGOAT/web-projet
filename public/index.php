@@ -4,10 +4,11 @@ require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../config/twig.php';
 require_once __DIR__ . '/../src/Controller/HomeController.php';
 require_once __DIR__ . '/../src/Controller/OffreController.php';
-require_once __DIR__ . '/../src/Controller/CandidatureControlleur.php';
+require_once __DIR__ . '/../src/Controller/CandidatureController.php';
 require_once __DIR__ . '/../src/Controller/EntrepriseController.php';
 require_once __DIR__ . '/../src/Controller/AuthController.php';
 require_once __DIR__ . '/../src/Controller/WishlistController.php';
+require_once __DIR__ . '/../src/Controller/CandidatureController.php';
 
 $page = $_GET['page'] ?? 'home';
 
@@ -106,5 +107,10 @@ switch ($page) {
         $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
         $controller = new WishlistController($pdo, $twig);
         $controller->supprimer($id);
+        break;
+
+    case 'candidatures':
+        $controller = new CandidatureController($pdo, $twig);
+        $controller->liste();
         break;
 }
