@@ -11,6 +11,18 @@ class OffreController
         $this->twig = $twig;
     }
 
+    /* --------- ACCES CREATION / MODIF --------- */
+    private function checkAccessManage(): void
+    {
+        if (empty($_SESSION['user_id'])
+            || empty($_SESSION['role'])
+            || !in_array($_SESSION['role'], ['admin', 'recruteur'], true)) {
+            header('Location: index.php?page=offres');
+            exit;
+        }
+    }
+
+    /* --------- LISTE (ton code existant) --------- */
     public function liste(): void
     {
         $sqlComp = "
@@ -71,7 +83,8 @@ class OffreController
 
         if (!empty($_GET['publication']) && $_GET['publication'] !== 'Toutes les dates') {
             if ($_GET['publication'] === 'Aujourd’hui') {
-                $conditions[] = 'DATE(o.date_publication) = CURDATE()';
+                $conditions[] = 'DATE(o.date_publication) = CURDATE();
+ ';
             } elseif ($_GET['publication'] === 'Cette semaine') {
                 $conditions[] = 'YEARWEEK(o.date_publication, 1) = YEARWEEK(CURDATE(), 1)';
             } elseif ($_GET['publication'] === 'Ce mois-ci') {
@@ -99,6 +112,7 @@ class OffreController
         ]);
     }
 
+    /* --------- DETAIL (ton code existant) --------- */
     public function detail(int $id): void
     {
         $sql = '
@@ -130,12 +144,195 @@ class OffreController
             $stmtCheck = $this->pdo->prepare($sqlCheck);
             $stmtCheck->execute([
                 'id_user'  => $idUser,
-                'id_offre' => $id,]);
+                'id_offre' => $id,
+            ]);
             $dejaCandidature = (bool) $stmtCheck->fetch();
         }
 
         echo $this->twig->render('offre.html.twig', [
             'offre'            => $offre,
-            'deja_candidature' => $dejaCandidature,]);
+            'deja_candidature' => $dejaCandidature,
+        ]);
     }
+
+    /* --------- CREER OFFRE (NOUVEAU) --------- */
+
+    // GET : afficher formulaire
+    public function creerForm(): void
+    {
+        $this->checkAccessManage();
+
+        $sql = "
+            SELECT id_entreprise, nom_entreprise, ville
+            FROM entreprise
+            ORDER BY nom_entreprise
+        ";
+        $entreprises = $this->pdo->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
+
+        echo $this->twig->render('creer_offre.html.twig', [
+            'entreprises' => $entreprises,
+            'old'         => [],
+        ]);
+    }
+
+    // POST : traiter formulaire
+    public function creerSubmit(): void
+    {
+        $this->checkAccessManage();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: index.php?page=offre-creer');
+            exit;
+        }
+
+        $titre        = trim($_POST['titre'] ?? '');
+        $competence   = trim($_POST['competence'] ?? '');
+        $type_offre   = trim($_POST['type_offre'] ?? '');
+        $duree_stage  = (int) ($_POST['duree_stage'] ?? 0);
+        $remuneration = (float) ($_POST['remuneration'] ?? 0);
+        $idEntreprise = (int) ($_POST['id_entreprise'] ?? 0);
+        $description  = trim($_POST['description'] ?? '');
+
+        $erreurs = [];
+
+        if ($titre === '')        $erreurs[] = 'Le titre est obligatoire.';
+        if ($competence === '')   $erreurs[] = 'La compétence est obligatoire.';
+        if ($type_offre === '')   $erreurs[] = 'Le type d\'offre est obligatoire.';
+        if ($duree_stage <= 0)    $erreurs[] = 'La durée doit être positive.';
+        if ($remuneration < 0)    $erreurs[] = 'La rémunération doit être positive.';
+        if ($idEntreprise <= 0)   $erreurs[] = 'Veuillez choisir une entreprise.';
+        if ($description === '')  $erreurs[] = 'La description est obligatoire.';
+
+        if (!empty($erreurs)) {
+            $sql = "
+                SELECT id_entreprise, nom_entreprise, ville
+                FROM entreprise
+                ORDER BY nom_entreprise
+            ";
+            $entreprises = $this->pdo->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
+
+            echo $this->twig->render('creer_offre.html.twig', [
+                'entreprises' => $entreprises,
+                'old' => [
+                    'titre'         => $titre,
+                    'competence'    => $competence,
+                    'type_offre'    => $type_offre,
+                    'duree_stage'   => $duree_stage,
+                    'remuneration'  => $remuneration,
+                    'id_entreprise' => $idEntreprise,
+                    'description'   => $description,
+                ],
+                'erreurs' => $erreurs,
+            ]);
+            return;
+        }
+
+        $sqlInsert = "
+            INSERT INTO offre (titre, competence, type_offre, duree_stage, remuneration, description, id_entreprise, date_publication)
+            VALUES (:titre, :competence, :type_offre, :duree_stage, :remuneration, :description, :id_entreprise, NOW())
+        ";
+        $stmt = $this->pdo->prepare($sqlInsert);
+        $stmt->execute([
+            'titre'         => $titre,
+            'competence'    => $competence,
+            'type_offre'    => $type_offre,
+            'duree_stage'   => $duree_stage,
+            'remuneration'  => $remuneration,
+            'description'   => $description,
+            'id_entreprise' => $idEntreprise,
+        ]);
+
+        header('Location: index.php?page=offres');
+        exit;
+    }
+
+    // GET : afficher formulaire de modification
+public function modifierForm(int $id): void
+{
+    $this->checkAccessManage();
+
+    $sql = "
+        SELECT *
+        FROM offre
+        WHERE id_offre = :id
+    ";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute(['id' => $id]);
+    $offre = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+    if (!$offre) {
+        http_response_code(404);
+        echo 'Offre introuvable';
+        return;
+    }
+
+    $sqlEnt = "
+        SELECT id_entreprise, nom_entreprise, ville
+        FROM entreprise
+        ORDER BY nom_entreprise
+    ";
+    $entreprises = $this->pdo->query($sqlEnt)->fetchAll(\PDO::FETCH_ASSOC);
+
+    echo $this->twig->render('modifier_offre.html.twig', [
+        'offre'       => $offre,
+        'entreprises' => $entreprises,
+    ]);
+}
+
+// POST : traiter modification ou suppression
+public function modifierSubmit(int $id): void
+{
+    $this->checkAccessManage();
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        header('Location: index.php?page=offre-modifier&id=' . $id);
+        exit;
+    }
+
+    // suppression
+    if (!empty($_POST['supprimer'])) {
+        $sqlDel = "DELETE FROM offre WHERE id_offre = :id";
+        $stmtDel = $this->pdo->prepare($sqlDel);
+        $stmtDel->execute(['id' => $id]);
+
+        header('Location: index.php?page=offres');
+        exit;
+    }
+
+    // mise à jour
+    $titre        = trim($_POST['titre'] ?? '');
+    $competence   = trim($_POST['competence'] ?? '');
+    $type_offre   = trim($_POST['type_offre'] ?? '');
+    $duree_stage  = (int) ($_POST['duree_stage'] ?? 0);
+    $remuneration = (float) ($_POST['remuneration'] ?? 0);
+    $idEntreprise = (int) ($_POST['id_entreprise'] ?? 0);
+    $description  = trim($_POST['description'] ?? '');
+
+    $sql = "
+        UPDATE offre
+        SET titre        = :titre,
+            competence   = :competence,
+            type_offre   = :type_offre,
+            duree_stage  = :duree_stage,
+            remuneration = :remuneration,
+            id_entreprise= :id_entreprise,
+            description  = :description
+        WHERE id_offre = :id
+    ";
+
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([
+        'titre'         => $titre,
+        'competence'    => $competence,
+        'type_offre'    => $type_offre,
+        'duree_stage'   => $duree_stage,
+        'remuneration'  => $remuneration,
+        'id_entreprise' => $idEntreprise,
+        'description'   => $description,
+        'id'            => $id,
+    ]);
+
+    header('Location: index.php?page=offre&id=' . $id);
+    exit;
+}
 }

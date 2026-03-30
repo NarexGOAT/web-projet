@@ -59,6 +59,12 @@
       </article>
     </section>
 
+    {% if session.role is defined and session.role in ['admin', 'recruteur'] %}
+  <a href="index.php?page=offre-modifier&id={{ offre.id_offre }}" class="bouton-modifier">
+    Modifier cette offre
+  </a>
+{% endif %}
+
     <section class="bloc-profil">
       <h2>Profil recherché</h2>
       <p>

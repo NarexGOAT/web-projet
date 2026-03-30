@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer une offre de stage - BHStage</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/creer-offre.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="topbar-left">
+            <img src="/allostage.png" alt="Logo BHStage" class="logo">
+        </div>
+
+        <nav class="topbar-nav">
+            <a href="index.php">Accueil</a>
+            <a href="index.php?page=offres" class="active">Offres de stages</a>
+            <a href="index.php?page=entreprises">Entreprises</a>
+        </nav>
+
+        <div class="topbar-right">
+            <a href="#" class="admin-btn">
+                {% if session.role is defined %}
+                    Espace {{ session.role|capitalize }}
+                {% else %}
+                    Espace
+                {% endif %}
+            </a>
+        </div>
+    </header>
+
+    <main class="page-wrapper">
+        <section class="form-card">
+
+            <div class="form-header">
+                <h1>Ajouter une offre de stage</h1>
+                <p>Remplissez les informations ci-dessous pour publier une nouvelle offre.</p>
+            </div>
+
+            <form class="offer-form"
+                  action="index.php?page=offre-creer"
+                  method="POST">
+
+                <div class="form-group full-width">
+                    <label for="titre">Titre de l'offre *</label>
+                    <input type="text" id="titre" name="titre"
+                           value="{{ old.titre|default('')|e }}"
+                           placeholder="Ex: Développeur Full Stack stagiaire" required>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="competence">Compétence recherchée *</label>
+                        <input type="text" id="competence" name="competence"
+                               value="{{ old.competence|default('')|e }}"
+                               placeholder="Ex: PHP, SQL, Angular..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type_offre">Type d'offre *</label>
+                        <input type="text" id="type_offre" name="type_offre"
+                               value="{{ old.type_offre|default('')|e }}"
+                               placeholder="Ex: Stage, Alternance" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="duree_stage">Durée du stage (semaines) *</label>
+                        <input type="number" id="duree_stage" name="duree_stage"
+                               value="{{ old.duree_stage|default('') }}"
+                               placeholder="Ex: 6" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="remuneration">Rémunération €/mois *</label>
+                        <input type="number" id="remuneration" name="remuneration" step="0.01"
+                               value="{{ old.remuneration|default('') }}"
+                               placeholder="Ex: 600" required>
+                    </div>
+
+                    <div class="form-group full-grid">
+                        <label for="id_entreprise">Entreprise *</label>
+                        <select id="id_entreprise" name="id_entreprise" required>
+                            <option value="">Sélectionner une entreprise</option>
+                            {% for e in entreprises %}
+                                <option value="{{ e.id_entreprise }}"
+                                    {% if old.id_entreprise is defined and old.id_entreprise == e.id_entreprise %}selected{% endif %}>
+                                    {{ e.nom_entreprise }} - {{ e.ville }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="description">Description de l'offre *</label>
+                    <textarea id="description" name="description" rows="7"
+                              placeholder="Décrivez les missions, le profil recherché, les outils utilisés..."
+                              required>{{ old.description|default('')|e }}</textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel" onclick="history.back()">Annuler</button>
+                    <button type="submit" class="btn btn-submit">Créer l'offre</button>
+                </div>
+
+            </form>
+        </section>
+    </main>
+
+</body>
+</html>
