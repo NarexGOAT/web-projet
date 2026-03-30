@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des étudiants - AlloStage</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="gestion-etudiants.css">
+</head>
+
+<body>
+
+<header class="entete">
+    <div class="logo">
+        <a href="index.html">
+            <img src="allostage.png" class="logo-img">
+        </a>
+    </div>
+
+    <nav class="navigation">
+        <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="#" class="actif">Étudiants</a></li>
+            <li><a href="liste-entreprises.html">Entreprises</a></li>
+        </ul>
+    </nav>
+
+    <div class="actions-entete">
+        <span class="texte-admin">Admin</span>
+    </div>
+</header>
+
+<main class="contenu fond-gris">
+
+    <div class="boite-blanche">
+
+        <h1>Gestion des étudiants</h1>
+
+        <!-- 🔎 RECHERCHE (SFx16) -->
+        <div class="barre-recherche">
+            <input type="text" placeholder="Rechercher un étudiant...">
+            <button class="btn-principal">Rechercher</button>
+        </div>
+
+        <!-- ➕ AJOUT (SFx17) -->
+        <div class="ajout">
+            <button class="btn-principal">+ Ajouter un étudiant</button>
+        </div>
+
+        <!-- 📋 LISTE -->
+        <table class="table-etudiants">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Ville</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Dupont</td>
+                    <td>dupont@email.com</td>
+                    <td>Paris</td>
+                    <td>
+                        <button class="btn-modifier">Modifier</button>
+                        <button class="btn-supprimer">Supprimer</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Martin</td>
+                    <td>martin@email.com</td>
+                    <td>Lyon</td>
+                    <td>
+                        <button class="btn-modifier">Modifier</button>
+                        <button class="btn-supprimer">Supprimer</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</main>
+
+<footer class="pied-de-page">
+    <p>&copy; 2026 AlloStage</p>
+</footer>
+
+</body>
+</html>
