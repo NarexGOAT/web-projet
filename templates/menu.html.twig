@@ -8,7 +8,6 @@
 </head>
 <body>
 
-
   <iframe class="fond-accueil" src="index.php" title="Page d'accueil en arrière-plan"></iframe>
   
   <div class="fond-menu"></div>
@@ -26,14 +25,17 @@
       <a class="navigation-menu__lien2" href="index.php?page=wishlist">Wishlist</a>
       <a class="navigation-menu__lien" href="index.php?page=candidatures">Candidatures</a>
 
+      {% if session.role is defined and session.role in ['admin', 'recruteur'] %}
+  <a class="navigation-menu__lien" href="index.php?page=entreprise-creer">Créer une entreprise</a>
+{% endif %}
     </nav>
 
     <div class="actions-menu">
       {% if session.user_id is defined %}
-      <p class="bonjour-texte">
-      Bonjour {{ session.user_prenom|e }}
-      </p>
-      <a class="bouton bouton--principal" href="index.php?page=logout">Se déconnecter</a>
+        <p class="bonjour-texte">
+          Bonjour {{ session.user_prenom|e }}
+        </p>
+        <a class="bouton bouton--principal" href="index.php?page=logout">Se déconnecter</a>
       {% else %}
         <a class="bouton bouton--principal" href="index.php?page=connexion">Se connecter</a>
         <a class="bouton bouton--doux" href="index.php?page=inscription">S’inscrire</a>

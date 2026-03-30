@@ -53,6 +53,12 @@
         <h3>Téléphone</h3>
         <p>{{ entreprise.telephone }}</p>
       </article>
+
+      {% if session.role is defined and session.role in ['admin', 'recruteur'] %}
+  <a href="index.php?page=entreprise-modifier&id={{ entreprise.id_entreprise }}" class="btn-modifier">
+    Modifier cette entreprise
+  </a>
+{% endif %}
     </section>
 
     <section class="bloc-offres">

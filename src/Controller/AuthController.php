@@ -26,7 +26,7 @@ class AuthController
             $erreurs[] = 'Le mot de passe est obligatoire.';
         }
 
-        if (empty($erreurs)) {
+                if (empty($erreurs)) {
             $sql = "SELECT * FROM utilisateur WHERE email = :email";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(['email' => $email]);
@@ -35,17 +35,26 @@ class AuthController
             if (!$user || !password_verify($mdp, $user['mot_de_passe'])) {
                 $erreurs[] = 'Identifiants incorrects.';
             } else {
-                $_SESSION['user_id']    = $user['id_user'];
-                $_SESSION['user_nom']   = $user['nom'];
-                $_SESSION['user_prenom']= $user['prenom'];
-                $_SESSION['user_email'] = $user['email'];
-                $_SESSION['user_role']  = $user['id_role'];
+                $sqlRole = "
+                    SELECT role
+                    FROM role
+                    WHERE id_role = :id_role
+                ";
+                $stmtRole = $this->pdo->prepare($sqlRole);
+                $stmtRole->execute(['id_role' => $user['id_role']]);
+                $roleName = $stmtRole->fetchColumn(); 
+
+                $_SESSION['user_id']      = $user['id_user'];
+                $_SESSION['user_nom']     = $user['nom'];
+                $_SESSION['user_prenom']  = $user['prenom'];
+                $_SESSION['user_email']   = $user['email'];
+                $_SESSION['user_role']    = $user['id_role'];
+                $_SESSION['role']         = $roleName;
 
                 header('Location: index.php');
                 exit;
             }
         }
-
         echo $this->twig->render('connexion.html.twig', [
             'erreurs' => $erreurs,
             'old' => [

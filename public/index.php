@@ -12,6 +12,8 @@ require_once __DIR__ . '/../src/Controller/CandidatureController.php';
 
 $page = $_GET['page'] ?? 'home';
 
+$entrepriseController = new EntrepriseController($pdo, $twig);
+
 switch ($page) {
     case 'offres':
         $controller = new OffreController($pdo, $twig);
@@ -33,6 +35,23 @@ switch ($page) {
         $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
         $controller = new EntrepriseController($pdo, $twig);
         $controller->detail($id);
+        break;
+
+    case 'entreprise-creer':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $entrepriseController->creerSubmit();
+        } else {
+            $entrepriseController->creerForm();
+        }
+        break;
+
+    case 'entreprise-modifier':
+        $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $entrepriseController->modifierSubmit($id);
+        } else {
+            $entrepriseController->modifierForm($id);
+        }
         break;
 
     case 'postuler':

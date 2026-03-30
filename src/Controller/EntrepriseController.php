@@ -11,6 +11,18 @@ class EntrepriseController
         $this->twig = $twig;
     }
 
+    private function checkAccessCreate(): void
+{
+    if (empty($_SESSION['user_id']) 
+        || empty($_SESSION['role']) 
+        || !in_array($_SESSION['role'], ['admin', 'recruteur'], true)
+    ) {
+        header('Location: index.php?page=entreprises');
+        exit;
+    }
+}
+
+
     public function liste(): void
     {
         $sqlDomaines = "
@@ -138,4 +150,141 @@ class EntrepriseController
             'offre_count'  => count($offres),
         ]);
     }
+
+    public function creerForm(): void
+    {
+        $this->checkAccessCreate();
+
+        echo $this->twig->render('creer-entreprise.html.twig', []);
+    }
+
+    public function creerSubmit(): void
+    {
+        $this->checkAccessCreate();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: index.php?page=entreprise-creer');
+            exit;
+        }
+
+        $nom         = $_POST['nom_entreprise'] ?? '';
+        $domaine     = $_POST['domaine'] ?? '';
+        $taille      = (int) ($_POST['taille'] ?? 0);
+        $ville       = $_POST['ville'] ?? '';
+        $telephone   = $_POST['telephone'] ?? '';
+        $email       = $_POST['email'] ?? '';
+        $description = $_POST['description'] ?? '';
+
+        $sql = "
+            INSERT INTO entreprise (nom_entreprise, domaine, taille, ville, telephone, email, description)
+            VALUES (:nom, :domaine, :taille, :ville, :telephone, :email, :description)
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'nom'         => $nom,
+            'domaine'     => $domaine,
+            'taille'      => $taille,
+            'ville'       => $ville,
+            'telephone'   => $telephone,
+            'email'       => $email,
+            'description' => $description,
+        ]);
+
+        header('Location: index.php?page=entreprises');
+        exit;
+    }
+
+    private function checkAccessManage(): void
+{
+    if (empty($_SESSION['user_id']) 
+        || empty($_SESSION['role']) 
+        || !in_array($_SESSION['role'], ['admin', 'recruteur'], true)) {
+        header('Location: index.php?page=entreprises');
+        exit;
+    }
+}
+
+// afficher le formulaire de modification
+public function modifierForm(int $id): void
+{
+    $this->checkAccessManage();
+
+    $sql = "
+        SELECT *
+        FROM entreprise
+        WHERE id_entreprise = :id
+    ";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute(['id' => $id]);
+    $entreprise = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+    if (!$entreprise) {
+        http_response_code(404);
+        echo 'Entreprise introuvable';
+        return;
+    }
+
+    echo $this->twig->render('modifier_entreprise.html.twig', [
+        'entreprise' => $entreprise,
+    ]);
+}
+
+// traiter le POST (update ou suppression)
+public function modifierSubmit(int $id): void
+{
+    $this->checkAccessManage();
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        header('Location: index.php?page=entreprise-modifier&id=' . $id);
+        exit;
+    }
+
+    // suppression
+    if (!empty($_POST['supprimer'])) {
+        $sqlDel = "DELETE FROM entreprise WHERE id_entreprise = :id";
+        $stmtDel = $this->pdo->prepare($sqlDel);
+        $stmtDel->execute(['id' => $id]);
+
+        header('Location: index.php?page=entreprises');
+        exit;
+    }
+
+    // mise à jour
+    $nom         = $_POST['nom_entreprise'] ?? '';
+    $domaine     = $_POST['domaine'] ?? '';
+    $taille      = (int) ($_POST['taille'] ?? 0);
+    $ville       = $_POST['ville'] ?? '';
+    $telephone   = $_POST['telephone'] ?? '';
+    $email       = $_POST['email'] ?? '';
+    $description = $_POST['description'] ?? '';
+
+    $sql = "
+        UPDATE entreprise
+        SET nom_entreprise = :nom,
+            domaine        = :domaine,
+            taille         = :taille,
+            ville          = :ville,
+            telephone      = :telephone,
+            email          = :email,
+            description    = :description
+        WHERE id_entreprise = :id
+    ";
+
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([
+        'nom'         => $nom,
+        'domaine'     => $domaine,
+        'taille'      => $taille,
+        'ville'       => $ville,
+        'telephone'   => $telephone,
+        'email'       => $email,
+        'description' => $description,
+        'id'          => $id,
+    ]);
+
+    header('Location: index.php?page=entreprise&id=' . $id);
+    exit;
+}
+
 }
