@@ -123,7 +123,7 @@ button { cursor: pointer; font-weight: bold; border-radius: 0.5rem; transition: 
 .badge-nouveau { background: var(--vert-badge); color: var(--blanc); padding: 0.2rem 0.6rem; border-radius: 1rem; font-size: 0.8rem; font-weight: bold; }
 .badge-urgent { background: var(--rouge-badge); color: var(--blanc); padding: 0.2rem 0.6rem; border-radius: 1rem; font-size: 0.8rem; font-weight: bold; }
 
-.btn-favori { background: none; border: none; font-size: 1.5rem; color: var(--gris-clair); padding: 0; }
+.btn-favori { background: none; border: none; font-size: 1.5rem; margin-left: auto; color: var(--gris-clair); padding: 0; }
 .btn-favori:hover { color: var(--rouge-badge); transform: scale(1.1); }
 
 .titre-offre { margin: 0 0 0.5rem 0; font-size: 1.2rem; color: var(--bleu-allostage); }
@@ -167,4 +167,10 @@ button { cursor: pointer; font-weight: bold; border-radius: 0.5rem; transition: 
     .navigation ul { gap: 1rem; flex-wrap: wrap; justify-content: center; }
     .grille-offres { grid-template-columns: 1fr; }
     .barre-recherche { flex-direction: column; }
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
