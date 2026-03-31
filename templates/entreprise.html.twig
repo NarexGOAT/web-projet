@@ -6,97 +6,171 @@
   <title>{{ entreprise.nom_entreprise }} - BHStage</title>
   <link rel="stylesheet" href="/css/entreprise.css">
 </head>
+
 <body>
-  <main class="page-entreprise">
 
-    <header class="barre-haut">
-      <a href="index.php?page=entreprises" class="bouton-retour">←</a>
-      <h1 class="titre-page">Entreprise</h1>
-      <a href="index.php?page=menu" class="bouton-profil">👤</a>
-    </header>
+<main class="page-entreprise">
 
-    <section class="presentation-entreprise">
-      <div class="entete-entreprise">
-        <div class="logo-entreprise"></div>
+  <!-- HEADER -->
+  <header class="barre-haut">
+    <a href="index.php?page=entreprises" class="bouton-retour">←</a>
+    <h1 class="titre-page">Entreprise</h1>
+    <a href="index.php?page=menu" class="bouton-profil">👤</a>
+  </header>
 
-        <div class="infos-principales">
-          <h2>{{ entreprise.nom_entreprise }}</h2>
-          <p class="secteur">
-            {{ entreprise.domaine is defined and entreprise.domaine ? entreprise.domaine : 'Secteur non renseigné' }}
-          </p>
-          <p class="localisation">
-            📍 {{ entreprise.ville is defined and entreprise.ville ? entreprise.ville : 'Ville non renseignée' }}
-          </p>
-        </div>
+  <!-- PRESENTATION -->
+  <section class="presentation-entreprise">
+    <div class="entete-entreprise">
 
-        <div class="evaluation">
-          {% if moyenne_note is not null %}
-            {{ moyenne_note|number_format(1, ',', ' ') }}/5 ⭐
-          {% else %}
-            Pas encore d’évaluation
-          {% endif %}
-        </div>
+      <div class="logo-entreprise"></div>
+
+      <div class="infos-principales">
+        <h2>{{ entreprise.nom_entreprise }}</h2>
+
+        <p class="secteur">
+          {{ entreprise.domaine is defined and entreprise.domaine ? entreprise.domaine : 'Secteur non renseigné' }}
+        </p>
+
+        <p class="localisation">
+          📍 {{ entreprise.ville is defined and entreprise.ville ? entreprise.ville : 'Ville non renseignée' }}
+        </p>
       </div>
 
-      <p class="texte-intro">
-        {{ entreprise.description }}
-      </p>
-    </section>
-
-    <section class="grille-infos">
-      <article class="carte-info">
-        <h3>Email</h3>
-        <p>{{ entreprise.email }}</p>
-      </article>
-
-      <article class="carte-info">
-        <h3>Téléphone</h3>
-        <p>{{ entreprise.telephone }}</p>
-      </article>
-
-      {% if session.role is defined and session.role in ['admin', 'recruteur'] %}
-  <a href="index.php?page=entreprise-modifier&id={{ entreprise.id_entreprise }}" class="btn-modifier">
-    Modifier cette entreprise
-  </a>
-{% endif %}
-    </section>
-
-    <section class="bloc-offres">
-      <div class="entete-section">
-        <h2>Offres de cette entreprise</h2>
-        <p>{{ offre_count }} offres disponibles</p>
-      </div>
-
-      <div class="liste-offres">
-        {% for offre in offres %}
-          <article class="ligne-offre">
-            <div class="ligne-offre__contenu">
-              <div class="ligne-offre__haut">
-                <h3>{{ offre.titre }}</h3>
-                <p class="etiquette-date">{{ offre.date_publication|date('d/m/Y') }}</p>
-              </div>
-
-              <p class="description-offre">
-                {{ offre.description }}
-              </p>
-
-              <div class="details-offre">
-                <span>⏳ {{ offre.duree_stage }} semaines</span>
-                <span>💼 {{ offre.type_offre ?? 'Stage' }}</span>
-                <span>🛠 {{ offre.competence }}</span>
-              </div>
-            </div>
-
-            <div class="ligne-offre__actions">
-              <a href="index.php?page=offre&id={{ offre.id_offre }}" class="bouton-voir">Voir l’offre</a>
-            </div>
-          </article>
+      <div class="evaluation">
+        {% if moyenne_note is not null %}
+          {{ moyenne_note|number_format(1, ',', ' ') }}/5 ⭐
         {% else %}
-          <p>Aucune offre pour le moment.</p>
-        {% endfor %}
+          Pas encore d’évaluation
+        {% endif %}
       </div>
-    </section>
 
-  </main>
+    </div>
+
+    <p class="texte-intro">
+      {{ entreprise.description }}
+    </p>
+  </section>
+
+  <!-- ⭐ NOUVEAU : EVALUATION -->
+  <section class="bloc-evaluation">
+
+    <h2>Donner mon avis</h2>
+
+    {% if session.user_id is defined %}
+
+      <form method="POST" action="index.php?page=evaluer-entreprise" class="form-evaluation">
+
+        <!-- étoiles -->
+        <div class="stars">
+
+          <input type="radio" id="star5" name="note" value="5">
+          <label for="star5">⭐</label>
+
+          <input type="radio" id="star4" name="note" value="4">
+          <label for="star4">⭐</label>
+
+          <input type="radio" id="star3" name="note" value="3">
+          <label for="star3">⭐</label>
+
+          <input type="radio" id="star2" name="note" value="2">
+          <label for="star2">⭐</label>
+
+          <input type="radio" id="star1" name="note" value="1">
+          <label for="star1">⭐</label>
+
+        </div>
+
+        <!-- commentaire -->
+        <textarea name="commentaire" placeholder="Ton avis sur cette entreprise..." required></textarea>
+
+        <!-- id caché -->
+        <input type="hidden" name="id_entreprise" value="{{ entreprise.id_entreprise }}">
+
+        <button type="submit" class="btn-submit">Envoyer mon avis</button>
+
+      </form>
+
+    {% else %}
+
+      <p>Tu dois être connecté pour laisser un avis.</p>
+      <a href="index.php?page=connexion" class="btn-connexion">Se connecter</a>
+
+    {% endif %}
+
+  </section>
+
+  <!-- INFOS -->
+  <section class="grille-infos">
+
+    <article class="carte-info">
+      <h3>Email</h3>
+      <p>{{ entreprise.email }}</p>
+    </article>
+
+    <article class="carte-info">
+      <h3>Téléphone</h3>
+      <p>{{ entreprise.telephone }}</p>
+    </article>
+
+    {% if session.role is defined and session.role in ['admin', 'recruteur'] %}
+      <a href="index.php?page=entreprise-modifier&id={{ entreprise.id_entreprise }}" class="btn-modifier">
+        Modifier cette entreprise
+      </a>
+    {% endif %}
+
+  </section>
+
+  <!-- OFFRES -->
+  <section class="bloc-offres">
+
+    <div class="entete-section">
+      <h2>Offres de cette entreprise</h2>
+      <p>{{ offre_count }} offres disponibles</p>
+    </div>
+
+    <div class="liste-offres">
+
+      {% for offre in offres %}
+        <article class="ligne-offre">
+
+          <div class="ligne-offre__contenu">
+
+            <div class="ligne-offre__haut">
+              <h3>{{ offre.titre }}</h3>
+              <p class="etiquette-date">
+                {{ offre.date_publication|date('d/m/Y') }}
+              </p>
+            </div>
+
+            <p class="description-offre">
+              {{ offre.description }}
+            </p>
+
+            <div class="details-offre">
+              <span>⏳ {{ offre.duree_stage }} semaines</span>
+              <span>💼 {{ offre.type_offre ?? 'Stage' }}</span>
+              <span>🛠 {{ offre.competence }}</span>
+            </div>
+
+          </div>
+
+          <div class="ligne-offre__actions">
+            <a href="index.php?page=offre&id={{ offre.id_offre }}" class="bouton-voir">
+              Voir l’offre
+            </a>
+          </div>
+
+        </article>
+
+      {% else %}
+        <p>Aucune offre pour le moment.</p>
+      {% endfor %}
+
+    </div>
+
+  </section>
+
+</main>
+
 </body>
 </html>
