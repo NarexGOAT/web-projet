@@ -61,25 +61,22 @@
       <form method="POST" action="index.php?page=evaluer-entreprise" class="form-evaluation">
 
         <!-- étoiles -->
-        <div class="stars">
+    <div class="stars">
+        <input type="radio" id="star5" name="note" value="5" required>
+        <label for="star5" title="5 étoiles">★</label>
 
-          <input type="radio" id="star5" name="note" value="5">
-          <label for="star5">⭐</label>
+        <input type="radio" id="star4" name="note" value="4">
+        <label for="star4" title="4 étoiles">★</label>
 
-          <input type="radio" id="star4" name="note" value="4">
-          <label for="star4">⭐</label>
+        <input type="radio" id="star3" name="note" value="3">
+        <label for="star3" title="3 étoiles">★</label>
 
-          <input type="radio" id="star3" name="note" value="3">
-          <label for="star3">⭐</label>
+        <input type="radio" id="star2" name="note" value="2">
+        <label for="star2" title="2 étoiles">★</label>
 
-          <input type="radio" id="star2" name="note" value="2">
-          <label for="star2">⭐</label>
-
-          <input type="radio" id="star1" name="note" value="1">
-          <label for="star1">⭐</label>
-
-        </div>
-
+        <input type="radio" id="star1" name="note" value="1">
+        <label for="star1" title="1 étoile">★</label>
+    </div>
         <!-- commentaire -->
         <textarea name="commentaire" placeholder="Ton avis sur cette entreprise..." required></textarea>
 
