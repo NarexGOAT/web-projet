@@ -34,6 +34,8 @@ class HomeController
             'total_offres'      => $total_offres,
             'total_entreprises' => $total_entreprises,
             'dernieres_offres'  => $dernieres_offres,
+            'wishlist_added'    => !empty($_GET['wishlist_added']),
+            'wishlist_exists'   => !empty($_GET['wishlist_exists']),
         ]);
     }
 }

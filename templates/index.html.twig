@@ -135,5 +135,16 @@
       <a href="index.php?page=mentions">Mentions légales</a>
     </div>
   </footer>
+  {% if wishlist_added %}
+<script>
+  alert('L’offre a bien été ajoutée à la wish-list.');
+</script>
+{% endif %}
+
+{% if wishlist_exists %}
+<script>
+  alert('Cette offre est déjà dans votre wish-list.');
+</script>
+{% endif %}
 </body>
 </html>

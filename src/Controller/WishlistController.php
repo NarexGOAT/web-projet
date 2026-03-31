@@ -72,19 +72,24 @@ class WishlistController
         ]);
 
         if (!$stmtCheck->fetch()) {
-            $sqlInsert = "
-                INSERT INTO wishlist (id_user, id_offre)
-                VALUES (:id_user, :id_offre)
-            ";
-            $stmtInsert = $this->pdo->prepare($sqlInsert);
-            $stmtInsert->execute([
-                'id_user'  => $idUser,
-                'id_offre' => $idOffre,
-            ]);
-        }
+    // insertion
+    $sqlInsert = "
+        INSERT INTO wishlist (id_user, id_offre)
+        VALUES (:id_user, :id_offre)
+    ";
+    $stmtInsert = $this->pdo->prepare($sqlInsert);
+    $stmtInsert->execute([
+        'id_user'  => $idUser,
+        'id_offre' => $idOffre,
+    ]);
 
-        header('Location: index.php?page=offre&id=' . $idOffre);
-        exit;
+    header('Location: index.php?wishlist_added=1');
+    exit;
+}
+
+// déjà présent
+header('Location: index.php?wishlist_exists=1');
+exit;
     }
 
     public function supprimer(int $idOffre): void
