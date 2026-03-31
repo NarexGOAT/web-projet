@@ -20,17 +20,21 @@
             <p>Salut ! Ravi de vous revoir.</p>
         </div>
 
+        {# --- BLOC ERREURS (Récupéré du vieux Twig) --- #}
         {% if erreurs is defined and erreurs %}
-            <ul class="liste-erreurs">
+            <ul class="liste-erreurs" style="color: #ff4757; margin-bottom: 20px; list-style: none; font-size: 14px;">
             {% for e in erreurs %}
-                <li>{{ e }}</li>
+                <li><i class="fas fa-exclamation-circle"></i> {{ e }}</li>
             {% endfor %}
             </ul>
         {% endif %}
 
+        {# --- FORMULAIRE (Action vers l'index PHP) --- #}
         <form action="index.php?page=connexion" method="post" class="login-form">
+            
             <div class="input-group">
                 <label for="email">Email</label>
+                {# On garde value="{{ old.email ?? '' }}" pour ne pas que l'utilisateur doive retaper son mail en cas d'erreur #}
                 <input type="email" id="email" name="email" placeholder="Votre adresse mail" required value="{{ old.email ?? '' }}">
             </div>
 
@@ -38,13 +42,14 @@
                 <label for="password">Mot de passe</label>
                 <div class="password-wrapper">
                     <input type="password" id="password" name="mot_de_passe" placeholder="Votre mot de passe" required>
-                    <i class="fas fa-eye"></i>
+                    <i class="fas fa-eye" id="icone-oeil" style="cursor: pointer;"></i>
                 </div>
             </div>
 
             <a href="index.php?page=oubli" class="forgot-password">Mot de passe oublié ?</a>
 
             <button type="submit" class="btn-submit">Se connecter</button>
+
         </form>
 
         <div class="signup-link">
@@ -55,6 +60,21 @@
             <a href="index.php?page=mentions" class="legal-link">Mentions légales</a>
         </div>
     </div>
+
+    {# --- TON SCRIPT JS (Gardé précieusement) --- #}
+    <script>
+        const iconeOeil = document.getElementById('icone-oeil');
+        const champMdp = document.getElementById('password');
+
+        iconeOeil.addEventListener('click', function () {
+            const type = champMdp.getAttribute('type') === 'password' ? 'text' : 'password';
+            champMdp.setAttribute('type', type);
+            
+            // Change l'icône
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
 
 </body>
 </html>
