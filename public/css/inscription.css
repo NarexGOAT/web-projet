@@ -99,10 +99,24 @@ body{
 
 /* PASSWORD */
 
-.password-wrapper{
-    position:relative;
+/* --- Placement de l'oeil pour les mots de passe --- */
+.password-wrapper {
+    position: relative; /* Indispensable pour que l'oeil se repère */
+    width: 100%;
 }
 
+.password-wrapper input {
+    width: 100%;
+    padding-right: 40px; /* Laisse de la place pour que le texte ne passe pas sous l'oeil */
+}
+
+.password-wrapper i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%); /* Centre l'oeil verticalement */
+    color: #a0aec0; /* Petite couleur grise discrète */
+}
 /* CHECKBOX */
 
 .checkbox-group{
