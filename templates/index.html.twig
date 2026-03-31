@@ -3,61 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlloStage</title>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <title>AlloStage - Accueil</title>
+
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
 
-<header class="barre-haut">
-  <div class="conteneur barre-haut__interieur">
+<header class="entete">
+    <div class="logo">
+        <a href="index.php">
+            <img src="/images/allostage.png" alt="Accueil AlloStage" class="logo-img">
+        </a>
+    </div>
 
-    <a href="index.php">
-      <img src="/images/allostage.png" class="logo-img" style="height:70px;">
-    </a>
-
-    <form class="recherche">
-      <input type="search" placeholder="Rechercher une offre...">
-    </form>
-
-    <nav class="actions">
-      <a href="index.php?page=wishlist">❤️</a>
-      <a href="index.php?page=menu">👤</a>
+    <nav class="navigation">
+        <ul>
+            <li><a href="index.php" class="actif">Accueil</a></li>
+            <li><a href="index.php?page=offres">Offres de stages</a></li>
+            <li><a href="index.php?page=entreprises">Entreprises</a></li>
+            <li><a href="index.php?page=wishlist">Ma Wish-list</a></li>
+        </ul>
     </nav>
 
-  </div>
+    <div class="actions-entete">
+        {% if session.user_id is defined %}
+            <a href="index.php?page=menu" class="btn-principal">
+                Espace {{ session.role|capitalize }}
+            </a>
+        {% else %}
+            <a href="index.php?page=connexion" class="btn-connexion">Connexion</a>
+            <a href="index.php?page=inscription" class="btn-inscription">Inscription</a>
+        {% endif %}
+    </div>
 </header>
 
-<main class="page">
-  <div class="conteneur">
+<main class="contenu">
 
-    <section class="mise-en-avant">
-      <h1>Des offres adaptées à ton profil</h1>
-
-      <p>
-        BHStage centralise les offres et te propose celles adaptées.
-      </p>
-
-      <div>
-        <strong>{{ total_offres }}</strong> offres<br>
-        <strong>{{ total_entreprises }}</strong> entreprises
-      </div>
+    <!-- HERO -->
+    <section class="recherche-hero">
+        <h1>Trouvez le stage parfait avec AlloStage</h1>
+        <p>Découvrez nos meilleures opportunités et lancez votre carrière.</p>
     </section>
 
-    <section>
-      <h2>Dernières offres</h2>
+    <!-- OFFRES -->
+    <section class="section-offres">
 
-      {% for offre in dernieres_offres %}
-        <div>
-          <h3>{{ offre.titre }}</h3>
-          <p>{{ offre.description }}</p>
-        </div>
-      {% endfor %}
+    <div class="entete-offres">
+        <h2>Offres à la une</h2>
+        <a href="index.php?page=offres" class="lien-toutes">Voir tout →</a>
+    </div>
 
-    </section>
+    <div class="grille-offres">
 
-  </div>
+        {% for offre in dernieres_offres %}
+        <article class="carte-offre">
+
+            <!-- HEADER -->
+            <div class="en-tete-carte">
+
+                <!-- badge dynamique -->
+                {% if loop.index == 1 %}
+                    <span class="badge-nouveau">Nouveau</span>
+                {% elseif loop.index == 3 %}
+                    <span class="badge-urgent">Urgent</span>
+                {% endif %}
+
+                <!-- coeur -->
+                <a href="#" class="btn-favori">💖</a>
+
+            </div>
+
+            <!-- TITRE -->
+            <h3 class="titre-offre">{{ offre.titre }}</h3>
+
+            <!-- ENTREPRISE -->
+            <p class="entreprise-offre">
+                <strong>{{ offre.nom_entreprise }}</strong>
+                {% if offre.ville %}
+                    • {{ offre.ville }}
+                {% endif %}
+            </p>
+
+            <!-- TAGS -->
+            <div class="tags-offre">
+                <span class="tag">📅 {{ offre.duree_stage }} mois</span>
+                <span class="tag">🎓 Stage</span>
+
+                {% if offre.competence %}
+                    <span class="tag">{{ offre.competence }}</span>
+                {% endif %}
+            </div>
+
+            <!-- DESCRIPTION -->
+            <p class="description">
+                {{ offre.description|slice(0, 140) ~ '...' }}
+            </p>
+
+            <!-- ACTIONS -->
+            <div class="actions-carte">
+                <a href="index.php?page=offre&id={{ offre.id_offre }}" class="btn-secondaire">
+                    Détails
+                </a>
+
+                <a href="index.php?page=postuler&id={{ offre.id_offre }}" class="btn-postuler">
+                    Postuler
+                </a>
+            </div>
+
+        </article>
+        {% endfor %}
+
+    </div>
+
+</section>
+
 </main>
+
+<footer class="pied-de-page">
+    <p>&copy; 2026 AlloStage. Tous droits réservés.</p>
+</footer>
 
 </body>
 </html>
