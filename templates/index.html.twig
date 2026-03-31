@@ -3,202 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlloStage - 3 Dernières Offres</title>
-    <link rel="stylesheet" href="style.css">
+    <title>AlloStage</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
-    <header class="entete">
-        <div class="logo">
-    <a href="index.html">
-        <img src="allostage.png" alt="Accueil AlloStage" class="logo-img">
+
+<header class="barre-haut">
+  <div class="conteneur barre-haut__interieur">
+
+    <a href="index.php">
+      <img src="/images/allostage.png" class="logo-img" style="height:70px;">
     </a>
-</div>
-        <nav class="navigation">
-            <ul>
-                <li><a href="index.html" class="actif">Accueil</a></li>
-                <li><a href="liste-offres.html">Offres de stages</a></li>
-                <li><a href="liste-entreprises.html">Entreprises</a></li>
-                <li><a href="wishlist.html">Ma Wish-list</a></li>
-                <li><a href="candidatures.html">Mes Candidatures</a></li>
-  <header class="barre-haut">
-    <div class="conteneur barre-haut__interieur">
-      <a href="index.php">
-                <img src="/images/allostage.png" alt="Accueil BHStage" class="logo-img" style="height: 70px; object-fit: contain;">
-            </a>
 
-      <form class="recherche" role="search">
-        <span class="recherche__icone">🔍</span>
-        <input
-          class="recherche__champ"
-          id="recherche-site"
-          type="search"
-          name="q"
-          placeholder="Rechercher une offre, une entreprise...">
-      </form>
+    <form class="recherche">
+      <input type="search" placeholder="Rechercher une offre...">
+    </form>
 
-      <nav class="actions">
-        <a class="bouton-icone" href="index.php?page=wishlist" title="Favoris">❤️</a>
-        <a href="index.php?page=menu" class="bouton-profil">👤</a>
-      </nav>
-    </div>  
-  </header>
+    <nav class="actions">
+      <a href="index.php?page=wishlist">❤️</a>
+      <a href="index.php?page=menu">👤</a>
+    </nav>
 
-  <main class="page">
-    <div class="conteneur">
-      <section class="disposition">
+  </div>
+</header>
 
-        <section class="carte mise-en-avant">
-          <h1 class="mise-en-avant__titre">Des offres adaptées à ton profil, au même endroit.</h1>
+<main class="page">
+  <div class="conteneur">
 
-          <p class="mise-en-avant__texte">
-            BHStage centralise les offres de stage d’entreprises partenaires et te propose celles
-            qui correspondent à tes compétences. Postule simplement et gagne du temps.
-          </p>
+    <section class="mise-en-avant">
+      <h1>Des offres adaptées à ton profil</h1>
 
-          <nav class="mise-en-avant__actions" aria-label="Actions principales">
-            <a class="bouton bouton--principal" href="index.php?page=offres">Voir toutes les offres</a>
-            <a class="bouton bouton--secondaire" href="#dernieres-offres">Voir les dernières</a>
-            <a class="bouton bouton--principal" href="index.php?page=entreprises">Voir toutes les entreprises</a>
-          </nav>
+      <p>
+        BHStage centralise les offres et te propose celles adaptées.
+      </p>
 
-          <section>
-            <ul class="mise-en-avant__stats">
-              <li>
-                <strong>{{ total_offres }}</strong>
-                <span>offres actives</span>
-              </li>
-              <li>
-                <strong>{{ total_entreprises }}</strong>
-                <span>entreprises</span>
-              </li>
-              <li>
-                <strong>1 clic</strong>
-                <span>pour postuler</span>
-              </li>
-            </ul>
-        </nav>
-        <div class="actions-entete" id="zone-utilisateur">
-</div>
+      <div>
+        <strong>{{ total_offres }}</strong> offres<br>
+        <strong>{{ total_entreprises }}</strong> entreprises
+      </div>
+    </section>
+
+    <section>
+      <h2>Dernières offres</h2>
+
+      {% for offre in dernieres_offres %}
+        <div>
+          <h3>{{ offre.titre }}</h3>
+          <p>{{ offre.description }}</p>
         </div>
-    </header>
+      {% endfor %}
 
-    <main class="contenu">
-        <section class="recherche-hero">
-            <h1>Trouvez le stage parfait avec AlloStage</h1>
-            <p>Découvrez nos meilleures opportunités et lancez votre carrière.</p>
-            <div class="barre-recherche">
-                <input type="text" placeholder="Métier, entreprise, ville...">
-                <button class="btn-principal">Rechercher</button>
-            </div>
-        </section>
+    </section>
 
-        <section class="section-offres">
-            <div class="entete-offres">
-                <h2>Offres à la une</h2>
-                <a href="liste-offres.html" class="lien-toutes">Voir tout →</a>
-            </div>
+  </div>
+</main>
 
-            <div class="grille-offres">
-                
-                <article class="carte-offre">
-                    <div class="en-tete-carte">
-                        <span class="badge-nouveau">Nouveau</span>
-                        <button class="btn-favori">🩷​​</button>
-                    </div>
-                    <h3 class="titre-offre">Développeur Web Front-End</h3>
-                    <p class="entreprise-offre"><strong>TechSolutions SAS</strong> • Paris</p>
-                    <div class="tags-offre">
-                        <span class="tag">📅 6 mois</span>
-                        <span class="tag">🎓 Bac+3/5</span>
-                    </div>
-                    <p class="description">Rejoignez notre équipe technique pour développer nos nouvelles interfaces web en React...</p>
-                    <div class="actions-carte">
-                        <a href="offre.html" class="btn-secondaire">Détails</a>
-                        <a href="postuler.html" class="btn-postuler">Postuler</a>
-                    </div>
-                </article>
-
-                <article class="carte-offre">
-                    <div class="en-tete-carte">
-                        <span class="badge-vide"></span> <!-- Espace vide pour l'alignement -->
-                        <button class="btn-favori">🩷​​</button>
-                    </div>
-                    <h3 class="titre-offre">Assistant Chef de Projet</h3>
-                    <p class="entreprise-offre"><strong>InnovCorp</strong> • Lyon</p>
-                    <div class="tags-offre">
-                        <span class="tag">📅 4 à 6 mois</span>
-                        <span class="tag">📊 Marketing</span>
-                    </div>
-                    <p class="description">Accompagnez notre équipe sur le lancement de la nouvelle gamme de produits et l'analyse de marché...</p>
-                    <div class="actions-carte">
-                        <a href="offre.html" class="btn-secondaire">Détails</a>
-                        <a href="postuler.html" class="btn-postuler">Postuler</a>
-                    </div>
-                </article>
-
-                <article class="carte-offre">
-                    <div class="en-tete-carte">
-                        <span class="badge-urgent">Urgent</span>
-                        <button class="btn-favori">🩷​​</button>
-                    </div>
-                    <h3 class="titre-offre">Ingénieur Cybersécurité</h3>
-                    <p class="entreprise-offre"><strong>CyberDefense Pro</strong> • Télétravail</p>
-                    <div class="tags-offre">
-                        <span class="tag">📅 6 mois</span>
-                        <span class="tag">🛡️ Sécurité</span>
-                    </div>
-                    <p class="description">Stage de fin d'études : participez à l'audit et à la sécurisation des infrastructures cloud de nos clients...</p>
-                    <div class="actions-carte">
-                        <a href="offre.html" class="btn-secondaire">Détails</a>
-                        <a href="postuler.html" class="btn-postuler">Postuler</a>
-                    </div>
-                </article>
-
-            </div>
-        </section>
-    </main>
-
-    <footer class="pied-de-page">
-        <p>&copy; 2026 AlloStage. Tous droits réservés.</p>
-    </footer>
 </body>
 </html>
-
-<script>
-const zone = document.getElementById("zone-utilisateur");
-
-// simulation utilisateur connecté
-const utilisateur = JSON.parse(localStorage.getItem("user"));
-
-if (utilisateur) {
-
-    let lien = "#";
-    let texte = "";
-
-    if (utilisateur.role === "etudiant") {
-        lien = "etudiant.html";
-        texte = "Espace Étudiant";
-    }
-
-    if (utilisateur.role === "admin") {
-        lien = "gestion-etudiants.html";
-        texte = "Espace Admin";
-    }
-
-    if (utilisateur.role === "pilote") {
-        lien = "gestion-pilotes.html";
-        texte = "Espace Pilote";
-    }
-
-    zone.innerHTML = `
-        <a href="${lien}" class="btn-principal">${texte}</a>
-    `;
-
-} else {
-
-    zone.innerHTML = `
-        <a href="inscription.html" class="btn-inscription">Inscription</a>
-        <a href="connexion.html" class="btn-connexion">Connexion</a>
-    `;
-}
-</script>
