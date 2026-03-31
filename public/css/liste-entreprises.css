@@ -1,278 +1,249 @@
-* {
-  box-sizing: border-box;
-}
+/* --- Mise en page spécifique pour l'annuaire des entreprises --- */
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background: #f3f5f9;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #111827;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.page-entreprises {
-  max-width: 1000px;
-  min-height: 100vh;
-  margin: 0 auto;
-  background: #ffffff;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03);
-}
-
-
-.barre-haut {
-  display: grid;
-  grid-template-columns: 44px 1fr 44px;
-  align-items: center;
-  gap: 12px;
-  padding: 18px 16px;
-  background: #f8f9fc;
-  border-bottom: 1px solid #eceff4;
-}
-
-.bouton-retour,
-.bouton-profil {
-  width: 44px;
-  height: 44px;
-  border: 1px solid #cfd6e2;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ffffff;
-  color: #111827;
-  font-size: 1.4rem;
-}
-
-.titre-page {
-  margin: 0;
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.zone-intro {
-  padding: 20px 16px 10px;
-}
-
-.texte-intro {
-  margin: 0;
-  color: #5b6472;
-  line-height: 1.5;
-}
-
-.zone-filtres {
-  margin: 0 16px 20px;
-  padding: 18px;
-  border: 1px solid #d9dfeb;
-  border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
-}
-
-.zone-filtres h2 {
-  margin: 0 0 16px;
-  font-size: 1.15rem;
-}
-
-.filtres {
-  display: grid;
-  gap: 14px;
-}
-
-.champ-filtre label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 700;
-  font-size: 0.95rem;
-}
-
-.champ-filtre input,
-.champ-filtre select {
-  width: 100%;
-  height: 46px;
-  padding: 0 12px;
-  border: 1px solid #cfd6e2;
-  border-radius: 12px;
-  background: #ffffff;
-  font-size: 1rem;
-  color: #111827;
-}
-
-.actions-filtres {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 4px;
-}
-
-.bouton-filtrer,
-.bouton-reinitialiser {
-  min-height: 46px;
-  padding: 0 18px;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.bouton-filtrer {
-  border: 1px solid #8fb1f5;
-  background: linear-gradient(135deg, #9dbbff, #6f9bff);
-  color: #0f172a;
-}
-
-.bouton-reinitialiser {
-  border: 1px solid #cfd6e2;
-  background: #ffffff;
-  color: #374151;
-}
-
-.zone-resultats {
-  padding: 0 16px 28px;
-}
-
-.nombre-resultats {
-  margin: 0 0 14px;
-  color: #5b6472;
-  font-weight: 700;
-}
-
-.liste-entreprises {
-  display: grid;
-  gap: 14px;
-}
-
-.ligne-entreprise {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 18px;
-  border: 1px solid #d9dfeb;
-  border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
-}
-
-.ligne-entreprise__haut {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.entreprise-entete {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.entreprise-logo {
-  width: 58px;
-  height: 58px;
-  border-radius: 14px;
-  background: #d9dee8;
-  border: 1px solid #cfd6e2;
-  flex-shrink: 0;
-}
-
-.entreprise-entete h2 {
-  margin: 0 0 6px;
-  font-size: 1.25rem;
-  line-height: 1.2;
-}
-
-.secteur {
-  margin: 0;
-  color: #5b6472;
-  font-weight: 700;
-}
-
-.description {
-  margin: 0 0 12px;
-  color: #4b5563;
-  line-height: 1.5;
-}
-
-.details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.details span {
-  display: inline-flex;
-  align-items: center;
-  min-height: 34px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  background: #f3f4f6;
-  border: 1px solid #d5d9e0;
-  color: #374151;
-  font-size: 0.92rem;
-}
-
-.ligne-entreprise__actions {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.bouton-voir {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 46px;
-  padding: 0 16px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #9dbbff, #6f9bff);
-  border: 1px solid #8fb1f5;
-  color: #0f172a;
-  font-weight: 700;
-}
-
-/* Version large */
-
-@media (min-width: 768px) {
-  .page-entreprises {
-    margin: 24px auto;
-    border-radius: 16px;
-    overflow: hidden;
-  }
-
-  .filtres {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .actions-filtres {
-    grid-column: 1 / -1;
-  }
-
-  .ligne-entreprise {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .ligne-entreprise__contenu {
+.fond-gris {
+    background-color: var(--gris-tres-clair);
+    padding: 2rem;
     flex: 1;
-  }
+}
 
-  .ligne-entreprise__actions {
-    flex-shrink: 0;
-    align-self: flex-end;
-  }
+/* --- En-tête et Recherche --- */
+.en-tete-annuaire {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem auto;
+}
 
-  .ligne-entreprise__haut {
-    flex-direction: row;
+.en-tete-annuaire h1 {
+    color: var(--bleu-allostage);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.en-tete-annuaire p {
+    color: var(--texte-moyen);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.barre-recherche-large {
+    display: flex;
+    gap: 0;
+    background: var(--blanc);
+    border-radius: 0.8rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--gris-clair);
+    overflow: hidden;
+}
+
+.barre-recherche-large input,
+.barre-recherche-large select {
+    padding: 1rem 1.2rem;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    outline: none;
+    color: var(--texte-sombre);
+}
+
+.barre-recherche-large input {
+    flex: 2;
+    border-right: 1px solid var(--gris-clair);
+}
+
+.filtre-select {
+    flex: 1;
+    border-right: 1px solid var(--gris-clair);
+    cursor: pointer;
+}
+
+.barre-recherche-large .btn-principal {
+    border-radius: 0;
+    padding: 1rem 2rem;
+}
+
+/* --- Grille des entreprises --- */
+.conteneur-entreprises {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.grille-entreprises {
+    display: grid;
+    /* On demande à CSS de caler le plus de cartes de 350px possible par ligne */
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.carte-annuaire {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.carte-annuaire:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    border-color: var(--bleu-clair-allostage);
+}
+
+/* --- Haut de la carte (Logo + Titre) --- */
+.haut-carte {
+    display: flex;
+    gap: 1.2rem;
     align-items: center;
+    margin-bottom: 1rem;
+}
+
+.logo-entreprise-carre {
+    width: 65px;
+    height: 65px;
+    border-radius: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--blanc);
+    flex-shrink: 0;
+}
+
+/* Couleurs fictives pour les logos (utilisées dynamiquement par le PHP) */
+.logo-ts { background: linear-gradient(135deg, #3498db, #2980b9); }
+.logo-ic { background: linear-gradient(135deg, #e67e22, #d35400); }
+.logo-cd { background: linear-gradient(135deg, #2c3e50, #1a252f); }
+.logo-ge { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+.logo-dv { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+.logo-bg { background: linear-gradient(135deg, #f1c40f, #f39c12); }
+
+.infos-titre { display: flex; flex-direction: column; }
+.infos-titre h2 { margin: 0 0 0.2rem 0; font-size: 1.2rem; color: var(--texte-sombre); }
+.secteur { font-size: 0.85rem; color: var(--texte-moyen); margin-bottom: 0.3rem; }
+.note { font-size: 0.9rem; }
+.etoiles { color: #f1c40f; letter-spacing: 2px; }
+.avis-count { color: var(--texte-moyen); font-size: 0.8rem; margin-left: 0.3rem; }
+
+/* --- Corps de la carte --- */
+.description-courte {
+    font-size: 0.95rem;
+    color: var(--texte-sombre);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    flex-grow: 1; /* Pousse les boutons en bas de la carte */
+}
+
+.tags-entreprise {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.tag {
+    background: var(--fond-panneau);
+    border: 1px solid var(--gris-clair);
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--texte-moyen);
+}
+
+/* --- Bas de la carte --- */
+.actions-annuaire {
+    display: flex;
     justify-content: space-between;
-  }
+    align-items: center;
+    border-top: 1px solid var(--gris-clair);
+    padding-top: 1rem;
+}
+
+.compteur-offres { font-size: 0.9rem; color: var(--bleu-allostage); }
+.compteur-offres strong { font-size: 1.1rem; }
+.text-urgent { color: var(--rouge-badge); }
+.text-vide { color: var(--texte-moyen); }
+
+.btn-petit {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+/* --- Pagination --- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.page-lien {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 0.8rem;
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    border-radius: 0.5rem;
+    color: var(--texte-sombre);
+    font-weight: bold;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.page-lien:hover:not(.desactive) {
+    border-color: var(--bleu-clair-allostage);
+    color: var(--bleu-allostage);
+    background-color: var(--fond-panneau);
+}
+
+.page-lien.actif {
+    background: var(--bleu-allostage);
+    color: var(--blanc);
+    border-color: var(--bleu-allostage);
+}
+
+.page-lien.desactive {
+    color: var(--gris-clair);
+    cursor: not-allowed;
+    background: var(--gris-tres-clair);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .barre-recherche-large {
+        flex-direction: column;
+        background: transparent;
+        box-shadow: none;
+        border: none;
+        gap: 0.5rem;
+    }
+
+    .barre-recherche-large input,
+    .barre-recherche-large select,
+    .barre-recherche-large .btn-principal {
+        width: 100%;
+        border: 1px solid var(--gris-clair);
+        background: var(--blanc);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+    
+    .pagination {
+        flex-wrap: wrap;
+    }
 }
