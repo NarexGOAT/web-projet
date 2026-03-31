@@ -288,3 +288,42 @@ public function modifierSubmit(int $id): void
 }
 
 }
+
+public function evaluerSubmit(): void
+{
+    if (empty($_SESSION['user_id'])) {
+        header('Location: index.php?page=connexion');
+        exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        header('Location: index.php?page=entreprises');
+        exit;
+    }
+
+    $note = (int) ($_POST['note'] ?? 0);
+    $commentaire = trim($_POST['commentaire'] ?? '');
+    $id_entreprise = (int) ($_POST['id_entreprise'] ?? 0);
+    $id_user = (int) $_SESSION['user_id'];
+
+    if ($note < 1 || $note > 5 || $id_entreprise <= 0 || $commentaire === '') {
+        header('Location: index.php?page=entreprise&id=' . $id_entreprise);
+        exit;
+    }
+
+    $sql = "
+        INSERT INTO evaluation (note, commentaire, id_user, id_entreprise)
+        VALUES (:note, :commentaire, :id_user, :id_entreprise)
+    ";
+
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([
+        'note' => $note,
+        'commentaire' => $commentaire,
+        'id_user' => $id_user,
+        'id_entreprise' => $id_entreprise,
+    ]);
+
+    header('Location: index.php?page=entreprise&id=' . $id_entreprise);
+    exit;
+}
