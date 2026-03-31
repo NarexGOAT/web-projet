@@ -16,7 +16,6 @@ body{
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: var(--text);
-  overflow: hidden;
 }
 
 a{
@@ -55,6 +54,7 @@ a{
   flex-direction: column;
   gap: 18px;
   z-index: 2;
+  overflow-y: auto;
 }
 
 .panneau-menu__haut{
@@ -86,7 +86,7 @@ a{
 .navigation-menu__lien{
   text-align: center;
   font-weight: 900;
-  padding: 18px 14px;
+  padding: 12px 10px;
   border-radius: 12px;
   background: rgba(255,255,255,.98);
   border: 1px solid rgba(0,0,0,.12);
@@ -97,7 +97,7 @@ a{
   margin-top: 30px;
   text-align: center;
   font-weight: 900;
-  padding: 18px 14px;
+  padding: 12px 10px;
   border-radius: 12px;
   background: rgba(255,255,255,.98);
   border: 1px solid rgba(0,0,0,.12);
