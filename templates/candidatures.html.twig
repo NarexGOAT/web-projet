@@ -20,7 +20,13 @@
                 <li><a href="index.php?page=offres">Offres de stages</a></li>
                 <li><a href="index.php?page=entreprises">Entreprises</a></li>
                 <li><a href="index.php?page=wishlist">Ma Wish-list</a></li>
-                <li><a href="index.php?page=candidatures" class="actif">Mes Candidatures</a></li>
+                <li><a href="index.php?page=candidatures" class="actif">
+                    {% if role == 'recruteur' or role == 'admin' %}
+                        Candidatures des étudiants
+                    {% else %}
+                        Mes Candidatures
+                    {% endif %}
+                </a></li>
             </ul>
         </nav>
         <div class="actions-entete">
@@ -31,14 +37,23 @@
     <main class="contenu fond-gris">
 
         <section class="en-tete-recherche">
-            <h1>Mes Candidatures 📂</h1>
-            <p>Suivez l'état d'avancement des stages auxquels vous avez postulé et retrouvez vos documents envoyés.</p>
+            {% if role == 'recruteur' or role == 'admin' %}
+                <h1>Candidatures des étudiants 📂</h1>
+                <p>Consultez les candidatures envoyées par les étudiants pour les différentes offres.</p>
+            {% else %}
+                <h1>Mes Candidatures 📂</h1>
+                <p>Suivez l'état d'avancement des stages auxquels vous avez postulé et retrouvez vos documents envoyés.</p>
+            {% endif %}
         </section>
 
         <section class="conteneur-liste">
 
             {% if candidatures is empty %}
-                <p>Vous n'avez encore envoyé aucune candidature.</p>
+                {% if role == 'recruteur' or role == 'admin' %}
+                    <p>Aucune candidature n’a encore été envoyée.</p>
+                {% else %}
+                    <p>Vous n'avez encore envoyé aucune candidature.</p>
+                {% endif %}
             {% else %}
                 <div class="grille-offres">
                     {% for c in candidatures %}
@@ -68,19 +83,26 @@
                                 {% endif %}
                             </p>
 
+                            {# Pour recruteur/admin, on affiche l'étudiant concerné #}
+                            {% if role == 'recruteur' or role == 'admin' %}
+                                <p class="description" style="font-size: 0.9rem; color: #6c757d; margin-top: 0.4rem;">
+                                    Candidat : {{ c.prenom }} {{ c.nom }}
+                                </p>
+                            {% endif %}
+
                             <p class="description" style="font-size: 0.9rem; color: #6c757d; margin-top: 1rem;">
                                 Envoyé le : {{ c.date_envoi|date('d F Y') }}
                             </p>
 
                             <div class="actions-documents">
                                 {% if c.cv is defined and c.cv %}
-                                    <a href="{{ c.cv }}" class="btn-doc" target="_blank">📄 Voir mon CV</a>
+                                    <a href="{{ c.cv }}" class="btn-doc" target="_blank">📄 Voir le CV</a>
                                 {% else %}
                                     <span class="btn-doc">📄 CV indisponible</span>
                                 {% endif %}
 
                                 {% if c.lm is defined and c.lm %}
-                                    <a href="{{ c.lm }}" class="btn-doc" target="_blank">✍️ Voir ma Lettre</a>
+                                    <a href="{{ c.lm }}" class="btn-doc" target="_blank">✍️ Voir la lettre</a>
                                 {% else %}
                                     <span class="btn-doc">✍️ Lettre indisponible</span>
                                 {% endif %}
