@@ -20,6 +20,61 @@
                 <li><a href="liste-entreprises.html">Entreprises</a></li>
                 <li><a href="wishlist.html">Ma Wish-list</a></li>
                 <li><a href="candidatures.html">Mes Candidatures</a></li>
+  <header class="barre-haut">
+    <div class="conteneur barre-haut__interieur">
+      <a href="index.php">
+                <img src="/images/allostage.png" alt="Accueil BHStage" class="logo-img" style="height: 70px; object-fit: contain;">
+            </a>
+
+      <form class="recherche" role="search">
+        <span class="recherche__icone">🔍</span>
+        <input
+          class="recherche__champ"
+          id="recherche-site"
+          type="search"
+          name="q"
+          placeholder="Rechercher une offre, une entreprise...">
+      </form>
+
+      <nav class="actions">
+        <a class="bouton-icone" href="index.php?page=wishlist" title="Favoris">❤️</a>
+        <a href="index.php?page=menu" class="bouton-profil">👤</a>
+      </nav>
+    </div>  
+  </header>
+
+  <main class="page">
+    <div class="conteneur">
+      <section class="disposition">
+
+        <section class="carte mise-en-avant">
+          <h1 class="mise-en-avant__titre">Des offres adaptées à ton profil, au même endroit.</h1>
+
+          <p class="mise-en-avant__texte">
+            BHStage centralise les offres de stage d’entreprises partenaires et te propose celles
+            qui correspondent à tes compétences. Postule simplement et gagne du temps.
+          </p>
+
+          <nav class="mise-en-avant__actions" aria-label="Actions principales">
+            <a class="bouton bouton--principal" href="index.php?page=offres">Voir toutes les offres</a>
+            <a class="bouton bouton--secondaire" href="#dernieres-offres">Voir les dernières</a>
+            <a class="bouton bouton--principal" href="index.php?page=entreprises">Voir toutes les entreprises</a>
+          </nav>
+
+          <section>
+            <ul class="mise-en-avant__stats">
+              <li>
+                <strong>{{ total_offres }}</strong>
+                <span>offres actives</span>
+              </li>
+              <li>
+                <strong>{{ total_entreprises }}</strong>
+                <span>entreprises</span>
+              </li>
+              <li>
+                <strong>1 clic</strong>
+                <span>pour postuler</span>
+              </li>
             </ul>
         </nav>
         <div class="actions-entete" id="zone-utilisateur">
