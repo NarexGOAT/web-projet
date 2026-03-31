@@ -106,8 +106,8 @@ if ($deja) {
 ";
 $stmtInsert = $this->pdo->prepare($sqlInsert);
 $stmtInsert->execute([
-    'cv'       => $cvSimule, //
-    'lm'       => $lmSimule, //
+    'cv'       => $cvNom, //
+    'lm'       => $lmNom, //
     'id_user'  => $idUser,
     'id_offre' => $idOffre,
 ]);
@@ -118,12 +118,13 @@ $stmtInsert->execute([
 
 public function liste(): void
 {
-    if (empty($_SESSION['user_id'])) {
+    if (empty($_SESSION['user_id']) || empty($_SESSION['role'])) {
         header('Location: index.php?page=connexion');
         exit;
     }
 
     $idUser = (int) $_SESSION['user_id'];
+    $role   = $_SESSION['role']; // 'etudiant', 'recruteur', 'admin'
 
     $sql = "
         SELECT 
@@ -132,20 +133,33 @@ public function liste(): void
             o.duree_stage,
             o.competence,
             e.nom_entreprise,
-            e.ville
+            e.ville,
+            u.nom,
+            u.prenom
         FROM candidature c
-        JOIN offre o ON o.id_offre = c.id_offre
+        JOIN offre o      ON o.id_offre = c.id_offre
         LEFT JOIN entreprise e ON e.id_entreprise = o.id_entreprise
-        WHERE c.id_user = :id_user
-        ORDER BY c.date_envoi DESC
+        JOIN utilisateur u ON u.id_user = c.id_user
     ";
 
+    $params = [];
+
+    if ($role === 'etudiant') {
+        // l'étudiant ne voit que ses candidatures
+        $sql .= " WHERE c.id_user = :id_user";
+        $params['id_user'] = $idUser;
+    }
+    // recruteur/admin : pas de WHERE → toutes les candidatures
+
+    $sql .= " ORDER BY c.date_envoi DESC";
+
     $stmt = $this->pdo->prepare($sql);
-    $stmt->execute(['id_user' => $idUser]);
+    $stmt->execute($params);
     $candidatures = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
     echo $this->twig->render('candidatures.html.twig', [
         'candidatures' => $candidatures,
+        'role'         => $role,
     ]);
 }
 }
