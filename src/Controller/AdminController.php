@@ -5,7 +5,7 @@ class AdminController
     private $pdo;
     private $twig;
 
-    // 🎯 constantes propres (important)
+    //  constantes propres (important)
     private const ROLE_ETUDIANT = 1;
     private const ROLE_RECRUTEUR = 2; // = pilotes
     private const ROLE_ADMIN = 3;
@@ -17,7 +17,7 @@ class AdminController
     }
 
     // =========================
-    // 🎓 GESTION ETUDIANTS
+    //  GESTION ETUDIANTS
     // =========================
     public function gestionEtudiants()
     {
@@ -56,7 +56,7 @@ class AdminController
     }
 
     // =========================
-    // ❌ SUPPRIMER ETUDIANT
+    //  SUPPRIMER ETUDIANT
     // =========================
     public function supprimerEtudiant()
     {
@@ -78,7 +78,7 @@ class AdminController
     }
 
     // =========================
-    // ✏️ FORM MODIFIER ETUDIANT
+    //  FORM MODIFIER ETUDIANT
     // =========================
     public function formModifierEtudiant($id)
     {
@@ -104,7 +104,7 @@ class AdminController
     }
 
     // =========================
-    // 💾 UPDATE ETUDIANT
+    //  UPDATE ETUDIANT
     // =========================
     public function updateEtudiant($id)
     {
@@ -131,7 +131,7 @@ class AdminController
     }
 
     // =========================
-    // 👨‍✈️ GESTION PILOTES
+    //  GESTION PILOTES
     // =========================
     public function gestionPilotes()
     {
@@ -144,7 +144,7 @@ class AdminController
         ";
 
         $params = [
-            ':role' => self::ROLE_RECRUTEUR // ✅ corrigé ici
+            ':role' => self::ROLE_RECRUTEUR 
         ];
 
         if (!empty($recherche)) {
@@ -170,7 +170,7 @@ class AdminController
     }
 
     // =========================
-    // ❌ SUPPRIMER PILOTE
+    //  SUPPRIMER PILOTE
     // =========================
     public function supprimerPilote()
     {
@@ -192,7 +192,7 @@ class AdminController
     }
 
     // =========================
-    // ✏️ FORM MODIFIER PILOTE
+    //  FORM MODIFIER PILOTE
     // =========================
     public function formModifierPilote($id)
     {
@@ -218,7 +218,7 @@ class AdminController
     }
 
     // =========================
-    // 💾 UPDATE PILOTE
+    //  UPDATE PILOTE
     // =========================
     public function updatePilote($id)
     {

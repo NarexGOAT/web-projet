@@ -17,7 +17,7 @@ class EtudiantController
         $stmt = $this->pdo->query("SELECT * FROM etudiant");
         $etudiants = $stmt->fetchAll();
 
-        // 🎨 afficher la page Twig
+        //  afficher la page Twig
         echo $this->twig->render('gestion-etudiants.html.twig', [
             'etudiants' => $etudiants,
             'session' => $_SESSION

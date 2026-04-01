@@ -42,19 +42,19 @@ class OffreController
     }
 
     // =========================
-    // 📋 LISTE OFFRES + FILTRES
+    //  LISTE OFFRES + FILTRES
     // =========================
     public function liste()
     {
         // =========================
-        // 📄 PAGINATION
+        //  PAGINATION
         // =========================
         $page = max(1, (int) ($_GET['p'] ?? 1));
         $limit = 6;
         $offset = ($page - 1) * $limit;
 
         // =========================
-        // 🔎 FILTRES
+        //  FILTRES
         // =========================
         $recherche = trim($_GET['recherche'] ?? '');
         $competence = trim($_GET['competence'] ?? '');
@@ -81,7 +81,7 @@ class OffreController
         $where = !empty($conditions) ? "WHERE " . implode(' AND ', $conditions) : "";
 
         // =========================
-        // 📦 REQUETE OFFRES
+        //  REQUETE OFFRES
         // =========================
         $sql = "
             SELECT o.*, e.nom_entreprise, e.ville
@@ -97,7 +97,7 @@ class OffreController
         $offres = $stmt->fetchAll();
 
         // =========================
-        // 🔢 COUNT TOTAL
+        //  COUNT TOTAL
         // =========================
         $sqlCount = "
             SELECT COUNT(*)
@@ -113,7 +113,7 @@ class OffreController
         $totalPages = max(1, ceil($total / $limit));
 
         // =========================
-        // 📍 FILTRES (LISTES)
+        //  FILTRES (LISTES)
         // =========================
         $villes = $this->pdo->query("
             SELECT DISTINCT ville 
@@ -128,7 +128,7 @@ class OffreController
         ")->fetchAll(PDO::FETCH_COLUMN);
 
         // =========================
-        // 🎯 RENDER
+        //  RENDER
         // =========================
         echo $this->twig->render('liste-offres.html.twig', [
             'offres' => $offres,
@@ -147,7 +147,7 @@ class OffreController
     }
 
     // =========================
-    // 🏢 GESTION OFFRES
+    //  GESTION OFFRES
     // =========================
     public function gestion(): void
     {
@@ -166,7 +166,7 @@ class OffreController
     }
 
     // =========================
-    // ➕ CREER OFFRE
+    //  CREER OFFRE
     // =========================
     public function creer(): void
     {
@@ -229,7 +229,7 @@ class OffreController
     }
 
     // =========================
-    // ✏️ MODIFIER OFFRE
+    //  MODIFIER OFFRE
     // =========================
     public function modifier(): void
     {
@@ -319,7 +319,7 @@ class OffreController
     }
 
     // =========================
-    // 🗑️ SUPPRIMER OFFRE
+    //  SUPPRIMER OFFRE
     // =========================
     public function supprimer(): void
     {

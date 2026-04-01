@@ -12,7 +12,7 @@ class AuthController
     }
 
     // =========================
-    // 🔐 CONNEXION
+    // CONNEXION
     // =========================
     public function connexion(): void
     {
@@ -80,7 +80,7 @@ class AuthController
     }
 
     // =========================
-    // 📝 INSCRIPTION
+    //  INSCRIPTION
     // =========================
     public function inscription(): void
     {
@@ -94,10 +94,10 @@ class AuthController
             $conditions = isset($_POST['conditions']);
             $redirect   = $_POST['redirect'] ?? 'home';
 
-            // 🎯 ROLE PAR DEFAUT
+            // ROLE PAR DEFAUT
             $idRole = 1; // étudiant
 
-            // 🔐 SI ADMIN → peut choisir
+            // SI ADMIN → peut choisir
             if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
 
                 $roleMap = [
@@ -158,10 +158,10 @@ class AuthController
                 return;
             }
 
-            // 🔐 HASH MDP
+            //  HASH MDP
             $hash = password_hash($mdp, PASSWORD_DEFAULT);
 
-            // 💾 INSERT
+            // INSERT
             $stmt = $this->pdo->prepare("
                 INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, id_role)
                 VALUES (?, ?, ?, ?, ?)
@@ -175,7 +175,7 @@ class AuthController
                 $idRole
             ]);
 
-            // 🔁 REDIRECTION INTELLIGENTE
+            //  REDIRECTION INTELLIGENTE
             header("Location: index.php?page=" . $redirect);
             exit;
         }
@@ -187,7 +187,7 @@ class AuthController
     }
 
     // =========================
-    // 🔁 OUBLI MDP
+    //  OUBLI MDP
     // =========================
     public function oubli(): void
     {
@@ -213,7 +213,7 @@ class AuthController
     }
 
     // =========================
-    // 🚪 DECONNEXION
+    // DECONNEXION
     // =========================
     public function logout(): void
     {

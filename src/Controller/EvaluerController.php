@@ -13,13 +13,13 @@ class EvaluerController
     {
         session_start();
 
-        // 🔐 sécurité connexion
+        //  sécurité connexion
         if (!isset($_SESSION['user'])) {
             header('Location: index.php?page=connexion');
             exit;
         }
 
-        // 🔒 rôle autorisé
+        //  rôle autorisé
         if (
             $_SESSION['user']['role'] !== 'admin' &&
             $_SESSION['user']['role'] !== 'pilote'
@@ -35,7 +35,7 @@ class EvaluerController
             $note = $_POST['note'];
             $commentaire = $_POST['commentaire'];
 
-            // ❌ éviter double évaluation
+            //  éviter double évaluation
             $check = $this->pdo->prepare("
                 SELECT * FROM evaluation 
                 WHERE id_user = ? AND id_entreprise = ?
@@ -46,7 +46,7 @@ class EvaluerController
                 die("Tu as déjà évalué cette entreprise");
             }
 
-            // 💾 insert
+            //  insert
             $stmt = $this->pdo->prepare("
                 INSERT INTO evaluation (id_user, id_entreprise, note, commentaire)
                 VALUES (?, ?, ?, ?)
