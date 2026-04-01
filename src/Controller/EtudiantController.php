@@ -13,7 +13,7 @@ class EtudiantController
 
     public function gestion()
     {
-        // 🔎 récupérer les étudiants
+        //  récupérer les étudiants
         $stmt = $this->pdo->query("SELECT * FROM etudiant");
         $etudiants = $stmt->fetchAll();
 

@@ -12,7 +12,7 @@ class EntrepriseController
     }
 
     // =========================
-    // 🔒 VERIFICATION ROLE
+    //  VERIFICATION ROLE
     // =========================
     private function verifierAccesAdminOuPilote(): void
     {
@@ -30,8 +30,8 @@ class EntrepriseController
         }
     }
 
-    // =========================
-    // 🔎 DETAIL ENTREPRISE
+    // ========================
+    //  DETAIL ENTREPRISE
     // =========================
     public function detail()
     {
@@ -74,7 +74,7 @@ class EntrepriseController
     }
 
     // =========================
-    // 📋 LISTE ENTREPRISES
+    //  LISTE ENTREPRISES
     // =========================
     public function liste()
     {
@@ -170,7 +170,7 @@ class EntrepriseController
     }
 
     // =========================
-    // 🏢 GESTION ENTREPRISES
+    //  GESTION ENTREPRISES
     // =========================
     public function gestion(): void
     {
@@ -190,7 +190,7 @@ class EntrepriseController
     }
 
     // =========================
-    // ➕ CREER ENTREPRISE
+    //  CREER ENTREPRISE
     // =========================
     public function creer(): void
     {
@@ -253,7 +253,7 @@ class EntrepriseController
     }
 
     // =========================
-    // ✏️ MODIFIER ENTREPRISE
+    //  MODIFIER ENTREPRISE
     // =========================
     public function modifier(): void
     {
@@ -340,7 +340,7 @@ class EntrepriseController
     }
 
     // =========================
-    // 🗑️ SUPPRIMER ENTREPRISE
+    //  SUPPRIMER ENTREPRISE
     // =========================
     public function supprimer(): void
     {
@@ -370,7 +370,7 @@ class EntrepriseController
     }
 
     // =========================
-    // ⭐ FORMULAIRE EVALUATION
+    //  FORMULAIRE EVALUATION
     // =========================
     public function evaluerForm(): void
     {
@@ -405,7 +405,7 @@ class EntrepriseController
     }
 
     // =========================
-    // ⭐ ENVOI EVALUATION
+    //  ENVOI EVALUATION
     // =========================
     public function evaluerSubmit(): void
     {

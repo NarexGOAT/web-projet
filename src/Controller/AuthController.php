@@ -200,7 +200,7 @@ class AuthController
     }
 
     // =========================
-    // 🔑 NOUVEAU MDP
+    //  NOUVEAU MDP
     // =========================
     public function nouveauMdp(): void
     {

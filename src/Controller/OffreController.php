@@ -12,7 +12,7 @@ class OffreController
     }
 
     // =========================
-    // 🔎 DETAIL OFFRE
+    //  DETAIL OFFRE
     // =========================
     public function detail()
     {

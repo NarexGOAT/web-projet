@@ -19,7 +19,7 @@ class PostulerController
             exit;
         }
 
-        // 🔎 récupérer id offre
+        //  récupérer id offre
         if (!isset($_GET['id'])) {
             die("Offre introuvable");
         }
@@ -28,7 +28,7 @@ class PostulerController
         $id_user = $_SESSION['user']['id'];
 
         // =========================
-        // 🔥 TRAITEMENT FORMULAIRE
+        //  TRAITEMENT FORMULAIRE
         // =========================
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

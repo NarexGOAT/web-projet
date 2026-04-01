@@ -59,7 +59,7 @@ class EvaluerController
                 $commentaire
             ]);
 
-            // 🔁 retour
+            //  retour
             header("Location: index.php?page=entreprise&id=" . $id_entreprise);
             exit;
         }
