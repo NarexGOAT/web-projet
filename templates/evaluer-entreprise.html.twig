@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évaluer une entreprise - AlloStage</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/evaluer-entreprise.css">
+</head>
+<body>
+
+<div id="menu-overlay" class="menu-overlay"></div>
+
+<div id="menu-burger" class="menu-burger">
+
+    <button id="close-menu" class="close-btn">✕</button>
+
+    <div class="menu-content">
+        <a href="index.php">🏠 Accueil</a>
+        <a href="index.php?page=offres">💼 Offres de stages</a>
+        <a href="index.php?page=entreprises">🏢 Entreprises</a>
+
+        {% if session.user is defined %}
+            {% if session.user.role == 'etudiant' %}
+                <a href="index.php?page=wishlist">❤️ Ma Wish-list</a>
+                <a href="index.php?page=mes-candidatures">📄 Mes candidatures</a>
+            {% elseif session.user.role == 'recruteur' %}
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+                <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+            {% elseif session.user.role == 'admin' %}
+                <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+                <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <a href="index.php?page=logout" class="btn-logout">
+        🔴 Déconnexion
+    </a>
+</div>
+
+<header class="entete">
+    <div class="logo">
+        <a href="index.php">
+            <img src="/images/allostage.png" alt="Accueil AlloStage" class="logo-img">
+        </a>
+    </div>
+
+    <nav class="navigation">
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="index.php?page=offres">Offres de stages</a></li>
+            <li><a href="index.php?page=entreprises" class="actif">Entreprises</a></li>
+        </ul>
+    </nav>
+
+    <div class="actions-entete">
+        {% if session.user is defined %}
+            <button id="open-menu" class="btn-principal">
+                Espace {{ session.user.role_label ?? session.user.role|capitalize }} ▾
+            </button>
+        {% else %}
+            <a href="index.php?page=connexion" class="btn-connexion">
+                Se connecter
+            </a>
+        {% endif %}
+    </div>
+</header>
+
+<main class="contenu fond-gris">
+    <div class="conteneur-formulaire">
+        <div class="boite-blanche">
+            <div class="en-tete-formulaire">
+                <h1>Évaluer {{ entreprise.nom_entreprise }}</h1>
+                <p>Donnez une note entre 1 et 5 étoiles et laissez un commentaire.</p>
+            </div>
+
+            <form method="POST" action="index.php?page=entreprise-evaluer-submit" class="formulaire-creation">
+                <input type="hidden" name="id_entreprise" value="{{ entreprise.id_entreprise }}">
+
+                <div class="groupe-champ pleine-largeur">
+                    <label>Note *</label>
+
+                    <div class="etoiles">
+                        <input type="radio" id="star5" name="note" value="5" required>
+                        <label for="star5">★</label>
+
+                        <input type="radio" id="star4" name="note" value="4">
+                        <label for="star4">★</label>
+
+                        <input type="radio" id="star3" name="note" value="3">
+                        <label for="star3">★</label>
+
+                        <input type="radio" id="star2" name="note" value="2">
+                        <label for="star2">★</label>
+
+                        <input type="radio" id="star1" name="note" value="1">
+                        <label for="star1">★</label>
+                    </div>
+                </div>
+
+                <div class="groupe-champ pleine-largeur">
+                    <label for="commentaire">Commentaire</label>
+                    <textarea
+                        id="commentaire"
+                        name="commentaire"
+                        class="champ-saisie zone-texte"
+                        rows="5"
+                        placeholder="Partagez votre expérience avec cette entreprise..."
+                    ></textarea>
+                </div>
+
+                <div class="actions-formulaire">
+                    <a href="index.php?page=entreprise&id={{ entreprise.id_entreprise }}" class="btn-secondaire btn-retour">
+                        Annuler
+                    </a>
+                    <button type="submit" class="btn-principal btn-large">
+                        Envoyer l’évaluation
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer class="pied-de-page">
+    <p>&copy; 2026 AlloStage. Tous droits réservés.</p>
+</footer>
+
+<script>
+const openBtn  = document.getElementById('open-menu');
+const closeBtn = document.getElementById('close-menu');
+const menu     = document.getElementById('menu-burger');
+const overlay  = document.getElementById('menu-overlay');
+
+function openMenu() {
+    menu.classList.add('active');
+    overlay.classList.add('active');
+}
+
+function closeMenu() {
+    menu.classList.remove('active');
+    overlay.classList.remove('active');
+}
+
+if (openBtn) openBtn.addEventListener('click', openMenu);
+if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+if (overlay) overlay.addEventListener('click', closeMenu);
+</script>
+
+</body>
+</html>

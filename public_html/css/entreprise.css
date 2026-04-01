@@ -1,0 +1,235 @@
+/* --- Profil Détaillé de l'Entreprise --- */
+
+.fond-gris {
+    background-color: var(--gris-tres-clair);
+    padding: 2rem;
+    flex: 1;
+}
+
+.conteneur-profil {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.lien-retour {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--texte-moyen);
+    font-weight: bold;
+}
+
+.lien-retour:hover {
+    color: var(--bleu-allostage);
+}
+
+.boite-blanche {
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    margin-bottom: 2rem;
+}
+
+/* --- En-tête du profil --- */
+.en-tete-profil {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap; /* S'adapte sur mobile */
+}
+
+.logo-grand {
+    width: 100px;
+    height: 100px;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--blanc);
+    flex-shrink: 0;
+}
+
+.logo-ts { background: linear-gradient(135deg, #3498db, #2980b9); }
+
+.infos-principales {
+    flex: 1;
+}
+
+.infos-principales h1 {
+    margin: 0 0 0.5rem 0;
+    color: var(--texte-sombre);
+    font-size: 2.2rem;
+}
+
+.secteur-activite {
+    color: var(--texte-moyen);
+    font-size: 1.1rem;
+    margin: 0 0 1rem 0;
+}
+
+.evaluation {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.etoiles {
+    color: #f1c40f;
+    letter-spacing: 2px;
+}
+
+.note-chiffre {
+    font-weight: bold;
+    color: var(--texte-sombre);
+}
+
+.lien-avis {
+    color: var(--bleu-clair-allostage);
+    font-size: 0.95rem;
+    margin-left: 0.5rem;
+}
+
+.lien-avis:hover { text-decoration: underline; }
+
+/* --- Grille Principale --- */
+.grille-profil {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* --- Colonne de gauche (Textes et Avis) --- */
+.section-texte h2, .section-avis h2 {
+    color: var(--bleu-allostage);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+.section-texte p, .section-texte li {
+    line-height: 1.6;
+    color: var(--texte-sombre);
+    margin-bottom: 1rem;
+}
+
+.section-texte ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+}
+
+/* Cartes des avis */
+.carte-avis {
+    border-bottom: 1px solid var(--gris-clair);
+    padding: 1.5rem 0;
+}
+
+.carte-avis:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.en-tete-avis {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.3rem;
+}
+
+.date-avis {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--texte-moyen);
+    margin-bottom: 0.8rem;
+}
+
+.carte-avis p {
+    font-style: italic;
+    color: var(--texte-sombre);
+    margin: 0;
+}
+
+/* --- Colonne de droite (Infos et Offres) --- */
+.colonne-droite h3 {
+    margin-top: 0;
+    color: var(--texte-sombre);
+    border-bottom: 2px solid var(--gris-clair);
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.liste-infos {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.liste-infos li {
+    margin-bottom: 1rem;
+    color: var(--texte-sombre);
+    line-height: 1.5;
+}
+
+.liste-infos strong {
+    color: var(--texte-moyen);
+}
+
+.lien-bleu {
+    color: var(--bleu-clair-allostage);
+    font-weight: bold;
+}
+
+/* Mini cartes pour les offres */
+.mini-carte-offre {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border: 1px solid var(--gris-clair);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    transition: 0.2s;
+}
+
+.mini-carte-offre:hover {
+    border-color: var(--bleu-clair-allostage);
+    background-color: var(--fond-panneau);
+}
+
+.titre-mini-offre {
+    font-weight: bold;
+    color: var(--bleu-allostage);
+    margin-bottom: 0.5rem;
+}
+
+.tags-mini {
+    font-size: 0.85rem;
+    color: var(--texte-moyen);
+}
+
+.pleine-largeur {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* --- Responsive --- */
+@media (max-width: 992px) {
+    .grille-profil {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .en-tete-profil {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .evaluation {
+        justify-content: center;
+    }
+}

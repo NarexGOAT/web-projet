@@ -1,142 +1,240 @@
-<!doctype html>
-<html lang="fr">
+<!DOCTYPE html>
+<html lang="fr-FR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Liste des offres - BHStage</title>
-  <link rel="stylesheet" href="/css/liste-offres.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offres de stage - AlloStage</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/liste-offres.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
-  <main class="page-offres">
 
-    <header class="barre-haut">
-      <a href="index.php" class="bouton-retour">←</a>
-      <h1 class="titre-page">Liste des offres</h1>
-      <a href="index.php?page=menu" class="bouton-profil">👤</a>
-    </header>
+<!-- OVERLAY -->
+<div id="menu-overlay" class="menu-overlay"></div>
 
-    <section class="zone-intro">
-      <p class="texte-intro">
-        Consulte les offres de stage disponibles et affine ta recherche avec les filtres.
-      </p>
-    </section>
+<!-- MENU BURGER -->
+<div id="menu-burger" class="menu-burger">
 
-    <section class="zone-filtres">
-      <h2>Filtres</h2>
+    <button id="close-menu" class="close-btn">✕</button>
 
-      <form class="filtres" action="index.php" method="get">
-  <input type="hidden" name="page" value="offres">
-        <div class="champ-filtre">
-          <label for="metier">Métier recherché</label>
-          <input
-            type="text"
-            id="metier"
-            name="metier"
-            placeholder="Exemple : développeur web"
-            value="{{ filtres.metier ?? '' }}"
-          >
-        </div>
+    <div class="menu-content">
 
-        <div class="champ-filtre">
-          <label for="ville">Ville</label>
-          {% set v = filtres.ville ?? 'Toutes les villes' %}
-          <select id="ville" name="ville">
-            <option {{ v == 'Toutes les villes' ? 'selected' }}>Toutes les villes</option>
-            {% for vi in villes %}
-              <option {{ v == vi ? 'selected' }}>{{ vi }}</option>
-            {% endfor %}
-          </select>
-        </div>
+        <a href="index.php">🏠 Accueil</a>
+        <a href="index.php?page=offres">💼 Offres de stages</a>
+        <a href="index.php?page=entreprises">🏢 Entreprises</a>
 
-        <div class="champ-filtre">
-          <label for="duree">Durée</label>
-          {% set duree = filtres.duree ?? 'Toutes les durées' %}
-          <select id="duree" name="duree">
-            <option {{ duree == 'Toutes les durées' ? 'selected' }}>Toutes les durées</option>
-            <option {{ duree == 'Moins de 2 mois' ? 'selected' }}>Moins de 2 mois</option>
-            <option {{ duree == '2 à 4 mois' ? 'selected' }}>2 à 4 mois</option>
-            <option {{ duree == '4 à 6 mois' ? 'selected' }}>4 à 6 mois</option>
-            <option {{ duree == 'Plus de 6 mois' ? 'selected' }}>Plus de 6 mois</option>
-          </select>
-        </div>
+        {% if session.user is defined %}
 
-        <div class="champ-filtre">
-          <label for="competence">Compétence</label>
-          {% set comp = filtres.competence ?? 'Toutes les compétences' %}
-          <select id="competence" name="competence">
-            <option {{ comp == 'Toutes les compétences' ? 'selected' }}>Toutes les compétences</option>
-            {% for c in competences %}
-              <option {{ comp == c ? 'selected' }}>{{ c }}</option>
-            {% endfor %}
-          </select>
-        </div>
+            {% if session.user.role == 'etudiant' %}
+                <a href="index.php?page=wishlist">❤️ Ma Wish-list</a>
+                <a href="index.php?page=mes-candidatures">📄 Mes candidatures</a>
 
-        <div class="champ-filtre">
-          <label for="publication">Date de publication</label>
-          {% set pub = filtres.publication ?? 'Toutes les dates' %}
-          <select id="publication" name="publication">
-            <option {{ pub == 'Toutes les dates' ? 'selected' }}>Toutes les dates</option>
-            <option {{ pub == 'Aujourd’hui' ? 'selected' }}>Aujourd’hui</option>
-            <option {{ pub == 'Cette semaine' ? 'selected' }}>Cette semaine</option>
-            <option {{ pub == 'Ce mois-ci' ? 'selected' }}>Ce mois-ci</option>
-          </select>
-        </div>
+            {% elseif session.user.role == 'recruteur' %}
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+                <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+            {% elseif session.user.role == 'admin' %}
+                <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+                <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+            {% endif %}
 
-        <div class="actions-filtres">
-          <button type="submit" class="bouton-filtrer">Filtrer</button>
-          <button type="reset" class="bouton-reinitialiser">Réinitialiser</button>
-        </div>
-      </form>
-    </section>
+        {% endif %}
 
-    <section class="zone-resultats">
-      <p class="nombre-resultats">
-        {{ nombre_offres }} offres trouvées
-      </p>
+    </div>
 
-      <div class="liste-offres">
+    <a href="index.php?page=logout" class="btn-logout">
+        🔴 Déconnexion
+    </a>
 
-        {% for offre in offres %}
-          <article class="ligne-offre">
-            <div class="ligne-offre__contenu">
-              <div class="ligne-offre__haut">
-                <h2>{{ offre.titre }}</h2>
-                <p class="etiquette-date">
-                  Publiée le {{ offre.date_publication|date('d/m/Y') }}
-                </p>
-              </div>
+</div>
 
-              <p class="entreprise">
-                {{ offre.nom_entreprise ?? 'Entreprise non renseignée' }}
-                {% if offre.ville %}
-                    {{ offre.ville }}
-                {% endif %}
-              </p>
+<!-- HEADER -->
+<header class="entete">
+    <div class="logo">
+        <a href="index.php">
+            <img src="/images/allostage.png" alt="Accueil AlloStage" class="logo-img">
+        </a>
+    </div>
 
-              <p class="description">
-                {{ offre.description }}
-              </p>
+    <nav class="navigation">
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="index.php?page=offres" class="actif">Offres de stages</a></li>
+            <li><a href="index.php?page=entreprises">Entreprises</a></li>
 
-              <div class="details">
-                <span>⏳ {{ offre.duree_stage }} semaines</span>
-                <span>💼 {{ offre.type_offre ?? 'Stage' }}</span>
-                <span>🛠 {{ offre.competence }}</span>
-              </div>
-            </div>
+            {% if session.user is defined and session.user.role == 'etudiant' %}
+                <li><a href="index.php?page=wishlist">Ma Wish-list</a></li>
+                <li><a href="index.php?page=mes-candidatures">Mes candidatures</a></li>
+            {% endif %}
+        </ul>
+    </nav>
 
-            <div class="ligne-offre__actions">
-              <a href="index.php?page=offre&id={{ offre.id_offre }}" class="bouton-voir">
-                Voir l’offre
-              </a>
-            </div>
-          </article>
+    <div class="actions-entete">
+        {% if session.user is defined %}
+            <button id="open-menu" class="btn-principal">
+                Espace {{ session.user.role_label ?? session.user.role|capitalize }} ▾
+            </button>
         {% else %}
-          <p>Aucune offre ne correspond à ces filtres.</p>
-        {% endfor %}
+            <a href="index.php?page=connexion" class="btn-connexion">
+                Se connecter
+            </a>
+        {% endif %}
+    </div>
+</header>
+<main class="contenu fond-gris">
 
-      </div>
+    <!-- TITRE -->
+    <section class="en-tete-recherche">
+        <h1>Trouvez le stage de vos rêves</h1>
+        <p>{{ nombre_offres }} offres disponibles</p>
     </section>
 
-  </main>
+    <!-- FILTRES -->
+    <section class="barre-recherche">
+        <form method="GET" action="index.php" class="form-recherche">
+
+            <input type="hidden" name="page" value="offres">
+
+            <input type="text" name="recherche" placeholder="Nom du poste..."
+                   value="{{ filtres.recherche }}">
+
+            <select name="competence">
+                <option value="">Toutes les compétences</option>
+                {% for comp in competences %}
+                    <option value="{{ comp }}" {% if filtres.competence == comp %}selected{% endif %}>
+                        {{ comp }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <select name="ville">
+                <option value="">Toutes les villes</option>
+                {% for v in villes %}
+                    <option value="{{ v }}" {% if filtres.ville == v %}selected{% endif %}>
+                        {{ v }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="btn-rechercher">Rechercher</button>
+
+        </form>
+    </section>
+
+    <!-- LISTE -->
+    <section class="conteneur-liste">
+
+        <div class="grille-offres">
+
+            {% for offre in offres %}
+            <article class="carte-offre">
+                <div class="en-tete-carte">
+                    {% if session.user is defined %}
+                        <a href="index.php?page=wishlist-ajouter&id={{ offre.id_offre }}" 
+                           class="btn-favori {{ (ids_wishlist is defined and offre.id_offre in ids_wishlist) ? 'actif' : '' }}">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                    {% else %}
+                        <a href="index.php?page=connexion" class="btn-favori">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                    {% endif %}
+                </div>
+
+                <h3 class="titre-offre">{{ offre.titre }}</h3>
+
+                <p class="entreprise-offre">
+                    <strong>{{ offre.nom_entreprise }}</strong> • {{ offre.ville }}
+                </p>
+
+                <div class="tags-offre">
+                    <span class="tag">📅 {{ offre.duree_stage }} semaines</span>
+                    <span class="tag">🛠 {{ offre.competence }}</span>
+                </div>
+
+                <p class="description">
+                    {{ offre.description|slice(0, 120) ~ '...' }}
+                </p>
+
+                <div class="actions-carte">
+                    <a href="index.php?page=offre&id={{ offre.id_offre }}" class="btn-secondaire">
+                        Détails
+                    </a>
+                
+                </div>
+
+            </article>
+
+            {% else %}
+                <p>Aucune offre trouvée.</p>
+            {% endfor %}
+
+        </div>
+
+        <!-- PAGINATION IDENTIQUE ENTREPRISE -->
+        <nav class="pagination">
+
+            {% if page > 1 %}
+                <a href="index.php?page=offres&p={{ page - 1 }}
+                {% if filtres.recherche %}&recherche={{ filtres.recherche }}{% endif %}
+                {% if filtres.competence %}&competence={{ filtres.competence }}{% endif %}
+                {% if filtres.ville %}&ville={{ filtres.ville }}{% endif %}"
+                class="page-lien">
+                    ← Précédent
+                </a>
+            {% else %}
+                <span class="page-lien desactive">← Précédent</span>
+            {% endif %}
+
+            <span class="page-lien actif">
+                Page {{ page }} / {{ totalPages }}
+            </span>
+
+            {% if page < totalPages %}
+                <a href="index.php?page=offres&p={{ page + 1 }}
+                {% if filtres.recherche %}&recherche={{ filtres.recherche }}{% endif %}
+                {% if filtres.competence %}&competence={{ filtres.competence }}{% endif %}
+                {% if filtres.ville %}&ville={{ filtres.ville }}{% endif %}"
+                class="page-lien">
+                    Suivant →
+                </a>
+            {% else %}
+                <span class="page-lien desactive">Suivant →</span>
+            {% endif %}
+
+        </nav>
+
+    </section>
+
+</main>
+
+<footer class="pied-de-page">
+    <p>&copy; 2026 AlloStage</p>
+</footer>
+<script>
+const openBtn  = document.getElementById('open-menu');
+const closeBtn = document.getElementById('close-menu');
+const menu     = document.getElementById('menu-burger');
+const overlay  = document.getElementById('menu-overlay');
+
+function openMenu() {
+    menu.classList.add('active');
+    overlay.classList.add('active');
+}
+
+function closeMenu() {
+    menu.classList.remove('active');
+    overlay.classList.remove('active');
+}
+
+if (openBtn)  openBtn.addEventListener('click', openMenu);
+if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+if (overlay)  overlay.addEventListener('click', closeMenu);
+</script>
 </body>
 </html>

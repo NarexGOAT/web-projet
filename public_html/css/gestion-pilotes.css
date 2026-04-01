@@ -1,0 +1,40 @@
+.boite-blanche {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 900px;
+    margin: auto;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.table-pilotes {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-pilotes th,
+.table-pilotes td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-modifier {
+    background: #3b82f6;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.btn-supprimer {
+    background: #ef4444;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: none;
+}

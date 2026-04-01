@@ -11,8 +11,13 @@
 <body>
 
     <div class="login-container">
+        {# --- NOUVEAU : BOUTON RETOUR --- #}
+        <a href="index.php" class="btn-retour">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        
         <div class="logo-section">
-            <img src="allostage.png" alt="Logo BHStage" class="logo-img">
+            <img src="/images/allostage.png" alt="Logo BHStage" class="logo-img">
         </div>
 
         <div class="header-text">
@@ -20,21 +25,20 @@
             <p>Salut ! Ravi de vous revoir.</p>
         </div>
 
-        {# --- BLOC ERREURS (Récupéré du vieux Twig) --- #}
+        {# --- AFFICHAGE DES ERREURS PHP --- #}
         {% if erreurs is defined and erreurs %}
-            <ul class="liste-erreurs" style="color: #ff4757; margin-bottom: 20px; list-style: none; font-size: 14px;">
+            <ul class="liste-erreurs" style="color: #ff4757; margin-bottom: 20px; list-style: none; font-size: 14px; padding: 0;">
             {% for e in erreurs %}
                 <li><i class="fas fa-exclamation-circle"></i> {{ e }}</li>
             {% endfor %}
             </ul>
         {% endif %}
 
-        {# --- FORMULAIRE (Action vers l'index PHP) --- #}
+        {# --- FORMULAIRE --- #}
         <form action="index.php?page=connexion" method="post" class="login-form">
             
             <div class="input-group">
                 <label for="email">Email</label>
-                {# On garde value="{{ old.email ?? '' }}" pour ne pas que l'utilisateur doive retaper son mail en cas d'erreur #}
                 <input type="email" id="email" name="email" placeholder="Votre adresse mail" required value="{{ old.email ?? '' }}">
             </div>
 
@@ -46,22 +50,16 @@
                 </div>
             </div>
 
-            <a href="index.php?page=oubli" class="forgot-password">Mot de passe oublié ?</a>
-
             <button type="submit" class="btn-submit">Se connecter</button>
 
         </form>
-
-        <div class="signup-link">
-            <p>Vous n'avez pas de compte ? <a href="index.php?page=inscription">S'inscrire</a></p>
-        </div>
 
         <div class="footer-bottom">
             <a href="index.php?page=mentions" class="legal-link">Mentions légales</a>
         </div>
     </div>
 
-    {# --- TON SCRIPT JS (Gardé précieusement) --- #}
+    {# --- SCRIPT POUR L'OEIL DU MOT DE PASSE --- #}
     <script>
         const iconeOeil = document.getElementById('icone-oeil');
         const champMdp = document.getElementById('password');
@@ -70,7 +68,7 @@
             const type = champMdp.getAttribute('type') === 'password' ? 'text' : 'password';
             champMdp.setAttribute('type', type);
             
-            // Change l'icône
+            // Change l'icône de l'oeil
             this.classList.toggle('fa-eye');
             this.classList.toggle('fa-eye-slash');
         });

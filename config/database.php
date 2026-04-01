@@ -1,9 +1,9 @@
 <?php
 
 $host = 'localhost';
-$dbname = 'stage_db';
-$username = 'root';
-$password = 'TonMdpRootSecurise123!';
+$dbname = 'u593710153_allostagedb';
+$username = 'u593710153_allostage';
+$password = 'PourandeePrime2017!';
 
 try {
     $pdo = new PDO(
@@ -13,6 +13,7 @@ try {
     );
 
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
 }

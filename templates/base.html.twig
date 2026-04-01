@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}AlloStage{% endblock %}</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    {% block styles %}{% endblock %}
+</head>
+
+<body>
+
+<header class="entete">
+    <div class="logo">
+        <a href="index.php">
+            <img src="/images/allostage.png" alt="Accueil AlloStage" class="logo-img">
+        </a>
+    </div>
+
+    <nav class="navigation">
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="index.php?page=offres">Offres</a></li>
+            <li><a href="index.php?page=entreprises">Entreprises</a></li>
+            <li><a href="index.php?page=wishlist">Wish-list</a></li>
+        </ul>
+    </nav>
+
+    <div class="actions-entete">
+        {% if session.user_id is defined %}
+            <a href="index.php?page=menu" class="btn-principal">
+                Espace {{ session.role|capitalize }}
+            </a>
+        {% else %}
+            <a href="index.php?page=connexion" class="btn-connexion">Connexion</a>
+            <a href="index.php?page=inscription" class="btn-inscription">Inscription</a>
+        {% endif %}
+    </div>
+</header>
+
+<main class="main-container">
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="pied-de-page">
+    <p>&copy; 2026 AlloStage. Tous droits réservés.</p>
+</footer>
+
+{% block scripts %}{% endblock %}
+
+</body>
+</html>

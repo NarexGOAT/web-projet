@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier une offre - AlloStage</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/creer-entreprise.css">
+</head>
+<body>
+
+<div id="menu-overlay" class="menu-overlay"></div>
+
+<div id="menu-burger" class="menu-burger">
+
+    <button id="close-menu" class="close-btn">✕</button>
+
+    <div class="menu-content">
+        <a href="index.php">🏠 Accueil</a>
+        <a href="index.php?page=offres">💼 Offres de stages</a>
+        <a href="index.php?page=entreprises">🏢 Entreprises</a>
+
+        {% if session.user is defined %}
+            {% if session.user.role == 'etudiant' %}
+                <a href="index.php?page=wishlist">❤️ Ma Wish-list</a>
+                <a href="index.php?page=mes-candidatures">📄 Mes candidatures</a>
+
+            {% elseif session.user.role == 'recruteur' %}
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+                <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+
+            {% elseif session.user.role == 'admin' %}
+                <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+                <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <a href="index.php?page=logout" class="btn-logout">
+        🔴 Déconnexion
+    </a>
+</div>
+
+<header class="entete">
+    <div class="logo">
+        <a href="index.php">
+            <img src="/images/allostage.png" alt="Accueil AlloStage" class="logo-img">
+        </a>
+    </div>
+
+    <nav class="navigation">
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="index.php?page=offres" class="actif">Offres de stages</a></li>
+            <li><a href="index.php?page=entreprises">Entreprises</a></li>
+        </ul>
+    </nav>
+
+    <div class="actions-entete">
+        {% if session.user is defined %}
+            <button id="open-menu" class="btn-principal">
+                Espace {{ session.user.role_label ?? session.user.role|capitalize }} ▾
+            </button>
+        {% else %}
+            <a href="index.php?page=connexion" class="btn-connexion">
+                Se connecter
+            </a>
+        {% endif %}
+    </div>
+</header>
+
+<main class="contenu fond-gris">
+    <div class="conteneur-formulaire">
+
+        <div class="boite-blanche">
+            <div class="en-tete-formulaire">
+                <h1>Modifier une offre</h1>
+                <p>Modifiez les informations de l’offre ci-dessous.</p>
+            </div>
+
+            {% if erreur is defined and erreur %}
+                <p class="message-erreur">{{ erreur }}</p>
+            {% endif %}
+
+            <form method="POST" class="formulaire-creation">
+
+                <div class="grille-formulaire">
+
+                    <div class="groupe-champ pleine-largeur">
+                        <label for="titre">Titre de l'offre *</label>
+                        <input
+                            type="text"
+                            id="titre"
+                            name="titre"
+                            class="champ-saisie"
+                            value="{{ offre.titre|default('') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="groupe-champ">
+                        <label for="competence">Compétence principale *</label>
+                        <input
+                            type="text"
+                            id="competence"
+                            name="competence"
+                            class="champ-saisie"
+                            value="{{ offre.competence|default('') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="groupe-champ">
+                        <label for="duree_stage">Durée du stage *</label>
+                        <input
+                            type="text"
+                            id="duree_stage"
+                            name="duree_stage"
+                            class="champ-saisie"
+                            value="{{ offre.duree_stage|default('') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="groupe-champ pleine-largeur">
+                        <label for="id_entreprise">Entreprise associée *</label>
+                        <select id="id_entreprise" name="id_entreprise" class="champ-saisie" required>
+                            <option value="">-- Choisir une entreprise --</option>
+                            {% for entreprise in entreprises %}
+                                <option value="{{ entreprise.id_entreprise }}"
+                                    {% if offre.id_entreprise is defined and offre.id_entreprise == entreprise.id_entreprise %}selected{% endif %}>
+                                    {{ entreprise.nom_entreprise }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="groupe-champ pleine-largeur">
+                        <label for="description">Description de l'offre *</label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            class="champ-saisie zone-texte"
+                            rows="6"
+                            required
+                        >{{ offre.description|default('') }}</textarea>
+                    </div>
+
+                </div>
+
+                <div class="actions-formulaire">
+                    <a href="index.php?page=gestion-offres" class="btn-secondaire btn-retour">
+                        Annuler
+                    </a>
+                    <button type="submit" class="btn-principal btn-large">
+                        Enregistrer les modifications
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer class="pied-de-page">
+    <p>&copy; 2026 AlloStage. Tous droits réservés.</p>
+</footer>
+
+<script>
+const openBtn  = document.getElementById('open-menu');
+const closeBtn = document.getElementById('close-menu');
+const menu     = document.getElementById('menu-burger');
+const overlay  = document.getElementById('menu-overlay');
+
+function openMenu() {
+    menu.classList.add('active');
+    overlay.classList.add('active');
+}
+
+function closeMenu() {
+    menu.classList.remove('active');
+    overlay.classList.remove('active');
+}
+
+if (openBtn) openBtn.addEventListener('click', openMenu);
+if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+if (overlay) overlay.addEventListener('click', closeMenu);
+</script>
+
+</body>
+</html>

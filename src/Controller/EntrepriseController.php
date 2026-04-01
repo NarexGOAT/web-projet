@@ -2,328 +2,462 @@
 
 class EntrepriseController
 {
-    private \PDO $pdo;
-    private \Twig\Environment $twig;
+    private $pdo;
+    private $twig;
 
-    public function __construct(\PDO $pdo, \Twig\Environment $twig)
+    public function __construct($pdo, $twig)
     {
-        $this->pdo  = $pdo;
+        $this->pdo = $pdo;
         $this->twig = $twig;
     }
 
-    private function checkAccessCreate(): void
-{
-    if (empty($_SESSION['user_id']) 
-        || empty($_SESSION['role']) 
-        || !in_array($_SESSION['role'], ['admin', 'recruteur'], true)
-    ) {
-        header('Location: index.php?page=entreprises');
-        exit;
-    }
-}
-
-
-    public function liste(): void
+    // =========================
+    // 🔒 VERIFICATION ROLE
+    // =========================
+    private function verifierAccesAdminOuPilote(): void
     {
-        $sqlDomaines = "
-            SELECT DISTINCT domaine
-            FROM entreprise
-            WHERE domaine IS NOT NULL AND domaine <> ''
-            ORDER BY domaine
-        ";
-        $domaines = $this->pdo->query($sqlDomaines)->fetchAll(\PDO::FETCH_COLUMN);
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
-        $sqlVilles = "
-            SELECT DISTINCT ville
-            FROM entreprise
-            WHERE ville IS NOT NULL AND ville <> ''
-            ORDER BY ville
-        ";
-        $villes = $this->pdo->query($sqlVilles)->fetchAll(\PDO::FETCH_COLUMN);
+        if (
+            empty($_SESSION['user']) ||
+            empty($_SESSION['user']['role']) ||
+            !in_array($_SESSION['user']['role'], ['admin', 'pilote'])
+        ) {
+            header('Location: index.php?page=accueil');
+            exit;
+        }
+    }
 
-        $sql = "
+    // =========================
+    // 🔎 DETAIL ENTREPRISE
+    // =========================
+    public function detail()
+    {
+        $id = $_GET['id'];
+
+        $stmt = $this->pdo->prepare("
+            SELECT * FROM entreprise WHERE id_entreprise = ?
+        ");
+        $stmt->execute([$id]);
+        $entreprise = $stmt->fetch();
+
+        $stmt = $this->pdo->prepare("
+            SELECT * FROM offre WHERE id_entreprise = ?
+        ");
+        $stmt->execute([$id]);
+        $offres = $stmt->fetchAll();
+
+        $stmt = $this->pdo->prepare("
             SELECT 
-                e.*,
-                COUNT(o.id_offre) AS nb_offres
-            FROM entreprise e
-            LEFT JOIN offre o ON o.id_entreprise = e.id_entreprise
-        ";
+                ROUND(AVG(note),1) as moyenne,
+                COUNT(*) as total
+            FROM evaluation
+            WHERE id_entreprise = ?
+        ");
+        $stmt->execute([$id]);
+        $evaluation = $stmt->fetch();
+
+        if (!$evaluation || $evaluation['moyenne'] === null) {
+            $evaluation = [
+                'moyenne' => 0,
+                'total' => 0
+            ];
+        }
+
+        echo $this->twig->render('entreprise.html.twig', [
+            'entreprise' => $entreprise,
+            'offres' => $offres,
+            'evaluation' => $evaluation
+        ]);
+    }
+
+    // =========================
+    // 📋 LISTE ENTREPRISES
+    // =========================
+    public function liste()
+    {
+        $page = isset($_GET['p']) ? (int) $_GET['p'] : 1;
+        if ($page < 1) $page = 1;
+
+        $limit = 6;
+        $offset = ($page - 1) * $limit;
+
+        $nom = $_GET['nom'] ?? '';
+        $domaine = $_GET['domaine'] ?? '';
+        $ville = $_GET['ville'] ?? '';
 
         $conditions = [];
         $params = [];
 
-        if (!empty($_GET['nom'])) {
-            $conditions[] = 'e.nom_entreprise LIKE :nom';
-            $params['nom'] = '%' . $_GET['nom'] . '%';
+        if (!empty($nom)) {
+            $conditions[] = "e.nom_entreprise LIKE :nom";
+            $params[':nom'] = "%$nom%";
         }
 
-        if (!empty($_GET['domaine']) && $_GET['domaine'] !== 'Tous les domaines') {
-            $conditions[] = 'e.domaine = :domaine';
-            $params['domaine'] = $_GET['domaine'];
+        if (!empty($domaine) && $domaine !== "Tous les domaines") {
+            $conditions[] = "e.domaine = :domaine";
+            $params[':domaine'] = $domaine;
         }
 
-        if (!empty($_GET['ville']) && $_GET['ville'] !== 'Toutes les villes') {
-            $conditions[] = 'e.ville = :ville';
-            $params['ville'] = $_GET['ville'];
+        if (!empty($ville) && $ville !== "Toutes les villes") {
+            $conditions[] = "e.ville = :ville";
+            $params[':ville'] = $ville;
         }
 
-        if (!empty($_GET['taille']) && $_GET['taille'] !== 'Toutes les tailles') {
-            if ($_GET['taille'] === 'Petite entreprise') {
-                $conditions[] = 'e.taille < 50';
-            } elseif ($_GET['taille'] === 'PME') {
-                $conditions[] = 'e.taille >= 50 AND e.taille < 250';
-            } elseif ($_GET['taille'] === 'Grande entreprise') {
-                $conditions[] = 'e.taille >= 250';
-            }
-        }
+        $where = !empty($conditions) ? "WHERE " . implode(' AND ', $conditions) : "";
 
-        if (!empty($_GET['offres']) && $_GET['offres'] !== 'Peu importe') {
-            if ($_GET['offres'] === '0 offre') {
-                $conditions[] = 'COUNT(o.id_offre) = 0';
-            } elseif ($_GET['offres'] === '1 à 5 offres') {
-                $conditions[] = 'COUNT(o.id_offre) BETWEEN 1 AND 5';
-            } elseif ($_GET['offres'] === '6 à 10 offres') {
-                $conditions[] = 'COUNT(o.id_offre) BETWEEN 6 AND 10';
-            } elseif ($_GET['offres'] === 'Plus de 10 offres') {
-                $conditions[] = 'COUNT(o.id_offre) > 10';
-            }
-        }
-
-        if ($conditions) {
-            $sql .= ' WHERE ' . implode(' AND ', $conditions);
-        }
-
-        $sql .= ' GROUP BY e.id_entreprise ORDER BY e.nom_entreprise';
+        $sql = "
+            SELECT 
+                e.*, 
+                COUNT(DISTINCT o.id_offre) as nb_offres,
+                ROUND(AVG(ev.note),1) as moyenne
+            FROM entreprise e
+            LEFT JOIN offre o ON e.id_entreprise = o.id_entreprise
+            LEFT JOIN evaluation ev ON e.id_entreprise = ev.id_entreprise
+            $where
+            GROUP BY e.id_entreprise
+            LIMIT :limit OFFSET :offset
+        ";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
-        $entreprises = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        echo $this->twig->render('liste-entreprises.html.twig', [
-            'entreprises'        => $entreprises,
-            'nombre_entreprises' => count($entreprises),
-            'filtres'            => $_GET,
-            'domaines'           => $domaines,
-            'villes'             => $villes,
-        ]);
-    }
-
-    public function detail(int $id): void
-    {
-        $sqlEnt = "
-            SELECT *
-            FROM entreprise
-            WHERE id_entreprise = :id
-        ";
-        $stmt = $this->pdo->prepare($sqlEnt);
-        $stmt->execute(['id' => $id]);
-        $entreprise = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-        if (!$entreprise) {
-            http_response_code(404);
-            echo 'Entreprise introuvable';
-            return;
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
         }
 
-        $sqlNote = "
-            SELECT AVG(note) AS moyenne
-            FROM evaluation
-            WHERE id_entreprise = :id";
-        $stmtNote = $this->pdo->prepare($sqlNote);
-        $stmtNote->execute(['id' => $id]);
-        $moyenne_note = $stmtNote->fetchColumn();
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
-        $sqlOffres = "
-            SELECT *
-            FROM offre
-            WHERE id_entreprise = :id
-            ORDER BY date_publication DESC
+        $stmt->execute();
+        $entreprises = $stmt->fetchAll();
+
+        $sqlCount = "
+            SELECT COUNT(DISTINCT e.id_entreprise)
+            FROM entreprise e
+            LEFT JOIN offre o ON e.id_entreprise = o.id_entreprise
+            $where
         ";
-        $stmtOffres = $this->pdo->prepare($sqlOffres);
-        $stmtOffres->execute(['id' => $id]);
-        $offres = $stmtOffres->fetchAll(\PDO::FETCH_ASSOC);
 
-        echo $this->twig->render('entreprise.html.twig', [
-            'entreprise'   => $entreprise,
-            'moyenne_note' => $moyenne_note,
-            'offres'       => $offres,
-            'offre_count'  => count($offres),
+        $stmtCount = $this->pdo->prepare($sqlCount);
+
+        foreach ($params as $key => $value) {
+            $stmtCount->bindValue($key, $value);
+        }
+
+        $stmtCount->execute();
+        $total = $stmtCount->fetchColumn();
+
+        $totalPages = max(1, ceil($total / $limit));
+
+        $domaines = $this->pdo->query("SELECT DISTINCT domaine FROM entreprise")->fetchAll(PDO::FETCH_COLUMN);
+        $villes = $this->pdo->query("SELECT DISTINCT ville FROM entreprise")->fetchAll(PDO::FETCH_COLUMN);
+
+        echo $this->twig->render('liste-entreprises.html.twig', [
+            'entreprises' => $entreprises,
+            'page' => $page,
+            'totalPages' => $totalPages,
+            'nombre_entreprises' => $total,
+            'domaines' => $domaines,
+            'villes' => $villes,
+            'filtres' => [
+                'nom' => $nom,
+                'domaine' => $domaine,
+                'ville' => $ville
+            ]
         ]);
     }
 
-    public function creerForm(): void
+    // =========================
+    // 🏢 GESTION ENTREPRISES
+    // =========================
+    public function gestion(): void
     {
-        $this->checkAccessCreate();
+        $this->verifierAccesAdminOuPilote();
 
-        echo $this->twig->render('creer-entreprise.html.twig', []);
+        $stmt = $this->pdo->query("
+            SELECT id_entreprise, nom_entreprise, domaine, ville, email
+            FROM entreprise
+            ORDER BY nom_entreprise ASC
+        ");
+
+        $entreprises = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        echo $this->twig->render('gestion-entreprises.html.twig', [
+            'entreprises' => $entreprises
+        ]);
     }
 
-    public function creerSubmit(): void
+    // =========================
+    // ➕ CREER ENTREPRISE
+    // =========================
+    public function creer(): void
     {
-        $this->checkAccessCreate();
+        $this->verifierAccesAdminOuPilote();
 
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: index.php?page=entreprise-creer');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nomEntreprise = trim($_POST['nom_entreprise'] ?? '');
+            $domaine = trim($_POST['domaine'] ?? '');
+            $ville = trim($_POST['ville'] ?? '');
+            $description = trim($_POST['description'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $telephone = trim($_POST['telephone'] ?? '');
+
+            if (
+                empty($nomEntreprise) ||
+                empty($domaine) ||
+                empty($ville) ||
+                empty($description) ||
+                empty($email) ||
+                empty($telephone)
+            ) {
+                echo $this->twig->render('creer-entreprise.html.twig', [
+                    'mode' => 'creer',
+                    'erreur' => 'Tous les champs sont obligatoires.',
+                    'entreprise' => [
+                        'nom_entreprise' => $nomEntreprise,
+                        'domaine' => $domaine,
+                        'ville' => $ville,
+                        'description' => $description,
+                        'email' => $email,
+                        'telephone' => $telephone
+                    ]
+                ]);
+                return;
+            }
+
+            $sql = "
+                INSERT INTO entreprise (nom_entreprise, domaine, ville, description, email, telephone)
+                VALUES (:nom_entreprise, :domaine, :ville, :description, :email, :telephone)
+            ";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([
+                ':nom_entreprise' => $nomEntreprise,
+                ':domaine' => $domaine,
+                ':ville' => $ville,
+                ':description' => $description,
+                ':email' => $email,
+                ':telephone' => $telephone
+            ]);
+
+            header('Location: index.php?page=entreprises&success=creation');
             exit;
         }
 
-        $nom         = $_POST['nom_entreprise'] ?? '';
-        $domaine     = $_POST['domaine'] ?? '';
-        $taille      = (int) ($_POST['taille'] ?? 0);
-        $ville       = $_POST['ville'] ?? '';
-        $telephone   = $_POST['telephone'] ?? '';
-        $email       = $_POST['email'] ?? '';
-        $description = $_POST['description'] ?? '';
+        echo $this->twig->render('creer-entreprise.html.twig', [
+            'mode' => 'creer',
+            'entreprise' => null
+        ]);
+    }
+
+    // =========================
+    // ✏️ MODIFIER ENTREPRISE
+    // =========================
+    public function modifier(): void
+    {
+        $this->verifierAccesAdminOuPilote();
+
+        $id = (int) ($_GET['id'] ?? 0);
+
+        if ($id <= 0) {
+            header('Location: index.php?page=entreprises');
+            exit;
+        }
+
+        $stmt = $this->pdo->prepare("SELECT * FROM entreprise WHERE id_entreprise = ?");
+        $stmt->execute([$id]);
+        $entreprise = $stmt->fetch();
+
+        if (!$entreprise) {
+            header('Location: index.php?page=entreprises');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nomEntreprise = trim($_POST['nom_entreprise'] ?? '');
+            $domaine = trim($_POST['domaine'] ?? '');
+            $ville = trim($_POST['ville'] ?? '');
+            $description = trim($_POST['description'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $telephone = trim($_POST['telephone'] ?? '');
+
+            if (
+                empty($nomEntreprise) ||
+                empty($domaine) ||
+                empty($ville) ||
+                empty($description) ||
+                empty($email) ||
+                empty($telephone)
+            ) {
+                echo $this->twig->render('modifier-entreprise.html.twig', [
+                    'mode' => 'modifier',
+                    'erreur' => 'Tous les champs sont obligatoires.',
+                    'entreprise' => [
+                        'id_entreprise' => $id,
+                        'nom_entreprise' => $nomEntreprise,
+                        'domaine' => $domaine,
+                        'ville' => $ville,
+                        'description' => $description,
+                        'email' => $email,
+                        'telephone' => $telephone
+                    ]
+                ]);
+                return;
+            }
+
+            $sql = "
+                UPDATE entreprise
+                SET nom_entreprise = :nom_entreprise,
+                    domaine = :domaine,
+                    ville = :ville,
+                    description = :description,
+                    email = :email,
+                    telephone = :telephone
+                WHERE id_entreprise = :id
+            ";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([
+                ':nom_entreprise' => $nomEntreprise,
+                ':domaine' => $domaine,
+                ':ville' => $ville,
+                ':description' => $description,
+                ':email' => $email,
+                ':telephone' => $telephone,
+                ':id' => $id
+            ]);
+
+            header('Location: index.php?page=entreprise&id=' . $id . '&success=modification');
+            exit;
+        }
+
+        echo $this->twig->render('modifier-entreprise.html.twig', [
+            'mode' => 'modifier',
+            'entreprise' => $entreprise
+        ]);
+    }
+
+    // =========================
+    // 🗑️ SUPPRIMER ENTREPRISE
+    // =========================
+    public function supprimer(): void
+    {
+        $this->verifierAccesAdminOuPilote();
+
+        $id = (int) ($_GET['id'] ?? 0);
+
+        if ($id <= 0) {
+            header('Location: index.php?page=entreprises');
+            exit;
+        }
+
+        $stmt = $this->pdo->prepare("SELECT * FROM entreprise WHERE id_entreprise = ?");
+        $stmt->execute([$id]);
+        $entreprise = $stmt->fetch();
+
+        if (!$entreprise) {
+            header('Location: index.php?page=entreprises');
+            exit;
+        }
+
+        $stmt = $this->pdo->prepare("DELETE FROM entreprise WHERE id_entreprise = ?");
+        $stmt->execute([$id]);
+
+        header('Location: index.php?page=entreprises&success=suppression');
+        exit;
+    }
+
+    // =========================
+    // ⭐ FORMULAIRE EVALUATION
+    // =========================
+    public function evaluerForm(): void
+    {
+        if (empty($_SESSION['user']) || empty($_SESSION['user']['id'])) {
+            header('Location: index.php?page=connexion');
+            exit;
+        }
+
+        $id = (int) ($_GET['id'] ?? 0);
+
+        if ($id <= 0) {
+            header('Location: index.php?page=entreprises');
+            exit;
+        }
+
+        $stmt = $this->pdo->prepare("
+            SELECT id_entreprise, nom_entreprise
+            FROM entreprise
+            WHERE id_entreprise = ?
+        ");
+        $stmt->execute([$id]);
+        $entreprise = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$entreprise) {
+            header('Location: index.php?page=entreprises');
+            exit;
+        }
+
+        echo $this->twig->render('evaluer-entreprise.html.twig', [
+            'entreprise' => $entreprise
+        ]);
+    }
+
+    // =========================
+    // ⭐ ENVOI EVALUATION
+    // =========================
+    public function evaluerSubmit(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (empty($_SESSION['user']) || empty($_SESSION['user']['id'])) {
+            header('Location: index.php?page=connexion');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: index.php?page=entreprises');
+            exit;
+        }
+
+        $note = (int) ($_POST['note'] ?? 0);
+        $commentaire = trim($_POST['commentaire'] ?? '');
+        $id_entreprise = (int) ($_POST['id_entreprise'] ?? 0);
+        $id_user = (int) $_SESSION['user']['id'];
+
+        if ($note < 1 || $note > 5 || $id_entreprise <= 0) {
+            header('Location: index.php?page=entreprise&id=' . $id_entreprise);
+            exit;
+        }
+
+        $check = $this->pdo->prepare("
+            SELECT * FROM evaluation 
+            WHERE id_user = ? AND id_entreprise = ?
+        ");
+        $check->execute([$id_user, $id_entreprise]);
+
+        if ($check->fetch()) {
+            header('Location: index.php?page=entreprise&id=' . $id_entreprise);
+            exit;
+        }
 
         $sql = "
-            INSERT INTO entreprise (nom_entreprise, domaine, taille, ville, telephone, email, description)
-            VALUES (:nom, :domaine, :taille, :ville, :telephone, :email, :description)
+            INSERT INTO evaluation (note, commentaire, id_user, id_entreprise)
+            VALUES (:note, :commentaire, :id_user, :id_entreprise)
         ";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            'nom'         => $nom,
-            'domaine'     => $domaine,
-            'taille'      => $taille,
-            'ville'       => $ville,
-            'telephone'   => $telephone,
-            'email'       => $email,
-            'description' => $description,
+            'note' => $note,
+            'commentaire' => $commentaire,
+            'id_user' => $id_user,
+            'id_entreprise' => $id_entreprise,
         ]);
 
-        header('Location: index.php?page=entreprises');
-        exit;
-    }
-
-    private function checkAccessManage(): void
-{
-    if (empty($_SESSION['user_id']) 
-        || empty($_SESSION['role']) 
-        || !in_array($_SESSION['role'], ['admin', 'recruteur'], true)) {
-        header('Location: index.php?page=entreprises');
-        exit;
-    }
-}
-
-// afficher le formulaire de modification
-public function modifierForm(int $id): void
-{
-    $this->checkAccessManage();
-
-    $sql = "
-        SELECT *
-        FROM entreprise
-        WHERE id_entreprise = :id
-    ";
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->execute(['id' => $id]);
-    $entreprise = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-    if (!$entreprise) {
-        http_response_code(404);
-        echo 'Entreprise introuvable';
-        return;
-    }
-
-    echo $this->twig->render('modifier_entreprise.html.twig', [
-        'entreprise' => $entreprise,
-    ]);
-}
-
-// traiter le POST (update ou suppression)
-public function modifierSubmit(int $id): void
-{
-    $this->checkAccessManage();
-
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header('Location: index.php?page=entreprise-modifier&id=' . $id);
-        exit;
-    }
-
-    // suppression
-    if (!empty($_POST['supprimer'])) {
-        $sqlDel = "DELETE FROM entreprise WHERE id_entreprise = :id";
-        $stmtDel = $this->pdo->prepare($sqlDel);
-        $stmtDel->execute(['id' => $id]);
-
-        header('Location: index.php?page=entreprises');
-        exit;
-    }
-
-    // mise à jour
-    $nom         = $_POST['nom_entreprise'] ?? '';
-    $domaine     = $_POST['domaine'] ?? '';
-    $taille      = (int) ($_POST['taille'] ?? 0);
-    $ville       = $_POST['ville'] ?? '';
-    $telephone   = $_POST['telephone'] ?? '';
-    $email       = $_POST['email'] ?? '';
-    $description = $_POST['description'] ?? '';
-
-    $sql = "
-        UPDATE entreprise
-        SET nom_entreprise = :nom,
-            domaine        = :domaine,
-            taille         = :taille,
-            ville          = :ville,
-            telephone      = :telephone,
-            email          = :email,
-            description    = :description
-        WHERE id_entreprise = :id
-    ";
-
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->execute([
-        'nom'         => $nom,
-        'domaine'     => $domaine,
-        'taille'      => $taille,
-        'ville'       => $ville,
-        'telephone'   => $telephone,
-        'email'       => $email,
-        'description' => $description,
-        'id'          => $id,
-    ]);
-
-    header('Location: index.php?page=entreprise&id=' . $id);
-    exit;
-}
-
-}
-
-public function evaluerSubmit(): void
-{
-    if (empty($_SESSION['user_id'])) {
-        header('Location: index.php?page=connexion');
-        exit;
-    }
-
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header('Location: index.php?page=entreprises');
-        exit;
-    }
-
-    $note = (int) ($_POST['note'] ?? 0);
-    $commentaire = trim($_POST['commentaire'] ?? '');
-    $id_entreprise = (int) ($_POST['id_entreprise'] ?? 0);
-    $id_user = (int) $_SESSION['user_id'];
-
-    if ($note < 1 || $note > 5 || $id_entreprise <= 0 || $commentaire === '') {
         header('Location: index.php?page=entreprise&id=' . $id_entreprise);
         exit;
     }
-
-    $sql = "
-        INSERT INTO evaluation (note, commentaire, id_user, id_entreprise)
-        VALUES (:note, :commentaire, :id_user, :id_entreprise)
-    ";
-
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->execute([
-        'note' => $note,
-        'commentaire' => $commentaire,
-        'id_user' => $id_user,
-        'id_entreprise' => $id_entreprise,
-    ]);
-
-    header('Location: index.php?page=entreprise&id=' . $id_entreprise);
-    exit;
 }

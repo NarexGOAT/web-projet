@@ -1,0 +1,163 @@
+.page-compte {
+    min-height: 100vh;
+    background: #f6f7fb;
+    padding: 2rem 1rem;
+    color: #1f2a44;
+}
+
+.barre-haut {
+    max-width: 900px;
+    margin: 0 auto 2rem auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bouton-retour,
+.bouton-profil {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #1f2a44;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    font-size: 1.2rem;
+}
+
+.titre-page {
+    font-size: 2rem;
+    color: #0056b3;
+    margin: 0;
+    font-weight: 800;
+}
+
+.bloc-compte,
+.bloc-danger {
+    max-width: 900px;
+    margin: 0 auto 1.5rem auto;
+    background: #ffffff;
+    border: 1px solid #eceff4;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+.entete-section {
+    margin-bottom: 1.5rem;
+}
+
+.entete-section h2 {
+    margin: 0 0 0.4rem 0;
+    color: #0b5fc1;
+    font-size: 1.5rem;
+}
+
+.entete-section p {
+    margin: 0;
+    color: #7b8698;
+}
+
+.form-compte {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.grille-formulaire {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.groupe-champ {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.groupe-champ label {
+    font-weight: 700;
+    color: #1f2a44;
+    font-size: 0.95rem;
+}
+
+.groupe-champ input {
+    padding: 0.95rem 1rem;
+    border: 1px solid #dfe5ee;
+    border-radius: 14px;
+    font-size: 1rem;
+    background: #ffffff;
+    color: #1f2a44;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.groupe-champ input:focus {
+    border-color: #6f9bff;
+    box-shadow: 0 0 0 3px rgba(111, 155, 255, 0.12);
+}
+
+.champ-readonly {
+    background: #f3f5f9 !important;
+    color: #6b7280 !important;
+}
+
+.actions-formulaire {
+    margin-top: 0.5rem;
+}
+
+.btn-principal {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    background: linear-gradient(135deg, #9dbbff, #6f9bff);
+    color: #0f172a;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 12px 24px rgba(111, 155, 255, 0.22);
+}
+
+.btn-danger {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    background: #ff4b5c;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 12px 24px rgba(255, 75, 92, 0.2);
+}
+
+.bloc-danger {
+    border: 1px solid #ffd7dc;
+    background: #fffafb;
+}
+
+@media (max-width: 768px) {
+    .page-compte {
+        padding: 1rem 0.75rem;
+    }
+
+    .grille-formulaire {
+        grid-template-columns: 1fr;
+    }
+
+    .bloc-compte,
+    .bloc-danger {
+        padding: 1.25rem;
+        border-radius: 16px;
+    }
+
+    .titre-page {
+        font-size: 1.5rem;
+    }
+}

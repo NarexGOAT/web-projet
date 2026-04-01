@@ -8,52 +8,89 @@
     <link rel="stylesheet" href="/css/candidatures.css">
 </head>
 <body>
-    <header class="entete">
-        <div class="logo">
-            <a href="index.php">
-                <img src="/images/allostage.png" alt="Accueil BHStage" class="logo-img" style="height: 70px; object-fit: contain;">
-            </a>
-        </div>
-        <nav class="navigation">
-            <ul>
-                <li><a href="index.php">Accueil</a></li>
-                <li><a href="index.php?page=offres">Offres de stages</a></li>
-                <li><a href="index.php?page=entreprises">Entreprises</a></li>
+    <!-- OVERLAY -->
+<div id="menu-overlay" class="menu-overlay"></div>
+
+<!-- MENU BURGER -->
+<div id="menu-burger" class="menu-burger">
+
+    <button id="close-menu" class="close-btn">✕</button>
+
+    <div class="menu-content">
+
+        <a href="index.php">🏠 Accueil</a>
+        <a href="index.php?page=offres">💼 Offres de stages</a>
+        <a href="index.php?page=entreprises">🏢 Entreprises</a>
+
+        {% if session.user is defined %}
+
+            {% if session.user.role == 'etudiant' %}
+                <a href="index.php?page=wishlist">❤️ Ma Wish-list</a>
+                <a href="index.php?page=mes-candidatures">📄 Mes candidatures</a>
+
+            {% elseif session.user.role == 'recruteur' %}
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+
+            {% elseif session.user.role == 'admin' %}
+                <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+    <a href="index.php?page=logout" class="btn-logout">
+        🔴 Déconnexion
+    </a>
+
+</div>
+
+<!-- HEADER -->
+<header class="entete">
+    <div class="logo">
+        <a href="index.php">
+            <img src="/images/allostage.png" alt="Accueil AlloStage" class="logo-img">
+        </a>
+    </div>
+
+    <nav class="navigation">
+        <ul>
+            <li><a href="index.php" class="actif">Accueil</a></li>
+            <li><a href="index.php?page=offres">Offres de stages</a></li>
+            <li><a href="index.php?page=entreprises">Entreprises</a></li>
+
+            {% if session.user is defined and session.user.role == 'etudiant' %}
                 <li><a href="index.php?page=wishlist">Ma Wish-list</a></li>
-                <li><a href="index.php?page=candidatures" class="actif">
-                    {% if role == 'recruteur' or role == 'admin' %}
-                        Candidatures des étudiants
-                    {% else %}
-                        Mes Candidatures
-                    {% endif %}
-                </a></li>
-            </ul>
-        </nav>
-        <div class="actions-entete">
-            <a href="index.php?page=menu" class="btn-secondaire">Mon Profil</a>
-        </div>
-    </header>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="actions-entete">
+        {% if session.user is defined %}
+            <button id="open-menu" class="btn-principal">
+                Espace {{ session.user.role_label ?? session.user.role|capitalize }} ▾
+            </button>
+        {% else %}
+            <a href="index.php?page=connexion" class="btn-connexion">
+                Se connecter
+            </a>
+        {% endif %}
+    </div>
+</header>
 
     <main class="contenu fond-gris">
 
         <section class="en-tete-recherche">
-            {% if role == 'recruteur' or role == 'admin' %}
-                <h1>Candidatures des étudiants 📂</h1>
-                <p>Consultez les candidatures envoyées par les étudiants pour les différentes offres.</p>
-            {% else %}
-                <h1>Mes Candidatures 📂</h1>
-                <p>Suivez l'état d'avancement des stages auxquels vous avez postulé et retrouvez vos documents envoyés.</p>
-            {% endif %}
+            <h1>Mes Candidatures 📂</h1>
+            <p>Suivez l'état d'avancement des stages auxquels vous avez postulé et retrouvez vos documents envoyés.</p>
         </section>
 
         <section class="conteneur-liste">
 
             {% if candidatures is empty %}
-                {% if role == 'recruteur' or role == 'admin' %}
-                    <p>Aucune candidature n’a encore été envoyée.</p>
-                {% else %}
-                    <p>Vous n'avez encore envoyé aucune candidature.</p>
-                {% endif %}
+                <p>Vous n'avez encore envoyé aucune candidature.</p>
             {% else %}
                 <div class="grille-offres">
                     {% for c in candidatures %}
@@ -83,26 +120,19 @@
                                 {% endif %}
                             </p>
 
-                            {# Pour recruteur/admin, on affiche l'étudiant concerné #}
-                            {% if role == 'recruteur' or role == 'admin' %}
-                                <p class="description" style="font-size: 0.9rem; color: #6c757d; margin-top: 0.4rem;">
-                                    Candidat : {{ c.prenom }} {{ c.nom }}
-                                </p>
-                            {% endif %}
-
                             <p class="description" style="font-size: 0.9rem; color: #6c757d; margin-top: 1rem;">
                                 Envoyé le : {{ c.date_envoi|date('d F Y') }}
                             </p>
 
                             <div class="actions-documents">
                                 {% if c.cv is defined and c.cv %}
-                                    <a href="{{ c.cv }}" class="btn-doc" target="_blank">📄 Voir le CV</a>
+                                    <a href="{{ c.cv }}" class="btn-doc" target="_blank">📄 Voir mon CV</a>
                                 {% else %}
                                     <span class="btn-doc">📄 CV indisponible</span>
                                 {% endif %}
 
                                 {% if c.lm is defined and c.lm %}
-                                    <a href="{{ c.lm }}" class="btn-doc" target="_blank">✍️ Voir la lettre</a>
+                                    <a href="{{ c.lm }}" class="btn-doc" target="_blank">✍️ Voir ma Lettre</a>
                                 {% else %}
                                     <span class="btn-doc">✍️ Lettre indisponible</span>
                                 {% endif %}
@@ -118,5 +148,25 @@
     <footer class="pied-de-page">
         <p>&copy; 2026 BHStage. Tous droits réservés.</p>
     </footer>
+    <script>
+const openBtn  = document.getElementById('open-menu');
+const closeBtn = document.getElementById('close-menu');
+const menu     = document.getElementById('menu-burger');
+const overlay  = document.getElementById('menu-overlay');
+
+function openMenu() {
+    menu.classList.add('active');
+    overlay.classList.add('active');
+}
+
+function closeMenu() {
+    menu.classList.remove('active');
+    overlay.classList.remove('active');
+}
+
+if (openBtn)  openBtn.addEventListener('click', openMenu);
+if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+if (overlay)  overlay.addEventListener('click', closeMenu);
+</script>
 </body>
 </html>

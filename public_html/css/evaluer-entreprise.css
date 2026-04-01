@@ -1,0 +1,128 @@
+.fond-gris {
+    background-color: var(--gris-tres-clair);
+    padding: 2rem;
+    flex: 1;
+}
+
+.conteneur-formulaire {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.boite-blanche {
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    border-radius: 1rem;
+    padding: 2.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.en-tete-formulaire {
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--gris-clair);
+    padding-bottom: 1.5rem;
+}
+
+.en-tete-formulaire h1 {
+    color: var(--bleu-allostage);
+    margin: 0 0 0.5rem 0;
+    font-size: 2rem;
+}
+
+.en-tete-formulaire p {
+    color: var(--texte-moyen);
+    margin: 0;
+}
+
+.formulaire-creation {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.groupe-champ {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.groupe-champ label {
+    font-weight: bold;
+    color: var(--texte-sombre);
+    font-size: 0.95rem;
+}
+
+.champ-saisie {
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--gris-clair);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    background-color: var(--fond-principal);
+    color: var(--texte-sombre);
+    font-family: inherit;
+}
+
+.zone-texte {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.etoiles {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 0.3rem;
+}
+
+.etoiles input {
+    display: none;
+}
+
+.etoiles label {
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.etoiles input:checked ~ label,
+.etoiles label:hover,
+.etoiles label:hover ~ label {
+    color: #f5b301;
+}
+
+.actions-formulaire {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gris-clair);
+}
+
+.btn-large {
+    padding: 0.8rem 2.5rem;
+    font-size: 1.05rem;
+}
+
+.btn-retour {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .actions-formulaire {
+        flex-direction: column-reverse;
+    }
+
+    .btn-large,
+    .btn-secondaire {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+}

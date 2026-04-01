@@ -1,0 +1,130 @@
+/* GLOBAL */
+.fond-gris {
+    background-color: var(--gris-tres-clair);
+    padding: 2rem;
+}
+
+/* HEADER */
+.en-tete-recherche {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.en-tete-recherche h1 {
+    color: var(--bleu-allostage);
+    font-size: 2rem;
+}
+
+/* FILTRES */
+.barre-recherche {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.form-recherche {
+    display: flex;
+    gap: 10px;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.form-recherche input,
+.form-recherche select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.btn-rechercher {
+    background: #0d6efd;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+}
+
+/* LISTE */
+.conteneur-liste {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.grille-offres {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+/* CARTE */
+.carte-offre {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid #ddd;
+    transition: 0.3s;
+}
+
+.carte-offre:hover {
+    transform: translateY(-5px);
+}
+
+.tags-offre {
+    margin: 10px 0;
+}
+
+.tag {
+    background: #f1f3f5;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
+.description {
+    margin: 10px 0;
+}
+
+/* PAGINATION */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.page-lien {
+    padding: 10px 15px;
+    border-radius: 8px;
+    background: white;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.page-lien.actif {
+    background: #0d6efd;
+    color: white;
+}
+
+.page-lien.desactive {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+    .grille-offres {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .grille-offres {
+        grid-template-columns: 1fr;
+    }
+
+    .form-recherche {
+        flex-direction: column;
+    }
+}

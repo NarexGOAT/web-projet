@@ -3,101 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer une entreprise - BHStage</title>
+    <title>Créer une entreprise - AlloStage</title>
+
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/creer-entreprise.css">
 </head>
 <body>
-    <header class="entete">
-        <div class="logo">
-            <a href="index.php">
-                <img src="/allostage.png" alt="Accueil BHStage" class="logo-img" style="height: 70px; object-fit: contain;">
+
+<!-- ================= MENU BURGER ================= -->
+<div id="menu-overlay" class="menu-overlay"></div>
+
+<div id="menu-burger" class="menu-burger">
+
+    <button id="close-menu" class="close-btn">✕</button>
+
+    <div class="menu-content">
+
+        <a href="index.php">🏠 Accueil</a>
+        <a href="index.php?page=offres">💼 Offres de stages</a>
+        <a href="index.php?page=entreprises">🏢 Entreprises</a>
+
+        {% if session.user is defined %}
+
+            {% if session.user.role == 'etudiant' %}
+                <a href="index.php?page=wishlist">❤️ Ma Wish-list</a>
+                <a href="index.php?page=mes-candidatures">📄 Mes candidatures</a>
+
+            {% elseif session.user.role == 'recruteur' %}
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+
+            {% elseif session.user.role == 'admin' %}
+                <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+    <a href="index.php?page=logout" class="btn-logout">
+        🔴 Déconnexion
+    </a>
+
+</div>
+
+<!-- ================= HEADER ================= -->
+<header class="entete">
+    <div class="logo">
+        <a href="index.php">
+            <img src="/images/allostage.png" alt="Accueil AlloStage" class="logo-img">
+        </a>
+    </div>
+
+    <nav class="navigation">
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="index.php?page=offres">Offres de stages</a></li>
+            <li><a href="index.php?page=entreprises" class="actif">Entreprises</a></li>
+        </ul>
+    </nav>
+
+    <div class="actions-entete">
+        {% if session.user is defined %}
+            <button id="open-menu" class="btn-principal">
+                Espace {{ session.user.role_label ?? session.user.role|capitalize }} ▾
+            </button>
+        {% else %}
+            <a href="index.php?page=connexion" class="btn-connexion">
+                Se connecter
             </a>
-        </div>
-        <nav class="navigation">
-            <ul>
-                <li><a href="index.php">Accueil</a></li>
-                <li><a href="index.php?page=offres">Offres de stages</a></li>
-                <li><a href="index.php?page=entreprises" class="actif">Entreprises</a></li>
-            </ul>
-        </nav>
-        <div class="actions-entete">
-            <span class="texte-admin">
-                {% if session.role is defined %}
-                    Espace {{ session.role|capitalize }}
-                {% else %}
-                    Espace
-                {% endif %}
-            </span>
-        </div>
-    </header>
+        {% endif %}
+    </div>
+</header>
 
-    <main class="contenu fond-gris">
-        <div class="conteneur-formulaire">
+<!-- ================= CONTENU ================= -->
+<main class="contenu fond-gris">
+    <div class="conteneur-formulaire">
 
-            <div class="boite-blanche">
-                <div class="en-tete-formulaire">
-                    <h1>Ajouter une entreprise</h1>
-                    <p>Remplissez les informations ci-dessous pour référencer un nouveau partenaire.</p>
+        <div class="boite-blanche">
+            <div class="en-tete-formulaire">
+                <h1>Ajouter une entreprise</h1>
+                <p>Remplissez les informations ci-dessous pour référencer un nouveau partenaire.</p>
+            </div>
+
+            {% if erreur is defined and erreur %}
+                <p class="message-erreur">{{ erreur }}</p>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data" class="formulaire-creation">
+
+                <div class="grille-formulaire">
+
+                    <div class="groupe-champ pleine-largeur">
+                        <label for="nom_entreprise">Nom de l'entreprise *</label>
+                        <input
+                            type="text"
+                            id="nom_entreprise"
+                            name="nom_entreprise"
+                            class="champ-saisie"
+                            placeholder="Ex: TechSolutions SAS"
+                            value="{{ entreprise.nom_entreprise|default('') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="groupe-champ">
+                        <label for="domaine">Domaine d'activité *</label>
+                        <input
+                            type="text"
+                            id="domaine"
+                            name="domaine"
+                            class="champ-saisie"
+                            placeholder="Ex: Informatique, Cybersécurité..."
+                            value="{{ entreprise.domaine|default('') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="groupe-champ">
+                        <label for="taille">Taille (nombre de salariés)</label>
+                        <input
+                            type="number"
+                            id="taille"
+                            name="taille"
+                            class="champ-saisie"
+                            placeholder="Ex: 45"
+                            min="1"
+                            value="{{ entreprise.taille|default('') }}"
+                        >
+                    </div>
+
+                    <div class="groupe-champ">
+                        <label for="ville">Ville (Siège social) *</label>
+                        <input
+                            type="text"
+                            id="ville"
+                            name="ville"
+                            class="champ-saisie"
+                            placeholder="Ex: Paris"
+                            value="{{ entreprise.ville|default('') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="groupe-champ">
+                        <label for="telephone">Téléphone</label>
+                        <input
+                            type="tel"
+                            id="telephone"
+                            name="telephone"
+                            class="champ-saisie"
+                            placeholder="Ex: 01 23 45 67 89"
+                            value="{{ entreprise.telephone|default('') }}"
+                        >
+                    </div>
+
+                    <div class="groupe-champ pleine-largeur">
+                        <label for="email">Adresse e-mail de contact *</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="champ-saisie"
+                            placeholder="Ex: contact@entreprise.fr"
+                            value="{{ entreprise.email|default('') }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="groupe-champ pleine-largeur">
+                        <label for="description">Description de l'entreprise *</label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            class="champ-saisie zone-texte"
+                            rows="5"
+                            placeholder="Présentez brièvement l'entreprise, ses valeurs, son activité..."
+                            required
+                        >{{ entreprise.description|default('') }}</textarea>
+                    </div>
+
+                    <div class="groupe-champ pleine-largeur section-upload">
+                        <label for="logo">Logo de l'entreprise</label>
+                        <p class="texte-aide">Formats acceptés : JPG, PNG (Max 2 Mo).</p>
+                        <input
+                            type="file"
+                            id="logo"
+                            name="logo"
+                            accept="image/png, image/jpeg"
+                            class="champ-fichier"
+                        >
+                    </div>
+
                 </div>
 
-                <form action="index.php?page=entreprise-creer" method="POST" enctype="multipart/form-data" class="formulaire-creation">
-                    
-                    <div class="grille-formulaire">
-                        <div class="groupe-champ pleine-largeur">
-                            <label for="nom_entreprise">Nom de l'entreprise *</label>
-                            <input type="text" id="nom_entreprise" name="nom_entreprise" class="champ-saisie" placeholder="Ex: TechSolutions SAS" required>
-                        </div>
+                <div class="actions-formulaire">
+                    <a href="index.php?page=gestion-entreprises" class="btn-secondaire btn-retour">
+                        Annuler
+                    </a>
+                    <button type="submit" class="btn-principal btn-large">
+                        Créer l'entreprise
+                    </button>
+                </div>
 
-                        <div class="groupe-champ">
-                            <label for="domaine">Domaine d'activité *</label>
-                            <input type="text" id="domaine" name="domaine" class="champ-saisie" placeholder="Ex: Informatique, Cybersécurité..." required>
-                        </div>
-                        
-                        <div class="groupe-champ">
-                            <label for="taille">Taille (nombre de salariés) *</label>
-                            <input type="number" id="taille" name="taille" class="champ-saisie" placeholder="Ex: 45" min="1" required>
-                        </div>
-
-                        <div class="groupe-champ">
-                            <label for="ville">Ville (Siège social) *</label>
-                            <input type="text" id="ville" name="ville" class="champ-saisie" placeholder="Ex: Paris" required>
-                        </div>
-
-                        <div class="groupe-champ">
-                            <label for="telephone">Téléphone</label>
-                            <input type="tel" id="telephone" name="telephone" class="champ-saisie" placeholder="Ex: 01 23 45 67 89">
-                        </div>
-
-                        <div class="groupe-champ pleine-largeur">
-                            <label for="email">Adresse e-mail de contact *</label>
-                            <input type="email" id="email" name="email" class="champ-saisie" placeholder="Ex: contact@entreprise.fr" required>
-                        </div>
-
-                        <div class="groupe-champ pleine-largeur">
-                            <label for="description">Description de l'entreprise *</label>
-                            <textarea id="description" name="description" class="champ-saisie zone-texte" rows="5" placeholder="Présentez brièvement l'entreprise, ses valeurs, son activité..." required></textarea>
-                        </div>
-
-                        <div class="groupe-champ pleine-largeur section-upload">
-                            <label for="logo">Logo de l'entreprise</label>
-                            <p class="texte-aide">Formats acceptés : JPG, PNG (Max 2 Mo).</p>
-                            <input type="file" id="logo" name="logo" accept="image/png, image/jpeg" class="champ-fichier">
-                        </div>
-                    </div>
-
-                    <div class="actions-formulaire">
-                        <button type="reset" class="btn-secondaire">Annuler</button>
-                        <button type="submit" class="btn-principal btn-large">Créer l'entreprise</button>
-                    </div>
-
-                </form>
-            </div>
+            </form>
         </div>
-    </main>
+    </div>
+</main>
 
-    <footer class="pied-de-page">
-        <p>&copy; 2026 BHStage. Tous droits réservés.</p>
-    </footer>
+<!-- ================= FOOTER ================= -->
+<footer class="pied-de-page">
+    <p>&copy; 2026 AlloStage. Tous droits réservés.</p>
+</footer>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+const openBtn  = document.getElementById('open-menu');
+const closeBtn = document.getElementById('close-menu');
+const menu     = document.getElementById('menu-burger');
+const overlay  = document.getElementById('menu-overlay');
+
+function openMenu() {
+    menu.classList.add('active');
+    overlay.classList.add('active');
+}
+
+function closeMenu() {
+    menu.classList.remove('active');
+    overlay.classList.remove('active');
+}
+
+if (openBtn) openBtn.addEventListener('click', openMenu);
+if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+if (overlay) overlay.addEventListener('click', closeMenu);
+</script>
+
 </body>
 </html>

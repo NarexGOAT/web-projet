@@ -1,70 +1,195 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Postuler - BHStage</title>
-  <link rel="stylesheet" href="/css/postuler.css">
+    <meta charset="UTF-8">
+    <title>Postuler - {{ offre.titre }}</title>
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/postuler.css">
 </head>
+
 <body>
-  <main class="page-candidature">
 
-    <header class="barre-haut">
-      <a href="index.php?page=offre&id={{ offre.id_offre }}" class="bouton-retour">←</a>
-      <h1 class="titre-page">Postuler</h1>
-      <a href="index.php?page=menu" class="bouton-profil">👤</a>
-    </header>
+<!-- OVERLAY -->
+<div id="menu-overlay" class="menu-overlay"></div>
 
-    <section class="carte-intro">
-      <h2>{{ offre.titre }}</h2>
-      <p class="entreprise">
-        {{ offre.nom_entreprise ?? 'Entreprise' }}
-        {% if offre.ville %}
-          • {{ offre.ville }}
+<!-- MENU BURGER -->
+<div id="menu-burger" class="menu-burger">
+
+    <button id="close-menu" class="close-btn">✕</button>
+
+    <div class="menu-content">
+
+        <a href="index.php">🏠 Accueil</a>
+        <a href="index.php?page=offres">💼 Offres de stages</a>
+        <a href="index.php?page=entreprises">🏢 Entreprises</a>
+
+        {% if session.user is defined %}
+
+            {% if session.user.role == 'etudiant' %}
+                <a href="index.php?page=wishlist">❤️ Ma Wish-list</a>
+                <a href="index.php?page=mes-candidatures">📄 Mes candidatures</a>
+
+            {% elseif session.user.role == 'recruteur' %}
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+
+            {% elseif session.user.role == 'admin' %}
+                <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+
+            {% endif %}
+
         {% endif %}
-      </p>
-      <p class="texte-intro">
-        Complète ce formulaire pour envoyer ta candidature à l’entreprise.
-      </p>
-    </section>
 
-    <form
-      class="formulaire-candidature"
-      action="index.php?page=postuler&id={{ offre.id_offre }}"
-      method="post"
-      enctype="multipart/form-data"
-    >
-      <section class="bloc-formulaire">
-        <h2>Informations personnelles</h2>
+    </div>
 
-        <label for="nom">Nom</label>
-        <input type="text" id="nom" name="nom" placeholder="Ton nom">
+    <a href="index.php?page=logout" class="btn-logout">
+        🔴 Déconnexion
+    </a>
 
-        <label for="prenom">Prénom</label>
-        <input type="text" id="prenom" name="prenom" placeholder="Ton prénom">
+</div>
 
-        <label for="email">Adresse e-mail</label>
-        <input type="email" id="email" name="email" placeholder="tonmail@email.com">
+<!-- HEADER -->
+<header class="entete">
+    <div class="logo">
+        <a href="index.php">
+            <img src="/images/allostage.png" alt="Accueil AlloStage" class="logo-img">
+        </a>
+    </div>
 
-        <label for="telephone">Téléphone</label>
-        <input type="tel" id="telephone" name="telephone" placeholder="06 00 00 00 00">
-      </section>
+    <nav class="navigation">
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="index.php?page=offres" class="actif">Offres de stages</a></li>
+            <li><a href="index.php?page=entreprises">Entreprises</a></li>
 
-      <section class="bloc-formulaire">
-        <h2>Candidature</h2>
+            {% if session.user is defined and session.user.role == 'etudiant' %}
+                <li><a href="index.php?page=wishlist">Ma Wish-list</a></li>
+                <li><a href="index.php?page=mes-candidatures">Mes candidatures</a></li>
+            {% endif %}
+        </ul>
+    </nav>
 
-        <label for="cv">CV</label>
-        <input type="file" id="cv" name="cv">
+    <div class="actions-entete">
+        {% if session.user is defined %}
+            <button id="open-menu" class="btn-principal">
+                Espace {{ session.user.role_label ?? session.user.role|capitalize }} ▾
+            </button>
+        {% else %}
+            <a href="index.php?page=connexion" class="btn-connexion">
+                Se connecter
+            </a>
+        {% endif %}
+    </div>
+</header>
 
-        <label for="lm">Lettre de motivation</label>
-        <input type="file" id="lm" name="lm">
-      </section>
+<main class="main">
 
-      <section class="actions-bas">
-        <button type="submit" class="bouton-envoyer">Envoyer ma candidature</button>
-      </section>
-    </form>
+    <div class="container">
 
-  </main>
+        <a href="index.php?page=offre&id={{ offre.id_offre }}" class="back">
+            ← Retour à l’offre
+        </a>
+
+        <div class="grid">
+
+            <!-- FORMULAIRE -->
+            <div class="content">
+
+                <div class="card">
+
+                    <h1>Postuler à l’offre</h1>
+                    <p class="subtitle">
+                        {{ offre.titre }} — {{ offre.nom_entreprise }}
+                    </p>
+
+                    <form method="POST" action="index.php?page=postuler&id={{ offre.id_offre }}" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label>Nom complet</label>
+        <input type="text" name="nom" required>
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" required>
+    </div>
+
+    <!-- CV -->
+    <div class="form-group">
+        <label>CV (PDF)</label>
+        <input type="file" name="cv" accept="application/pdf" required>
+    </div>
+
+    <!-- LETTRE DE MOTIVATION (UPLOAD) -->
+    <div class="form-group">
+        <label>Lettre de motivation (PDF)</label>
+        <input type="file" name="lettre" accept="application/pdf">
+    </div>
+
+    <!-- OU TEXTE -->
+    <div class="form-group">
+        <label>Ou écrire votre lettre directement</label>
+        <textarea name="lettre_texte" rows="6"
+                  placeholder="Expliquez pourquoi vous êtes motivé pour ce stage..."></textarea>
+    </div>
+
+    <button type="submit" class="btn-primary">
+        Envoyer ma candidature
+    </button>
+
+</form>
+
+                </div>
+
+            </div>
+
+            <!-- SIDEBAR -->
+            <div class="sidebar">
+
+                <div class="card">
+
+                    <h3>Rappel de l’offre</h3>
+
+                    <p><strong>{{ offre.titre }}</strong></p>
+                    <p>{{ offre.nom_entreprise }}</p>
+                    <p>{{ offre.ville }}</p>
+
+                    <hr>
+
+                    <p><strong>Durée :</strong> {{ offre.duree_stage }} mois</p>
+                    <p><strong>Compétence :</strong> {{ offre.competence }}</p>
+                    <p><strong>Salaire :</strong> {{ offre.remuneration }} €</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
 </body>
+<script>
+const openBtn  = document.getElementById('open-menu');
+const closeBtn = document.getElementById('close-menu');
+const menu     = document.getElementById('menu-burger');
+const overlay  = document.getElementById('menu-overlay');
+
+function openMenu() {
+    menu.classList.add('active');
+    overlay.classList.add('active');
+}
+
+function closeMenu() {
+    menu.classList.remove('active');
+    overlay.classList.remove('active');
+}
+
+if (openBtn)  openBtn.addEventListener('click', openMenu);
+if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+if (overlay)  overlay.addEventListener('click', closeMenu);
+</script>
 </html>

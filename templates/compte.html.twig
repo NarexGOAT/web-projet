@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mon compte - AlloStage</title>
+  <link rel="stylesheet" href="/css/compte.css">
+</head>
+<body>
+
+  <main class="page-compte">
+
+    <header class="barre-haut">
+      <a href="index.php?page=menu" class="bouton-retour">←</a>
+      <h1 class="titre-page">Mon compte</h1>
+      <a href="index.php?page=menu" class="bouton-profil">👤</a>
+    </header>
+
+    <section class="bloc-compte">
+      <div class="entete-section">
+        <h2>Mes informations</h2>
+        <p>Modifie les informations de ton compte.</p>
+      </div>
+
+      <form method="POST" action="index.php?page=compte-modifier" class="form-compte">
+
+        <div class="grille-formulaire">
+          <div class="groupe-champ">
+            <label for="prenom">Prénom</label>
+            <input type="text" id="prenom" name="prenom" value="{{ utilisateur.prenom ?? '' }}" required>
+          </div>
+
+          <div class="groupe-champ">
+            <label for="nom">Nom</label>
+            <input type="text" id="nom" name="nom" value="{{ utilisateur.nom ?? '' }}" required>
+          </div>
+        </div>
+
+        <div class="groupe-champ">
+          <label for="email">Adresse e-mail</label>
+          <input type="email" id="email" name="email" value="{{ utilisateur.email ?? '' }}" required>
+        </div>
+
+        <div class="groupe-champ">
+          <label for="role">Rôle</label>
+          <input type="text" id="role" value="{{ session.role ?? 'Utilisateur' }}" readonly class="champ-readonly">
+        </div>
+
+        <div class="grille-formulaire">
+          <div class="groupe-champ">
+            <label for="mot_de_passe">Nouveau mot de passe</label>
+            <input type="password" id="mot_de_passe" name="mot_de_passe" placeholder="Laisser vide pour ne pas changer">
+          </div>
+
+          <div class="groupe-champ">
+            <label for="confirmation_mot_de_passe">Confirmer le mot de passe</label>
+            <input type="password" id="confirmation_mot_de_passe" name="confirmation_mot_de_passe" placeholder="Confirmer le mot de passe">
+          </div>
+        </div>
+
+        <div class="actions-formulaire">
+          <button type="submit" class="btn-principal">
+            Enregistrer les modifications
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section class="bloc-danger">
+      <div class="entete-section">
+        <h2>Zone de danger</h2>
+        <p>La suppression du compte est définitive.</p>
+      </div>
+
+      <form method="POST" action="index.php?page=compte-supprimer" onsubmit="return confirm('Es-tu sûr de vouloir supprimer ton compte ?');">
+        <button type="submit" class="btn-danger">
+          🔴 Déconnexion
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+</body>
+</html>

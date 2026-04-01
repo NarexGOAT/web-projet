@@ -1,0 +1,199 @@
+/* RESET */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:'Poppins', sans-serif;
+}
+
+/* BODY */
+
+body{
+    background-color:#f3f4f6;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+/* CONTAINER */
+
+.login-container{
+    background:white;
+    width:100%;
+    max-width:450px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+    padding:50px 40px;
+    display:flex;
+    flex-direction:column;
+}
+
+/* LOGO */
+
+.logo-section{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.logo-img{
+    width:220px;
+}
+
+/* HEADER */
+
+.header-text{
+    margin-bottom:35px;
+}
+
+.header-text h2{
+    color:#1e293b;
+    font-size:26px;
+    margin-bottom:8px;
+}
+
+.header-text p{
+    color:#94a3b8;
+    font-size:14px;
+}
+
+/* FORM */
+
+.login-form{
+    display:flex;
+    flex-direction:column;
+}
+
+/* INPUT */
+
+.input-group{
+    margin-bottom:25px;
+}
+
+.input-group label{
+    display:block;
+    color:#A8C6FA;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.input-group input{
+    width:100%;
+    border:none;
+    border-bottom:1px solid #e2e8f0;
+    padding-bottom:10px;
+    font-size:14px;
+    outline:none;
+    background:transparent;
+}
+
+.input-group input::placeholder{
+    color:#cbd5e1;
+}
+
+.input-group input:focus{
+    border-bottom-color:#A8C6FA;
+}
+
+/* PASSWORD */
+
+/* --- Placement de l'oeil pour les mots de passe --- */
+.password-wrapper {
+    position: relative; /* Indispensable pour que l'oeil se repère */
+    width: 100%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 40px; /* Laisse de la place pour que le texte ne passe pas sous l'oeil */
+}
+
+.password-wrapper i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%); /* Centre l'oeil verticalement */
+    color: #a0aec0; /* Petite couleur grise discrète */
+}
+/* CHECKBOX */
+
+.checkbox-group{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:30px;
+    font-size:13px;
+    color:#94a3b8;
+}
+
+.checkbox-group input{
+    width:16px;
+    height:16px;
+    accent-color:#A8C6FA;
+}
+
+.checkbox-group a{
+    color:#A8C6FA;
+    text-decoration:none;
+    font-weight:600;
+}
+
+/* BUTTON */
+
+.btn-submit{
+    background-color:#A8C6FA;
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:16px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    width:100%;
+    box-shadow:0 10px 20px rgba(255,180,200,0.4);
+}
+
+/* LINKS */
+
+.signup-link{
+    text-align:center;
+    margin-top:35px;
+    margin-bottom:20px;
+}
+
+.signup-link a{
+    color:#A8C6FA;
+    font-weight:600;
+    text-decoration:none;
+}
+
+.footer-bottom{
+    text-align:center;
+}
+
+.legal-link{
+    color:#A8C6FA;
+    font-weight:600;
+    text-decoration:none;
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width:500px){
+
+    body{
+        background:white;
+        display:block;
+    }
+
+    .login-container{
+        max-width:100%;
+        min-height:100vh;
+        border-radius:0;
+        box-shadow:none;
+        padding:40px 30px;
+    }
+
+}

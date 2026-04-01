@@ -1,148 +1,231 @@
-<!doctype html>
-<html lang="fr">
+<!DOCTYPE html>
+<html lang="fr-FR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Liste des entreprises - BHStage</title>
-  <link rel="stylesheet" href="/css/liste-entreprises.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entreprises Partenaires - AlloStage</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/liste-entreprises.css">
 </head>
+
 <body>
-  <main class="page-entreprises">
 
-    <header class="barre-haut">
-      <a href="index.php" class="bouton-retour">←</a>
-      <h1 class="titre-page">Liste des entreprises</h1>
-      <a href="index.php?page=menu" class="bouton-profil">👤</a>
-    </header>
+<!-- OVERLAY -->
+<div id="menu-overlay" class="menu-overlay"></div>
 
-    <section class="zone-intro">
-      <p class="texte-intro">
-        Découvre les entreprises partenaires qui proposent des stages et alternances.
-      </p>
-    </section>
+<!-- MENU BURGER -->
+<div id="menu-burger" class="menu-burger">
 
-    <section class="zone-filtres">
-      <h2>Filtres</h2>
+    <button id="close-menu" class="close-btn">✕</button>
 
-      <form class="filtres" action="index.php" method="get">
-        <input type="hidden" name="page" value="entreprises">
-        <div class="champ-filtre">
-          <label for="nom">Nom de l’entreprise</label>
-          <input
-            type="text"
-            id="nom"
-            name="nom"
-            placeholder="Exemple : OpenStage"
-            value="{{ filtres.nom ?? '' }}"
-          >
-        </div>
+    <div class="menu-content">
 
-        <div class="champ-filtre">
-          <label for="domaine">Domaine</label>
-          {% set dom = filtres.domaine ?? 'Tous les domaines' %}
-          <select id="domaine" name="domaine">
-            <option {{ dom == 'Tous les domaines' ? 'selected' }}>Tous les domaines</option>
-            {% for d in domaines %}
-              <option {{ dom == d ? 'selected' }}>{{ d }}</option>
-            {% endfor %}
-          </select>
-        </div>
+        <a href="index.php">🏠 Accueil</a>
+        <a href="index.php?page=offres">💼 Offres de stages</a>
+        <a href="index.php?page=entreprises">🏢 Entreprises</a>
 
-        <div class="champ-filtre">
-          <label for="ville">Ville</label>
-          {% set v = filtres.ville ?? 'Toutes les villes' %}
-          <select id="ville" name="ville">
-            <option {{ v == 'Toutes les villes' ? 'selected' }}>Toutes les villes</option>
-            {% for vi in villes %}
-              <option {{ v == vi ? 'selected' }}>{{ vi }}</option>
-            {% endfor %}
-          </select>
-        </div>
+        {% if session.user is defined %}
 
-        <div class="champ-filtre">
-          <label for="taille">Taille</label>
-            {% set ta = filtres.taille ?? 'Toutes les tailles' %}
-            <select id="taille" name="taille">
-              <option {{ ta == 'Toutes les tailles' ? 'selected' }}>Toutes les tailles</option>
-              <option {{ ta == 'Petite entreprise' ? 'selected' }}>Petite entreprise</option>
-              <option {{ ta == 'PME' ? 'selected' }}>PME</option>
-              <option {{ ta == 'Grande entreprise' ? 'selected' }}>Grande entreprise</option>
-            </select>
-        </div>
+            {% if session.user.role == 'etudiant' %}
+                <a href="index.php?page=wishlist">❤️ Ma Wish-list</a>
+                <a href="index.php?page=mes-candidatures">📄 Mes candidatures</a>
 
-        <div class="champ-filtre">
-          <label for="offres">Nombre d’offres</label>
-          {% set fOffres = filtres.offres ?? 'Peu importe' %}
-          <select id="offres" name="offres">
-            <option {{ fOffres == 'Peu importe' ? 'selected' }}>Peu importe</option>
-            <option {{ fOffres == '0 offre' ? 'selected' }}>0 offre</option>
-            <option {{ fOffres == '1 à 5 offres' ? 'selected' }}>1 à 5 offres</option>
-            <option {{ fOffres == '6 à 10 offres' ? 'selected' }}>6 à 10 offres</option>
-            <option {{ fOffres == 'Plus de 10 offres' ? 'selected' }}>Plus de 10 offres</option>
-          </select>
-        </div>
+            {% elseif session.user.role == 'recruteur' %}
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+                <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+            {% elseif session.user.role == 'admin' %}
+                <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+                <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+            {% endif %}
 
-        <div class="actions-filtres">
-          <button type="submit" class="bouton-filtrer">Filtrer</button>
-          <a href="index.php?page=entreprises" class="bouton-reinitialiser">Réinitialiser</a>
-        </div>
-      </form>
-    </section>
+        {% endif %}
 
-    <section class="zone-resultats">
-      <p class="nombre-resultats">
-        {{ nombre_entreprises }} entreprises trouvées
-      </p>
+    </div>
 
-      <div class="liste-entreprises">
-        {% for entreprise in entreprises %}
-          <article class="ligne-entreprise">
-            <div class="ligne-entreprise__contenu">
-              <div class="ligne-entreprise__haut">
-                <div class="entreprise-entete">
-                  <div class="entreprise-logo"></div>
-                  <div>
-                    <h2>{{ entreprise.nom_entreprise }}</h2>
-                    <p class="secteur">{{ entreprise.domaine }}</p>
-                  </div>
-                </div>
-              </div>
+    <a href="index.php?page=logout" class="btn-logout">
+        🔴 Déconnexion
+    </a>
 
-              <p class="description">
-                {{ entreprise.description }}
-              </p>
+</div>
 
-              <div class="details">
-                <span>📍 {{ entreprise.ville }}</span>
-                <span>🏢
-                  {% if entreprise.taille is null %}
-                    Taille non renseignée
-                  {% elseif entreprise.taille < 50 %}
-                     Petite entreprise ({{ entreprise.taille }} salariés)
-                  {% elseif entreprise.taille < 250 %}
-                    PME ({{ entreprise.taille }} salariés)
-                  {% else %}
-                    Grande entreprise ({{ entreprise.taille }} salariés)
-                  {% endif %}
-                </span>
-                <span>📄 {{ entreprise.nb_offres }} offre(s)</span>
-                <span>📧 {{ entreprise.email }}</span>
-                <span>📞 {{ entreprise.telephone }}</span>
-              </div>
-            </div>
+<!-- HEADER -->
+<header class="entete">
+    <div class="logo">
+        <a href="index.php">
+            <img src="/images/allostage.png" alt="Accueil AlloStage" class="logo-img">
+        </a>
+    </div>
 
-            <div class="ligne-entreprise__actions">
-              <a href="index.php?page=entreprise&id={{ entreprise.id_entreprise }}" class="bouton-voir">
-                Voir l'entreprise
-              </a>
-            </div>
-          </article>
+    <nav class="navigation">
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="index.php?page=offres">Offres de stages</a></li>
+            <li><a href="index.php?page=entreprises" class="actif">Entreprises</a></li>
+
+            {% if session.user is defined and session.user.role == 'etudiant' %}
+                <li><a href="index.php?page=wishlist">Ma Wish-list</a></li>
+                <li><a href="index.php?page=mes-candidatures">Mes candidatures</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="actions-entete">
+        {% if session.user is defined %}
+            <button id="open-menu" class="btn-principal">
+                Espace {{ session.user.role_label ?? session.user.role|capitalize }} ▾
+            </button>
         {% else %}
-          <p>Aucune entreprise ne correspond à ces filtres.</p>
-        {% endfor %}
-      </div>
+            <a href="index.php?page=connexion" class="btn-connexion">
+                Se connecter
+            </a>
+        {% endif %}
+    </div>
+</header>
+
+<main class="contenu fond-gris">
+        
+    <section class="en-tete-annuaire">
+        <h1>Découvrez nos entreprises partenaires</h1>
+        <p>{{ nombre_entreprises }} entreprises disponibles</p>
+
+        <form method="get" action="index.php" class="barre-recherche-large">
+            <input type="hidden" name="page" value="entreprises">
+
+            <input type="text" name="nom" placeholder="Nom entreprise..."
+                   value="{{ filtres.nom }}">
+
+            <select name="domaine" class="filtre-select">
+                <option value="">Tous les domaines</option>
+                {% for d in domaines %}
+                    <option value="{{ d }}" {% if filtres.domaine == d %}selected{% endif %}>
+                        {{ d }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <select name="ville" class="filtre-select">
+                <option value="">Toutes les villes</option>
+                {% for v in villes %}
+                    <option value="{{ v }}" {% if filtres.ville == v %}selected{% endif %}>
+                        {{ v }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="btn-principal">Rechercher</button>
+        </form>
     </section>
 
-  </main>
+    <section class="conteneur-entreprises">
+
+        <div class="grille-entreprises">
+
+            {% for entreprise in entreprises %}
+                <article class="carte-annuaire boite-blanche">
+
+                    <div class="haut-carte">
+                        <div class="logo-entreprise-carre">
+                            {{ entreprise.nom_entreprise|slice(0,2)|upper }}
+                        </div>
+
+                        <div class="infos-titre">
+                            <h2>{{ entreprise.nom_entreprise }}</h2>
+                            <span class="secteur">{{ entreprise.domaine }}</span>
+                        </div>
+                    </div>
+
+                    <p class="description-courte">
+                        {{ entreprise.description }}
+                    </p>
+
+                    <div class="tags-entreprise">
+                        <span class="tag">📍 {{ entreprise.ville }}</span>
+                        <span class="tag">👥 {{ entreprise.taille }} salariés</span>
+                    </div>
+
+                    <div class="actions-annuaire">
+
+                        {% if entreprise.nb_offres == 0 %}
+                            <span class="compteur-offres text-vide">Aucune offre</span>
+                        {% elseif entreprise.nb_offres >= 3 %}
+                            <span class="compteur-offres text-urgent">
+                                <strong>{{ entreprise.nb_offres }}</strong> offres actives
+                            </span>
+                        {% else %}
+                            <span class="compteur-offres">
+                                <strong>{{ entreprise.nb_offres }}</strong> offre(s)
+                            </span>
+                        {% endif %}
+
+                        <a href="index.php?page=entreprise&id={{ entreprise.id_entreprise }}"
+                           class="btn-secondaire btn-petit">
+                            Voir le profil
+                        </a>
+
+                    </div>
+
+                </article>
+
+            {% else %}
+                <p>Aucune entreprise trouvée.</p>
+            {% endfor %}
+
+        </div>
+
+        <!-- 🔥 PAGINATION -->
+        <nav class="pagination">
+
+            {% if page > 1 %}
+                <a href="index.php?page=entreprises&p={{ page - 1 }}" class="page-lien">
+                    ← Précédent
+                </a>
+            {% else %}
+                <span class="page-lien precedent desactive">← Précédent</span>
+            {% endif %}
+
+            <span class="page-lien actif">
+                Page {{ page }} / {{ totalPages }}
+            </span>
+
+            {% if page < totalPages %}
+                <a href="index.php?page=entreprises&p={{ page + 1 }}" class="page-lien">
+                    Suivant →
+                </a>
+            {% else %}
+                <span class="page-lien suivant desactive">Suivant →</span>
+            {% endif %}
+
+        </nav>
+
+    </section>
+
+</main>
+
+<footer class="pied-de-page">
+    <p>&copy; 2026 AlloStage. Tous droits réservés.</p>
+</footer>
+<script>
+const openBtn  = document.getElementById('open-menu');
+const closeBtn = document.getElementById('close-menu');
+const menu     = document.getElementById('menu-burger');
+const overlay  = document.getElementById('menu-overlay');
+
+function openMenu() {
+    menu.classList.add('active');
+    overlay.classList.add('active');
+}
+
+function closeMenu() {
+    menu.classList.remove('active');
+    overlay.classList.remove('active');
+}
+
+if (openBtn)  openBtn.addEventListener('click', openMenu);
+if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+if (overlay)  overlay.addEventListener('click', closeMenu);
+</script>
 </body>
 </html>

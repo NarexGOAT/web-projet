@@ -11,157 +11,214 @@ class AuthController
         $this->twig = $twig;
     }
 
+    // =========================
+    // 🔐 CONNEXION
+    // =========================
     public function connexion(): void
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $email = trim($_POST['email'] ?? '');
-        $mdp   = $_POST['mot_de_passe'] ?? '';
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $erreurs = [];
+            $email = trim($_POST['email'] ?? '');
+            $mdp   = $_POST['mot_de_passe'] ?? '';
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $erreurs[] = 'Email invalide.';
-        }
-        if ($mdp === '') {
-            $erreurs[] = 'Le mot de passe est obligatoire.';
-        }
+            $erreurs = [];
 
-                if (empty($erreurs)) {
-            $sql = "SELECT * FROM utilisateur WHERE email = :email";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(['email' => $email]);
-            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $erreurs[] = 'Email invalide.';
+            }
 
-            if (!$user || !password_verify($mdp, $user['mot_de_passe'])) {
-                $erreurs[] = 'Identifiants incorrects.';
-            } else {
-                $sqlRole = "
-                    SELECT role
-                    FROM role
-                    WHERE id_role = :id_role
+            if ($mdp === '') {
+                $erreurs[] = 'Le mot de passe est obligatoire.';
+            }
+
+            if (empty($erreurs)) {
+
+                $sql = "
+                    SELECT u.*, r.role
+                    FROM utilisateur u
+                    JOIN role r ON u.id_role = r.id_role
+                    WHERE u.email = :email
                 ";
-                $stmtRole = $this->pdo->prepare($sqlRole);
-                $stmtRole->execute(['id_role' => $user['id_role']]);
-                $roleName = $stmtRole->fetchColumn(); 
 
-                $_SESSION['user_id']      = $user['id_user'];
-                $_SESSION['user_nom']     = $user['nom'];
-                $_SESSION['user_prenom']  = $user['prenom'];
-                $_SESSION['user_email']   = $user['email'];
-                $_SESSION['user_role']    = $user['id_role'];
-                $_SESSION['role']         = $roleName;
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->execute(['email' => $email]);
+                $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-                header('Location: index.php');
-                exit;
+                if (!$user || !password_verify($mdp, $user['mot_de_passe'])) {
+                    $erreurs[] = 'Identifiants incorrects.';
+                } else {
+
+                    $roleLabel = match ($user['role']) {
+                        'recruteur' => 'Pilote',
+                        'admin'     => 'Admin',
+                        'etudiant'  => 'Étudiant',
+                        default     => ucfirst($user['role'])
+                    };
+
+                    $_SESSION['user'] = [
+                        'id'         => $user['id_user'],
+                        'nom'        => $user['nom'],
+                        'prenom'     => $user['prenom'],
+                        'email'      => $user['email'],
+                        'role'       => $user['role'],
+                        'role_label' => $roleLabel
+                    ];
+
+                    header('Location: index.php');
+                    exit;
+                }
             }
-        }
-        echo $this->twig->render('connexion.html.twig', [
-            'erreurs' => $erreurs,
-            'old' => [
-                'email' => $email,
-            ],
-        ]);
-        return;
-    }
 
-    echo $this->twig->render('connexion.html.twig');
-}
-
-    public function inscription(): void
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $nom        = trim($_POST['nom'] ?? '');
-        $prenom     = trim($_POST['prenom'] ?? '');
-        $email      = trim($_POST['email'] ?? '');
-        $mdp        = $_POST['mot_de_passe'] ?? '';
-        $mdpConf    = $_POST['mot_de_passe_confirm'] ?? '';
-        $conditions = isset($_POST['conditions']);
-        $idRole     = isset($_POST['id_role']) ? (int) $_POST['id_role'] : 1;
-
-        $erreurs = [];
-
-        if ($nom === '') {
-            $erreurs[] = 'Le nom est obligatoire.';
-        }
-        if ($prenom === '') {
-            $erreurs[] = 'Le prénom est obligatoire.';
-        }
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $erreurs[] = 'Email invalide.';
-        }
-        if ($mdp === '' || $mdpConf === '') {
-            $erreurs[] = 'Le mot de passe et sa confirmation sont obligatoires.';
-        } elseif ($mdp !== $mdpConf) {
-            $erreurs[] = 'Les mots de passe ne correspondent pas.';
-        }
-        if (!$conditions) {
-            $erreurs[] = 'Vous devez accepter les conditions d’utilisation.';
-        }
-        if (!in_array($idRole, [1, 2, 3], true)) {
-            $erreurs[] = 'Rôle invalide.';
-        }
-
-        // Vérifier si email déjà utilisé
-        if (empty($erreurs)) {
-            $sqlCheck = "SELECT id_user FROM utilisateur WHERE email = :email";
-            $stmtCheck = $this->pdo->prepare($sqlCheck);
-            $stmtCheck->execute(['email' => $email]);
-            if ($stmtCheck->fetch()) {
-                $erreurs[] = 'Cet email est déjà utilisé.';
-            }
-        }
-
-        if (!empty($erreurs)) {
-            echo $this->twig->render('inscription.html.twig', [
+            echo $this->twig->render('connexion.html.twig', [
                 'erreurs' => $erreurs,
-                'old' => [
-                    'nom'     => $nom,
-                    'prenom'  => $prenom,
-                    'email'   => $email,
-                    'id_role' => $idRole,
-                ],
+                'old' => ['email' => $email],
             ]);
             return;
         }
 
-        $hash = password_hash($mdp, PASSWORD_DEFAULT);
+        echo $this->twig->render('connexion.html.twig');
+    }
 
-        $sqlInsert = "
-            INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, id_role)
-            VALUES (:nom, :prenom, :email, :mot_de_passe, :id_role)
-        ";
-        $stmtInsert = $this->pdo->prepare($sqlInsert);
-        $stmtInsert->execute([
-            'nom'          => $nom,
-            'prenom'       => $prenom,
-            'email'        => $email,
-            'mot_de_passe' => $hash,
-            'id_role'      => $idRole,
+    // =========================
+    // 📝 INSCRIPTION
+    // =========================
+    public function inscription(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $nom        = trim($_POST['nom'] ?? '');
+            $prenom     = trim($_POST['prenom'] ?? '');
+            $email      = trim($_POST['email'] ?? '');
+            $mdp        = $_POST['mot_de_passe'] ?? '';
+            $mdpConf    = $_POST['mot_de_passe_confirm'] ?? '';
+            $conditions = isset($_POST['conditions']);
+            $redirect   = $_POST['redirect'] ?? 'home';
+
+            // 🎯 ROLE PAR DEFAUT
+            $idRole = 1; // étudiant
+
+            // 🔐 SI ADMIN → peut choisir
+            if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
+
+                $roleMap = [
+                    'etudiant' => 1,
+                    'pilote'   => 2
+                ];
+
+                if (isset($_POST['role']) && isset($roleMap[$_POST['role']])) {
+                    $idRole = $roleMap[$_POST['role']];
+                }
+            }
+
+            $erreurs = [];
+
+            if ($nom === '') {
+                $erreurs[] = 'Le nom est obligatoire.';
+            }
+
+            if ($prenom === '') {
+                $erreurs[] = 'Le prénom est obligatoire.';
+            }
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $erreurs[] = 'Email invalide.';
+            }
+
+            if ($mdp === '' || $mdpConf === '') {
+                $erreurs[] = 'Le mot de passe est obligatoire.';
+            } elseif ($mdp !== $mdpConf) {
+                $erreurs[] = 'Les mots de passe ne correspondent pas.';
+            }
+
+            if (!$conditions) {
+                $erreurs[] = 'Vous devez accepter les conditions.';
+            }
+
+            // Vérif email unique
+            if (empty($erreurs)) {
+                $stmt = $this->pdo->prepare("SELECT id_user FROM utilisateur WHERE email = ?");
+                $stmt->execute([$email]);
+
+                if ($stmt->fetch()) {
+                    $erreurs[] = 'Cet email est déjà utilisé.';
+                }
+            }
+
+            if (!empty($erreurs)) {
+                echo $this->twig->render('inscription.html.twig', [
+                    'erreurs' => $erreurs,
+                    'old' => [
+                        'nom'    => $nom,
+                        'prenom' => $prenom,
+                        'email'  => $email,
+                        'role'   => $_POST['role'] ?? 'etudiant'
+                    ],
+                    'redirect' => $redirect
+                ]);
+                return;
+            }
+
+            // 🔐 HASH MDP
+            $hash = password_hash($mdp, PASSWORD_DEFAULT);
+
+            // 💾 INSERT
+            $stmt = $this->pdo->prepare("
+                INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, id_role)
+                VALUES (?, ?, ?, ?, ?)
+            ");
+
+            $stmt->execute([
+                $nom,
+                $prenom,
+                $email,
+                $hash,
+                $idRole
+            ]);
+
+            // 🔁 REDIRECTION INTELLIGENTE
+            header("Location: index.php?page=" . $redirect);
+            exit;
+        }
+
+        // GET
+        echo $this->twig->render('inscription.html.twig', [
+            'redirect' => $_GET['redirect'] ?? null
         ]);
-
-        header('Location: index.php?page=connexion');
-        exit;
     }
 
-    echo $this->twig->render('inscription.html.twig');
-}
-
+    // =========================
+    // 🔁 OUBLI MDP
+    // =========================
     public function oubli(): void
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        header('Location: index.php?page=nouveau-mdp');
-        exit;
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            header('Location: index.php?page=nouveau-mdp');
+            exit;
+        }
+
+        echo $this->twig->render('oubli.html.twig');
     }
 
-    echo $this->twig->render('oubli.html.twig');
-}
+    // =========================
+    // 🔑 NOUVEAU MDP
+    // =========================
     public function nouveauMdp(): void
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        header('Location: index.php?page=connexion');
-        exit;
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            header('Location: index.php?page=connexion');
+            exit;
+        }
+
+        echo $this->twig->render('nouveau-mdp.html.twig');
     }
 
-    echo $this->twig->render('nouveau-mdp.html.twig');
-}
+    // =========================
+    // 🚪 DECONNEXION
+    // =========================
+    public function logout(): void
+    {
+        session_destroy();
+        header('Location: index.php');
+        exit;
+    }
 }
