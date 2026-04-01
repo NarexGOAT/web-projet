@@ -1,0 +1,596 @@
+:root {
+    --blanc: #ffffff;
+    --gris-tres-clair: #f8f9fa;
+    --gris-clair: #e9ecef;
+    --texte-sombre: #2c3e50;
+    --texte-moyen: #6c757d;
+    
+    --bleu-allostage: #0056b3; 
+    --bleu-clair-allostage: #00a8ff;
+    --orange-allostage: #ff7e00;
+    --vert-badge: #2ed573;
+    --rouge-badge: #ff4757;
+    
+    --degrade-bouton: linear-gradient(135deg, var(--bleu-clair-allostage), var(--bleu-allostage));
+    --degrade-orange: linear-gradient(135deg, #ffb347, var(--orange-allostage));
+}
+
+/* ================= BASE ================= */
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: var(--blanc);
+    color: var(--texte-sombre);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+ul { list-style: none; padding: 0; margin: 0; }
+
+a {
+    text-decoration: none;
+    color: var(--texte-sombre);
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+a:hover, a.actif {
+    color: var(--bleu-clair-allostage);
+}
+
+button {
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    transition: 0.2s;
+    font-family: inherit;
+}
+
+/* CACHE PAR DEFAUT */
+.menu-overlay {
+    display: none;
+}
+
+.menu-burger {
+    position: fixed;
+    top: 0;
+    right: -100%; /* 🔥 important */
+    width: 280px; /* taille fixe propre */
+    max-width: 80%;
+    height: 100%;
+    background: white;
+    z-index: 9999;
+    transition: right 0.3s ease;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* OUVERT */
+.menu-burger.active {
+    right: 0;
+}
+
+/* ACTIVE */
+.menu-burger.active {
+    right: 0;
+}
+
+.menu-overlay.active {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+/* BOUTONS */
+.menu-content a {
+    display: block;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+/* CLOSE */
+.close-btn {
+    border: none;
+    background: none;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+/* LOGOUT */
+.btn-logout {
+    margin-top: auto;
+    background: red;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+/* ================= HEADER ================= */
+
+.entete {
+    display: grid;
+    grid-template-columns: auto 1fr auto; /* 🔥 clé du layout */
+    align-items: center;
+    padding: 0.5rem 2rem;
+    border-bottom: 1px solid var(--gris-clair);
+}
+
+/* Logo */
+.logo a {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 70px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
+}
+
+/* Navigation centrée */
+.navigation {
+    display: flex;
+    justify-content: center;
+}
+
+.navigation ul {
+    display: flex;
+    gap: 2rem;
+}
+
+/* Bouton à droite 🔥 */
+.actions-entete {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ================= BOUTONS ================= */
+
+.btn-inscription {
+    background: var(--bleu-allostage);
+    border: 2px solid var(--bleu-clair-allostage);
+    color: var(--blanc);
+    padding: 0.5rem 1.2rem;
+}
+
+.btn-connexion {
+    background: none;
+    border: 2px solid var(--bleu-clair-allostage);
+    color: var(--bleu-clair-allostage);
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+}
+
+.btn-principal {
+    background: var(--degrade-bouton);
+    border: none;
+    color: var(--blanc);
+    padding: 0.8rem 1.5rem;
+}
+
+/* ================= CONTENU ================= */
+
+.contenu {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.recherche-hero {
+    text-align: center;
+    max-width: 700px;
+    margin: 2rem 0 4rem 0;
+}
+
+.recherche-hero h1 {
+    color: var(--bleu-allostage);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.recherche-hero p {
+    color: var(--texte-moyen);
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+/* ================= RECHERCHE ================= */
+
+.barre-recherche {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.barre-recherche input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--gris-clair);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+
+.barre-recherche input:focus {
+    outline: none;
+    border-color: var(--bleu-clair-allostage);
+}
+
+/* ================= OFFRES ================= */
+
+.section-offres {
+    width: 100%;
+    max-width: 1100px;
+}
+
+.entete-offres {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.entete-offres h2 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.lien-toutes {
+    color: var(--orange-allostage);
+    font-weight: bold;
+}
+
+/* Grid */
+.grille-offres {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+/* Carte */
+.carte-offre {
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    transition: 0.3s;
+}
+
+.carte-offre:hover {
+    border-color: var(--bleu-clair-allostage);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transform: translateY(-4px);
+}
+
+/* Badges */
+.en-tete-carte {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    height: 25px;
+}
+
+.badge-nouveau {
+    background: var(--vert-badge);
+    color: var(--blanc);
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.badge-urgent {
+    background: var(--rouge-badge);
+    color: var(--blanc);
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Favori */
+.btn-favori {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    margin-left: auto;
+    color: var(--gris-clair);
+}
+
+.btn-favori:hover {
+    color: var(--rouge-badge);
+    transform: scale(1.1);
+}
+
+.btn-favori.actif {
+    color: var(--rouge-badge) !important; /* Force le rouge BHStage */
+}
+
+.btn-favori i {
+    pointer-events: none; /* Évite les bugs de clic sur l'icône */
+}
+
+/* Texte */
+.titre-offre {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+    color: var(--bleu-allostage);
+}
+
+.entreprise-offre {
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+    color: var(--texte-moyen);
+}
+
+.tags-offre {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background: var(--gris-tres-clair);
+    border: 1px solid var(--gris-clair);
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.4rem;
+    font-size: 0.8rem;
+}
+
+/* Description */
+.description {
+    font-size: 0.9rem;
+    color: var(--texte-moyen);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+/* Actions */
+.actions-carte {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-secondaire {
+    flex: 1;
+    text-align: center;
+    border: 1px solid var(--gris-clair);
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+}
+
+.btn-postuler {
+    flex: 1;
+    background: var(--degrade-orange);
+    color: var(--blanc);
+    padding: 0.6rem;
+    text-align: center;
+    border-radius: 0.5rem;
+    font-weight: bold;
+}
+
+/* ================= FOOTER ================= */
+
+.pied-de-page {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--gris-tres-clair);
+    border-top: 1px solid var(--gris-clair);
+    color: var(--texte-moyen);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 992px) {
+    .grille-offres {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .entete {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .navigation {
+        justify-content: center;
+    }
+
+    .actions-entete {
+        justify-content: center;
+    }
+
+    .grille-offres {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Container */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Overlay */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: none;
+    z-index: 1000;
+}
+
+/* Menu */
+.menu-burger {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 300px;
+    height: 100%;
+    background: white;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+/* Ouvert */
+.menu-burger.active {
+    right: 0;
+}
+
+.menu-overlay.active {
+    display: block;
+}
+
+/* Close */
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    align-self: flex-start;
+    margin-bottom: 20px;
+}
+
+/* Liens */
+.menu-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.menu-content a {
+    padding: 10px;
+    border-radius: 8px;
+    background: #f5f5f5;
+}
+
+/* Déconnexion */
+.btn-logout {
+    margin-top: auto;
+    padding: 12px;
+    text-align: center;
+    background: #ff4757;
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* ================= MENU BURGER FIX ================= */
+
+/* Cache totalement */
+.menu-burger {
+    position: fixed;
+    top: 0;
+    right: -100%; /* 🔥 totalement hors écran */
+    width: 300px;
+    max-width: 85%;
+    height: 100vh;
+    background: white;
+    z-index: 9999;
+    transition: right 0.3s ease;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Ouvert */
+.menu-burger.active {
+    right: 0;
+}
+
+/* Overlay */
+.menu-overlay {
+    display: none;
+}
+
+.menu-overlay.active {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 9998;
+}
+
+/* Contenu scrollable */
+.menu-content {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Boutons menu */
+.menu-content a {
+    padding: 12px;
+    border-radius: 10px;
+    background: #f5f5f5;
+    font-weight: 500;
+}
+
+/* Bouton fermer */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* 🔴 Déconnexion BIEN VISIBLE */
+.btn-logout {
+    margin-top: 20px;
+    padding: 14px;
+    text-align: center;
+    background: #ff4757;
+    color: white;
+    border-radius: 10px;
+    font-weight: bold;
+
+    position: sticky;
+    bottom: 0;
+}
+
+/* 🔥 évite les débordements */
+body {
+    overflow-x: hidden;
+}

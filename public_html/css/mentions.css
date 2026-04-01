@@ -1,0 +1,110 @@
+/* --- Reset basique (Même que la connexion) --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* --- Layout principal --- */
+body {
+    background-color: #f3f4f6;
+    display: flex;
+    justify-content: center;
+    /* On utilise padding au lieu d'align-items pour laisser la page défiler (scroll) s'il y a trop de texte */
+    padding: 40px 20px; 
+    min-height: 100vh;
+}
+
+/* --- Container style document --- */
+/* C'est comme la page de connexion, mais plus large pour la lecture */
+.legal-container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 800px; /* Plus large que les 450px de la connexion */
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 50px;
+}
+
+/* --- En-tête (Logo + Retour) --- */
+.legal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #f3f4f6; /* Petite ligne discrète de séparation */
+    padding-bottom: 20px;
+}
+
+.back-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.back-link:hover {
+    color: #A8C6FA; /* Devient bleu au survol */
+}
+
+.legal-logo {
+    height: 40px; /* Un logo tout petit juste pour rappeler la marque */
+    width: auto;
+}
+
+/* --- Le contenu texte (La partie importante) --- */
+.legal-content h1 {
+    color: #1e293b;
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.intro-text {
+    color: #94a3b8;
+    font-style: italic;
+    margin-bottom: 40px;
+    font-size: 14px;
+}
+
+/* Espacement entre chaque paragraphe légal */
+section {
+    margin-bottom: 35px;
+}
+
+/* Les sous-titres reprennent le bleu de BHStage pour garder l'identité visuelle */
+section h2 {
+    color: #A8C6FA;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+/* On aère bien le texte pour que ce soit facile à lire */
+section p {
+    color: #334155;
+    font-size: 15px;
+    line-height: 1.7; /* 👈 C'est le secret d'un texte agréable à lire ! */
+    margin-bottom: 10px;
+}
+
+/* --- RESPONSIVE MOBILE --- */
+@media screen and (max-width: 600px) {
+    
+    body {
+        background-color: #ffffff;
+        padding: 0; /* On enlève l'espace gris autour */
+    }
+
+    .legal-container {
+        max-width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 30px 20px;
+    }
+
+    /* Le titre peut être un poil plus petit sur téléphone */
+    .legal-content h1 {
+        font-size: 24px;
+    }
+}

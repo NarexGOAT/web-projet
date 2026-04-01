@@ -1,0 +1,70 @@
+
+.fond-gris {
+    background-color: var(--gris-tres-clair);
+    padding: 2rem;
+    flex: 1;
+}
+
+/* --- En-tête de la page --- */
+.en-tete-recherche {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto 2rem auto;
+    text-align: center;
+}
+
+.en-tete-recherche h1 {
+    color: var(--bleu-allostage);
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.en-tete-recherche p {
+    color: var(--texte-moyen);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+/* --- Grille des offres sauvegardées --- */
+.conteneur-liste {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.grille-offres {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Style spécifique pour le bouton Postuler */
+.btn-postuler-lien {
+    display: block;
+    flex: 1;
+    background: var(--degrade-orange);
+    color: var(--blanc);
+    padding: 0.6rem;
+    text-align: center;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.btn-postuler-lien:hover {
+    opacity: 0.9;
+}
+
+/* --- Responsive (pour tablettes et mobiles) --- */
+@media (max-width: 992px) {
+    .grille-offres {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .grille-offres {
+        grid-template-columns: 1fr;
+    }
+}

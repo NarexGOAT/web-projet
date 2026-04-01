@@ -1,0 +1,209 @@
+/* ==========================================================================
+   1. RESET & FONDATIONS (Lignes 1-17 de ton fichier)
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f3f4f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #1e293b;
+}
+
+/* ==========================================================================
+   2. CONTAINERS & STRUCTURE (Lignes 19-45)
+   ========================================================================== */
+.login-container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.logo-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo-img {
+    width: 220px;
+    height: auto;
+    object-fit: contain;
+}
+
+.header-text {
+    margin-bottom: 35px;
+}
+
+.header-text h2 {
+    color: #1e293b;
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.header-text p {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+/* ==========================================================================
+   3. FORMULAIRE & INPUTS (Lignes 58-110)
+   ========================================================================== */
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    margin-bottom: 35px;
+}
+
+.input-group label {
+    display: block;
+    color: #A8C6FA;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+    font-size: 14px;
+    outline: none;
+    background: transparent;
+}
+
+.input-group input::placeholder {
+    color: #cbd5e1;
+}
+
+.input-group input:focus {
+    border-bottom-color: #A8C6FA;
+    transition: 0.3s;
+}
+
+/* Password Wrapper & Icon */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper i {
+    position: absolute;
+    right: 0;
+    top: 40%;
+    transform: translateY(-50%);
+    color: #cbd5e1;
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: #94a3b8;
+    font-size: 13px;
+    text-decoration: none;
+    margin-bottom: 30px;
+    display: inline-block;
+}
+
+/* ==========================================================================
+   4. BOUTONS & FOOTER (Lignes 120-154)
+   ========================================================================== */
+.btn-submit {
+    background-color: #A8C6FA;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(255, 180, 200, 0.4);
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 35px;
+    margin-bottom: 20px;
+}
+
+.signup-link a, 
+.legal-link {
+    color: #A8C6FA;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer-bottom {
+    text-align: center;
+}
+
+.home-indicator {
+    display: none; 
+}
+
+/* ==========================================================================
+   BOUTON RETOUR (Haut à Gauche)
+   ========================================================================== */
+.btn-retour {
+    position: absolute; /* Il se positionne par rapport à .login-container */
+    top: 25px;          /* Espace depuis le haut */
+    left: 25px;         /* Espace depuis la gauche */
+    color: #cbd5e1;     /* Couleur grise discrète par défaut */
+    font-size: 18px;    /* Taille de la flèche */
+    text-decoration: none;
+    transition: 0.3s;
+    z-index: 10;        /* Assure qu'il passe au-dessus du logo */
+}
+
+.btn-retour:hover {
+    color: #A8C6FA;     /* Devient bleu BHStage au survol */
+    transform: translateX(-3px); /* Petit effet de mouvement à gauche */
+}
+
+
+
+/* ==========================================================================
+   5. RESPONSIVE MOBILE (Lignes 156-182)
+   ========================================================================== */
+@media screen and (max-width: 500px) {
+    body {
+        background-color: #ffffff;
+        display: block; 
+    }
+
+    .login-container {
+        background-color: #ffffff;
+        width: 100%;
+        max-width: 450px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 60px 50px; /* Augmenté : 60px haut/bas, 50px gauche/droite */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .home-indicator {
+        display: inline-block;
+        width: 135px;
+        height: 5px;
+        background-color: #cbd5e1;
+        border-radius: 10px;
+        margin-top: 50px;
+    }
+}

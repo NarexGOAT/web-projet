@@ -1,0 +1,77 @@
+.boite-blanche {
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    border-radius: 1rem;
+    padding: 2rem;
+    max-width: 1000px;
+    margin: auto;
+}
+
+h1 {
+    color: var(--bleu-allostage);
+    margin-bottom: 1.5rem;
+}
+
+.barre-recherche {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.barre-recherche input {
+    flex: 1;
+    padding: 0.7rem;
+    border: 1px solid var(--gris-clair);
+    border-radius: 0.5rem;
+}
+
+.ajout {
+    margin-bottom: 1rem;
+}
+
+.table-etudiants {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-etudiants th,
+.table-etudiants td {
+    padding: 0.8rem;
+    border-bottom: 1px solid var(--gris-clair);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.table-etudiants th {
+    background: var(--gris-tres-clair);
+}
+
+.btn-modifier {
+    display: inline-block;
+    background: var(--bleu-clair-allostage);
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-supprimer {
+    background: var(--rouge-badge);
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.actions {
+    white-space: nowrap;
+}
+
+.actions form {
+    display: inline-block;
+    margin: 0 0 0 0.3rem;
+}

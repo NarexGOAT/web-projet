@@ -1,0 +1,176 @@
+:root {
+    --blanc: #ffffff;
+    --gris-tres-clair: #f8f9fa;
+    --gris-clair: #e9ecef;
+    --texte-sombre: #2c3e50;
+    --texte-moyen: #6c757d;
+    
+    --bleu-allostage: #0056b3; 
+    --bleu-clair-allostage: #00a8ff;
+    --orange-allostage: #ff7e00;
+    --vert-badge: #2ed573;
+    --rouge-badge: #ff4757;
+    
+    --degrade-bouton: linear-gradient(135deg, var(--bleu-clair-allostage), var(--bleu-allostage));
+    --degrade-orange: linear-gradient(135deg, #ffb347, var(--orange-allostage));
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: var(--blanc);
+    color: var(--texte-sombre);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+ul { list-style: none; padding: 0; margin: 0; }
+a { text-decoration: none; color: var(--texte-sombre); font-weight: 500; transition: 0.2s; }
+a:hover, a.actif { color: var(--bleu-clair-allostage); }
+button { cursor: pointer; font-weight: bold; border-radius: 0.5rem; transition: 0.2s; font-family: inherit; }
+
+.entete {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 2rem; 
+    border-bottom: 1px solid var(--gris-clair);
+}
+
+.logo a {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 70px; 
+    width: auto; 
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
+}
+.logo-accent { color: var(--orange-allostage); }
+.navigation ul { display: flex; gap: 2rem; }
+
+.btn-inscription {
+    background: var(--bleu-allostage);
+    border: 2px solid var(--bleu-clair-allostage);
+    color: var(--blanc);
+    padding: 0.5rem 1.2rem;
+}
+.btn-connexion {
+    background: none;
+    border: 2px solid var(--bleu-clair-allostage);
+    color: var(--bleu-clair-allostage);
+    padding: 0.5rem 1.2rem;
+}
+.contenu { flex: 1; padding: 2rem; display: flex; flex-direction: column; align-items: center; }
+
+.recherche-hero {
+    text-align: center;
+    max-width: 700px;
+    margin: 2rem 0 4rem 0;
+}
+.recherche-hero h1 { color: var(--bleu-allostage); font-size: 2.5rem; margin-bottom: 0.5rem; }
+.recherche-hero p { color: var(--texte-moyen); font-size: 1.2rem; margin-bottom: 2rem; }
+
+.barre-recherche { display: flex; gap: 0.5rem; }
+.barre-recherche input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--gris-clair);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+.barre-recherche input:focus { outline: none; border-color: var(--bleu-clair-allostage); }
+
+.btn-principal {
+    background: var(--degrade-bouton);
+    border: none;
+    color: var(--blanc);
+    padding: 0.8rem 1.5rem;
+}
+
+.section-offres { width: 100%; max-width: 1100px; }
+
+.entete-offres { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.entete-offres h2 { margin: 0; font-size: 1.8rem; }
+.lien-toutes { color: var(--orange-allostage); font-weight: bold; }
+
+.grille-offres {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.carte-offre {
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    transition: 0.3s;
+}
+.carte-offre:hover { border-color: var(--bleu-clair-allostage); box-shadow: 0 8px 20px rgba(0,0,0,0.08); transform: translateY(-4px); }
+
+.en-tete-carte { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; height: 25px; }
+.badge-nouveau { background: var(--vert-badge); color: var(--blanc); padding: 0.2rem 0.6rem; border-radius: 1rem; font-size: 0.8rem; font-weight: bold; }
+.badge-urgent { background: var(--rouge-badge); color: var(--blanc); padding: 0.2rem 0.6rem; border-radius: 1rem; font-size: 0.8rem; font-weight: bold; }
+
+.btn-favori { background: none; border: none; font-size: 1.5rem; margin-left: auto; color: var(--gris-clair); padding: 0; }
+.btn-favori:hover { color: var(--rouge-badge); transform: scale(1.1); }
+
+.titre-offre { margin: 0 0 0.5rem 0; font-size: 1.2rem; color: var(--bleu-allostage); }
+.entreprise-offre { margin: 0 0 1rem 0; font-size: 0.9rem; color: var(--texte-moyen); }
+.entreprise-offre strong { color: var(--texte-sombre); }
+
+.tags-offre { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.tag { background: var(--gris-tres-clair); border: 1px solid var(--gris-clair); padding: 0.3rem 0.5rem; border-radius: 0.4rem; font-size: 0.8rem; color: var(--texte-moyen); }
+
+.description { font-size: 0.9rem; color: var(--texte-moyen); line-height: 1.5; margin-bottom: 1.5rem; flex-grow: 1; }
+
+.actions-carte { display: flex; gap: 1rem; }
+.btn-secondaire { 
+    flex: 1; 
+    background: none; 
+    border: 1px solid var(--gris-clair); 
+    color: var(--texte-sombre); 
+    padding: 0.6rem; 
+    
+    /* --- Les propriétés à rajouter pour les liens --- */
+    text-align: center;       /* Force le texte à se centrer */
+    border-radius: 0.5rem;    /* Remet les jolis bords arrondis */
+    font-weight: bold;        /* Met le texte en gras comme l'autre bouton */
+    box-sizing: border-box;   /* Assure que le padding ne déforme pas la boîte */
+}
+.btn-secondaire:hover { border-color: var(--bleu-allostage); color: var(--bleu-allostage); }
+.btn-postuler { flex: 1; background: var(--degrade-orange); border: none; color: var(--blanc); padding: 0.6rem; 
+    text-align: center;       /* Force le texte à se centrer */
+    border-radius: 0.5rem;    /* Remet les jolis bords arrondis */
+    font-weight: bold;        /* Met le texte en gras comme l'autre bouton */
+    box-sizing: border-box;}
+.btn-postuler:hover { opacity: 0.9; }
+
+.pied-de-page { text-align: center; padding: 1.5rem; background: var(--gris-tres-clair); border-top: 1px solid var(--gris-clair); color: var(--texte-moyen); }
+
+@media (max-width: 992px) {
+    .grille-offres { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+    .entete { flex-direction: column; gap: 1rem; }
+    .navigation ul { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .grille-offres { grid-template-columns: 1fr; }
+    .barre-recherche { flex-direction: column; }
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}

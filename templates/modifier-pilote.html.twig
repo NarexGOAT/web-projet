@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier pilote - AlloStage</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/modifier-etudiant.css">
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="carte">
+
+        <h1>✏️ Modifier le pilote</h1>
+        <p class="subtitle">Modifiez les informations du pilote</p>
+
+        <form method="POST" class="formulaire">
+
+            <div class="groupe">
+                <label>Nom</label>
+                <input type="text" name="nom" value="{{ pilote.nom }}" required>
+            </div>
+
+            <div class="groupe">
+                <label>Prénom</label>
+                <input type="text" name="prenom" value="{{ pilote.prenom }}" required>
+            </div>
+
+            <div class="groupe">
+                <label>Email</label>
+                <input type="email" name="email" value="{{ pilote.email }}" required>
+            </div>
+
+            <div class="actions">
+                <a href="index.php?page=gestion-pilotes" class="btn-annuler">
+                    Annuler
+                </a>
+
+                <button type="submit" class="btn-valider">
+                    💾 Enregistrer
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

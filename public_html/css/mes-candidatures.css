@@ -1,0 +1,131 @@
+
+/* =========================
+   CONTENEUR GLOBAL
+========================= */
+.conteneur-liste {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* =========================
+   EN-TÊTE HARMONISÉ
+========================= */
+
+.en-tete-recherche {
+    width: 100%;
+    margin: 0 auto 2rem auto;
+    text-align: center; /* Centre tout le bloc */
+}
+
+.en-tete-recherche h1 {
+    color: var(--bleu-allostage); /* Le beau bleu de ton site */
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.en-tete-recherche p {
+    color: var(--texte-moyen); /* Gris stylé */
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+
+/* =========================
+   LISTE & CARTES
+========================= */
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.card {
+    background: var(--blanc);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--gris-clair);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    transition: 0.3s;
+}
+
+.card:hover {
+    border-color: var(--bleu-clair-allostage);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transform: translateY(-4px);
+}
+
+.date {
+    font-size: 0.9rem;
+    color: var(--texte-moyen);
+    margin-top: 0.5rem;
+}
+
+.right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* =========================
+   BOUTONS
+========================= */
+.btn {
+    background: var(--degrade-orange);
+    color: var(--blanc);
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    opacity: 0.9;
+    color: var(--blanc);
+}
+
+.btn-lettre {
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    color: var(--texte-sombre);
+}
+
+.btn-lettre:hover {
+    border-color: var(--bleu-clair-allostage);
+    color: var(--bleu-clair-allostage);
+}
+
+.btn-lien {
+    color: var(--bleu-allostage);
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.btn-lien:hover {
+    color: var(--bleu-clair-allostage);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .right {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .right a {
+        flex: 1;
+        text-align: center;
+    }
+}

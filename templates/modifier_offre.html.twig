@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier une offre de stage - BHStage</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/modifier-stage.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="topbar-left">
+            <img src="/allostage.png" alt="Logo BHStage" class="logo">
+        </div>
+
+        <nav class="topbar-nav">
+            <a href="index.php">Accueil</a>
+            <a href="index.php?page=offres" class="active">Offres de stages</a>
+            <a href="index.php?page=entreprises">Entreprises</a>
+        </nav>
+
+        <div class="topbar-right">
+            <a href="#" class="admin-btn">
+                {% if session.role is defined %}
+                    Espace {{ session.role|capitalize }}
+                {% else %}
+                    Espace
+                {% endif %}
+            </a>
+        </div>
+    </header>
+
+    <main class="page-wrapper">
+        <section class="form-card">
+
+            <div class="form-header">
+                <h1>Modifier une offre de stage</h1>
+                <p>Mettre à jour les informations d’une offre de stage existante.</p>
+            </div>
+
+            <form class="offer-form"
+                  action="index.php?page=offre-modifier&id={{ offre.id_offre }}"
+                  method="POST">
+
+                <div class="form-group full-width">
+                    <label for="titre">Titre de l'offre *</label>
+                    <input type="text" id="titre" name="titre"
+                           value="{{ offre.titre|e }}" required>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="competence">Compétence recherchée *</label>
+                        <input type="text" id="competence" name="competence"
+                               value="{{ offre.competence|e }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type_offre">Type d'offre *</label>
+                        <input type="text" id="type_offre" name="type_offre"
+                               value="{{ offre.type_offre|e }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="duree_stage">Durée du stage (semaines) *</label>
+                        <input type="number" id="duree_stage" name="duree_stage"
+                               value="{{ offre.duree_stage }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="remuneration">Rémunération €/mois *</label>
+                        <input type="number" id="remuneration" name="remuneration" step="0.01"
+                               value="{{ offre.remuneration }}" required>
+                    </div>
+
+                    <div class="form-group full-grid">
+                        <label for="id_entreprise">Entreprise *</label>
+                        <select id="id_entreprise" name="id_entreprise" required>
+                            <option value="">Sélectionner une entreprise</option>
+                            {% for e in entreprises %}
+                                <option value="{{ e.id_entreprise }}"
+                                    {% if offre.id_entreprise == e.id_entreprise %}selected{% endif %}>
+                                    {{ e.nom_entreprise }} - {{ e.ville }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="description">Description de l'offre *</label>
+                    <textarea id="description" name="description" rows="7" required>{{ offre.description|e }}</textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" name="supprimer" value="1" class="btn btn-delete">
+                        Supprimer
+                    </button>
+
+                    <div class="right-actions">
+                        <button type="button" class="btn btn-cancel" onclick="history.back()">Annuler</button>
+                        <button type="submit" class="btn btn-submit">Enregistrer les modifications</button>
+                    </div>
+                </div>
+
+            </form>
+        </section>
+    </main>
+
+</body>
+</html>

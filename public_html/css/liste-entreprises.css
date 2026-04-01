@@ -1,0 +1,249 @@
+/* --- Mise en page spécifique pour l'annuaire des entreprises --- */
+
+.fond-gris {
+    background-color: var(--gris-tres-clair);
+    padding: 2rem;
+    flex: 1;
+}
+
+/* --- En-tête et Recherche --- */
+.en-tete-annuaire {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem auto;
+}
+
+.en-tete-annuaire h1 {
+    color: var(--bleu-allostage);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.en-tete-annuaire p {
+    color: var(--texte-moyen);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.barre-recherche-large {
+    display: flex;
+    gap: 0;
+    background: var(--blanc);
+    border-radius: 0.8rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--gris-clair);
+    overflow: hidden;
+}
+
+.barre-recherche-large input,
+.barre-recherche-large select {
+    padding: 1rem 1.2rem;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    outline: none;
+    color: var(--texte-sombre);
+}
+
+.barre-recherche-large input {
+    flex: 2;
+    border-right: 1px solid var(--gris-clair);
+}
+
+.filtre-select {
+    flex: 1;
+    border-right: 1px solid var(--gris-clair);
+    cursor: pointer;
+}
+
+.barre-recherche-large .btn-principal {
+    border-radius: 0;
+    padding: 1rem 2rem;
+}
+
+/* --- Grille des entreprises --- */
+.conteneur-entreprises {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.grille-entreprises {
+    display: grid;
+    /* On demande à CSS de caler le plus de cartes de 350px possible par ligne */
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.carte-annuaire {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.carte-annuaire:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    border-color: var(--bleu-clair-allostage);
+}
+
+/* --- Haut de la carte (Logo + Titre) --- */
+.haut-carte {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.logo-entreprise-carre {
+    width: 65px;
+    height: 65px;
+    border-radius: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--blanc);
+    flex-shrink: 0;
+}
+
+/* Couleurs fictives pour les logos (utilisées dynamiquement par le PHP) */
+.logo-ts { background: linear-gradient(135deg, #3498db, #2980b9); }
+.logo-ic { background: linear-gradient(135deg, #e67e22, #d35400); }
+.logo-cd { background: linear-gradient(135deg, #2c3e50, #1a252f); }
+.logo-ge { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+.logo-dv { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+.logo-bg { background: linear-gradient(135deg, #f1c40f, #f39c12); }
+
+.infos-titre { display: flex; flex-direction: column; }
+.infos-titre h2 { margin: 0 0 0.2rem 0; font-size: 1.2rem; color: var(--texte-sombre); }
+.secteur { font-size: 0.85rem; color: var(--texte-moyen); margin-bottom: 0.3rem; }
+.note { font-size: 0.9rem; }
+.etoiles { color: #f1c40f; letter-spacing: 2px; }
+.avis-count { color: var(--texte-moyen); font-size: 0.8rem; margin-left: 0.3rem; }
+
+/* --- Corps de la carte --- */
+.description-courte {
+    font-size: 0.95rem;
+    color: var(--texte-sombre);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    flex-grow: 1; /* Pousse les boutons en bas de la carte */
+}
+
+.tags-entreprise {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.tag {
+    background: var(--fond-panneau);
+    border: 1px solid var(--gris-clair);
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--texte-moyen);
+}
+
+/* --- Bas de la carte --- */
+.actions-annuaire {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--gris-clair);
+    padding-top: 1rem;
+}
+
+.compteur-offres { font-size: 0.9rem; color: var(--bleu-allostage); }
+.compteur-offres strong { font-size: 1.1rem; }
+.text-urgent { color: var(--rouge-badge); }
+.text-vide { color: var(--texte-moyen); }
+
+.btn-petit {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+/* --- Pagination --- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.page-lien {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 0.8rem;
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    border-radius: 0.5rem;
+    color: var(--texte-sombre);
+    font-weight: bold;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.page-lien:hover:not(.desactive) {
+    border-color: var(--bleu-clair-allostage);
+    color: var(--bleu-allostage);
+    background-color: var(--fond-panneau);
+}
+
+.page-lien.actif {
+    background: var(--bleu-allostage);
+    color: var(--blanc);
+    border-color: var(--bleu-allostage);
+}
+
+.page-lien.desactive {
+    color: var(--gris-clair);
+    cursor: not-allowed;
+    background: var(--gris-tres-clair);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .barre-recherche-large {
+        flex-direction: column;
+        background: transparent;
+        box-shadow: none;
+        border: none;
+        gap: 0.5rem;
+    }
+
+    .barre-recherche-large input,
+    .barre-recherche-large select,
+    .barre-recherche-large .btn-principal {
+        width: 100%;
+        border: 1px solid var(--gris-clair);
+        background: var(--blanc);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+    
+    .pagination {
+        flex-wrap: wrap;
+    }
+}

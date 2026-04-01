@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Entreprise - {{ entreprise.nom_entreprise }}</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/entreprise.css">
+</head>
+
+<body>
+
+<!-- OVERLAY -->
+<div id="menu-overlay" class="menu-overlay"></div>
+
+<!-- MENU BURGER -->
+<div id="menu-burger" class="menu-burger">
+
+    <button id="close-menu" class="close-btn">✕</button>
+
+    <div class="menu-content">
+
+        <a href="index.php">🏠 Accueil</a>
+        <a href="index.php?page=offres">💼 Offres de stages</a>
+        <a href="index.php?page=entreprises">🏢 Entreprises</a>
+
+        {% if session.user is defined %}
+
+            {% if session.user.role == 'etudiant' %}
+                <a href="index.php?page=wishlist">❤️ Ma Wish-list</a>
+                <a href="index.php?page=mes-candidatures">📄 Mes candidatures</a>
+
+            {% elseif session.user.role == 'recruteur' %}
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+                <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+            {% elseif session.user.role == 'admin' %}
+                <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+                <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+    <a href="index.php?page=logout" class="btn-logout">
+        🔴 Déconnexion
+    </a>
+
+</div>
+
+<!-- HEADER -->
+<header class="entete">
+    <div class="logo">
+        <a href="index.php">
+            <img src="/images/allostage.png" alt="Accueil AlloStage" class="logo-img">
+        </a>
+    </div>
+
+    <nav class="navigation">
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="index.php?page=offres">Offres de stages</a></li>
+            <li><a href="index.php?page=entreprises" class="actif">Entreprises</a></li>
+
+            {% if session.user is defined and session.user.role == 'etudiant' %}
+                <li><a href="index.php?page=wishlist">Ma Wish-list</a></li>
+                <li><a href="index.php?page=mes-candidatures">Mes candidatures</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="actions-entete">
+        {% if session.user is defined %}
+            <button id="open-menu" class="btn-principal">
+                Espace {{ session.user.role_label ?? session.user.role|capitalize }} ▾
+            </button>
+        {% else %}
+            <a href="index.php?page=connexion" class="btn-connexion">
+                Se connecter
+            </a>
+        {% endif %}
+    </div>
+</header>
+
+<main class="contenu fond-gris">
+    <div class="conteneur-profil">
+
+        <a href="index.php?page=entreprises" class="lien-retour">
+            ← Retour à la liste
+        </a>
+
+        <!-- 🔥 HEADER ENTREPRISE -->
+        <div class="en-tete-profil boite-blanche">
+
+            <div class="logo-grand">
+                {{ entreprise.nom_entreprise|slice(0,2)|upper }}
+            </div>
+
+            <div class="infos-principales">
+                <h1>{{ entreprise.nom_entreprise }}</h1>
+                <p class="secteur-activite">{{ entreprise.domaine }}</p>
+
+                <div class="evaluation">
+                    ⭐⭐⭐⭐☆
+                    <span class="note-chiffre">4/5</span>
+                </div>
+            </div>
+
+            <div class="action-profil">
+                {% if session.user is defined and session.user.role == 'etudiant' %}
+                    <a href="index.php?page=entreprise-evaluer&id={{ entreprise.id_entreprise }}" class="btn-principal">
+                        Évaluer
+                    </a>
+                {% else %}
+                    <a href="index.php?page=connexion" class="btn-principal">
+                        Évaluer
+                    </a>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <div class="grille-profil">
+
+            <!-- 🔥 GAUCHE -->
+            <article class="colonne-gauche">
+
+                <div class="boite-blanche section-texte">
+                    <h2>Présentation</h2>
+
+                    <p>{{ entreprise.description }}</p>
+
+                    <h3>Pourquoi nous rejoindre ?</h3>
+                    <ul>
+                        <li>Environnement dynamique</li>
+                        <li>Encadrement professionnel</li>
+                        <li>Expérience enrichissante</li>
+                    </ul>
+                </div>
+
+            </article>
+
+            <!-- 🔥 DROITE -->
+            <aside class="colonne-droite">
+
+                <div class="boite-blanche infos-pratiques">
+                    <h3>Informations pratiques</h3>
+
+                    <ul class="liste-infos">
+                        <li><strong>📍</strong> {{ entreprise.ville }}</li>
+                        <li><strong>👥</strong> {{ entreprise.taille }} salariés</li>
+                        <li><strong>✉️</strong> {{ entreprise.email }}</li>
+                        <li><strong>📞</strong> {{ entreprise.telephone }}</li>
+                    </ul>
+                </div>
+
+                <!-- 🔥 OFFRES -->
+                <div class="boite-blanche offres-entreprise">
+                    <h3>Offres de stages ({{ offres|length }})</h3>
+
+                    {% for offre in offres %}
+                        <a href="index.php?page=offre&id={{ offre.id_offre }}" class="mini-carte-offre">
+                            <span class="titre-mini-offre">{{ offre.titre }}</span>
+                            <span class="tags-mini">
+                                📅 {{ offre.duree_stage }} semaines • 🛠 {{ offre.competence }}
+                            </span>
+                        </a>
+                    {% else %}
+                        <p>Aucune offre disponible</p>
+                    {% endfor %}
+
+                </div>
+
+            </aside>
+
+        </div>
+    </div>
+</main>
+
+<footer class="pied-de-page">
+    <p>&copy; 2026 AlloStage</p>
+</footer>
+<script>
+const openBtn  = document.getElementById('open-menu');
+const closeBtn = document.getElementById('close-menu');
+const menu     = document.getElementById('menu-burger');
+const overlay  = document.getElementById('menu-overlay');
+
+function openMenu() {
+    menu.classList.add('active');
+    overlay.classList.add('active');
+}
+
+function closeMenu() {
+    menu.classList.remove('active');
+    overlay.classList.remove('active');
+}
+
+if (openBtn)  openBtn.addEventListener('click', openMenu);
+if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+if (overlay)  overlay.addEventListener('click', closeMenu);
+</script>
+
+</body>
+</html>
