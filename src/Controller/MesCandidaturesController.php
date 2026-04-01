@@ -13,7 +13,7 @@ class MesCandidaturesController
 
     public function liste()
     {
-        // 🔐 sécurité (déjà gérée mais safe)
+        // sécurité 
         if (!isset($_SESSION['user'])) {
             header('Location: index.php?page=connexion');
             exit;
@@ -21,7 +21,7 @@ class MesCandidaturesController
 
         $id_user = $_SESSION['user']['id'];
 
-        // 📦 récupérer candidatures + offres + entreprise
+        // récupérer candidatures + offres + entreprise
         $stmt = $this->pdo->prepare("
             SELECT c.*, o.titre, e.nom_entreprise, e.ville
             FROM candidature c
@@ -34,7 +34,7 @@ class MesCandidaturesController
         $stmt->execute([$id_user]);
         $candidatures = $stmt->fetchAll();
 
-        // 🎨 rendu Twig
+        // rendu Twig
         echo $this->twig->render('mes-candidatures.html.twig', [
             'candidatures' => $candidatures
         ]);
