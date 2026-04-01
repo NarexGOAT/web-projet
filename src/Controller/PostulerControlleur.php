@@ -13,13 +13,13 @@ class PostulerController
     {
         session_start();
 
-        // 🔐 Vérifier connexion
+        //  Vérifier connexion
         if (!isset($_SESSION['user'])) {
             header('Location: index.php?page=connexion');
             exit;
         }
 
-        // 🔎 récupérer id offre
+        //  récupérer id offre
         if (!isset($_GET['id'])) {
             die("Offre introuvable");
         }
@@ -28,12 +28,12 @@ class PostulerController
         $id_user = $_SESSION['user']['id'];
 
         // =========================
-        // 🔥 TRAITEMENT FORMULAIRE
+        //  TRAITEMENT FORMULAIRE
         // =========================
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // =====================
-            // ❌ éviter double candidature
+            //  éviter double candidature
             // =====================
             $check = $this->pdo->prepare("
                 SELECT * FROM candidature 
@@ -46,7 +46,7 @@ class PostulerController
             }
 
             // =====================
-            // 📄 UPLOAD CV
+            //  UPLOAD CV
             // =====================
             $cv_name = null;
 
@@ -72,7 +72,7 @@ class PostulerController
             }
 
             // =====================
-            // 📄 UPLOAD LETTRE (lm)
+            //  UPLOAD LETTRE 
             // =====================
             $lm_name = null;
 
@@ -98,7 +98,7 @@ class PostulerController
             }
 
             // =====================
-            // 💾 INSERT BDD
+            //  INSERT BDD
             // =====================
             $stmt = $this->pdo->prepare("
                 INSERT INTO candidature 
@@ -114,7 +114,7 @@ class PostulerController
             ]);
 
             // =====================
-            // 🔁 REDIRECTION
+            //  REDIRECTION
             // =====================
             $_SESSION['success'] = "Candidature envoyée avec succès !";
 
@@ -123,7 +123,7 @@ class PostulerController
         }
 
         // =========================
-        // 📦 Récupérer l’offre
+        //  Récupérer l’offre
         // =========================
         $stmt = $this->pdo->prepare("
             SELECT * FROM offre WHERE id_offre = ?
@@ -136,7 +136,7 @@ class PostulerController
         }
 
         // =========================
-        // 🎨 AFFICHAGE TWIG
+        //  AFFICHAGE TWIG
         // =========================
         require 'views/postuler.html.twig';
     }
