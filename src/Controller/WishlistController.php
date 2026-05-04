@@ -21,6 +21,7 @@ class WishlistController
 
         $idUser = (int) $_SESSION['user']['id'];
 
+        // 1. On charge la wishlist avec les infos entreprises associées
         $sql = "
             SELECT 
                 o.*,
