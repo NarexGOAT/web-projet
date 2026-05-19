@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Candidature - {{ c.titre }}</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/mes-candidatures.css">
+</head>
+
+<body>
+
+<div id="menu-overlay" class="menu-overlay"></div>
+
+<div id="menu-burger" class="menu-burger">
+    <button id="close-menu" class="close-btn">✕</button>
+    <div class="menu-content">
+        <a href="index.php">🏠 Accueil</a>
+        <a href="index.php?page=offres">💼 Offres de stages</a>
+        <a href="index.php?page=entreprises">🏢 Entreprises</a>
+        <a href="index.php?page=statistiques">📊 Statistiques</a>
+
+        {% if session.user is defined %}
+            {% if session.user.role == 'etudiant' %}
+                <a href="index.php?page=wishlist">❤️ Ma Wish-list</a>
+                <a href="index.php?page=mes-candidatures">📄 Mes candidatures</a>
+            {% elseif session.user.role == 'recruteur' %}
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=candidatures-pilote">📁 Candidatures</a>
+            {% elseif session.user.role == 'admin' %}
+                <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+            {% endif %}
+        {% endif %}
+    </div>
+    <a href="index.php?page=logout" class="btn-logout">🔴 Déconnexion</a>
+</div>
+
+<header class="entete">
+    <div class="logo">
+        <a href="index.php">
+            <img src="/images/allostage.png" alt="Accueil AlloStage" class="logo-img">
+        </a>
+    </div>
+
+    <nav class="navigation">
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="index.php?page=offres">Offres de stages</a></li>
+            <li><a href="index.php?page=entreprises">Entreprises</a></li>
+            <li><a href="index.php?page=statistiques">Statistiques</a></li>
+        </ul>
+    </nav>
+
+    <div class="actions-entete">
+        {% if session.user is defined %}
+            <button id="open-menu" class="btn-principal">
+                Espace {{ session.user.role_label ?? session.user.role|capitalize }} ▾
+            </button>
+        {% else %}
+            <a href="index.php?page=connexion" class="btn-connexion">Se connecter</a>
+        {% endif %}
+    </div>
+</header>
+
+<main class="contenu fond-gris">
+
+    <div class="conteneur-detail-cand">
+
+        {% if session.user.role == 'etudiant' %}
+            <a href="index.php?page=mes-candidatures" class="lien-retour">← Retour à mes candidatures</a>
+        {% else %}
+            <a href="index.php?page=candidatures-pilote" class="lien-retour">← Retour aux candidatures</a>
+        {% endif %}
+
+        <div class="cand-header boite-blanche">
+            <div>
+                <h1>{{ c.titre }}</h1>
+                <p class="cand-meta">
+                    <strong>{{ c.nom_entreprise }}</strong>
+                    {% if c.ville %} • {{ c.ville }}{% endif %}
+                </p>
+                <p class="tags-mini">
+                    {% if c.duree_stage %}📅 {{ c.duree_stage }} sem.{% endif %}
+                    {% if c.competence %} • 🛠 {{ c.competence }}{% endif %}
+                    {% if c.remuneration %} • 💰 {{ c.remuneration }} €/mois{% endif %}
+                </p>
+            </div>
+            <a href="index.php?page=offre&id={{ c.id_offre }}" class="btn">Voir l'offre →</a>
+        </div>
+
+        <div class="grille-detail-cand">
+
+            <!-- INFOS ÉTUDIANT -->
+            <aside class="boite-blanche">
+                <h2>👤 Candidat</h2>
+                <div class="bloc-etudiant">
+                    <div class="avatar-grand">
+                        {{ (c.etudiant_prenom|slice(0,1) ~ c.etudiant_nom|slice(0,1))|upper }}
+                    </div>
+                    <p><strong>{{ c.etudiant_prenom }} {{ c.etudiant_nom }}</strong></p>
+                    <p>✉️ <a href="mailto:{{ c.etudiant_email }}">{{ c.etudiant_email }}</a></p>
+                </div>
+
+                <hr>
+
+                <h3>📅 Date d'envoi</h3>
+                <p>{{ c.date_envoi|date("d/m/Y à H:i") }}</p>
+
+                <hr>
+
+                <h3>📎 Documents</h3>
+                <ul class="liste-docs">
+                    {% if c.cv %}
+                        <li><a href="/uploads/cv/{{ c.cv }}" target="_blank" download>📄 Télécharger le CV</a></li>
+                    {% else %}
+                        <li class="manquant">📄 Aucun CV joint</li>
+                    {% endif %}
+
+                    {% if c.lm %}
+                        <li><a href="/uploads/lm/{{ c.lm }}" target="_blank" download>✉️ Télécharger la lettre (PDF)</a></li>
+                    {% elseif c.lm_texte %}
+                        <li>✉️ Lettre saisie en texte (voir ci-contre)</li>
+                    {% else %}
+                        <li class="manquant">✉️ Aucune lettre fournie</li>
+                    {% endif %}
+                </ul>
+            </aside>
+
+            <!-- VISUALISEUR -->
+            <section class="zone-visualiseur">
+
+                {% if c.cv %}
+                    <div class="boite-blanche bloc-pdf">
+                        <h2>📄 CV</h2>
+                        <embed src="/uploads/cv/{{ c.cv }}"
+                               type="application/pdf"
+                               width="100%" height="600px">
+                        <p class="hint-pdf">
+                            Si le PDF ne s'affiche pas,
+                            <a href="/uploads/cv/{{ c.cv }}" target="_blank">cliquez ici pour l'ouvrir</a>.
+                        </p>
+                    </div>
+                {% endif %}
+
+                {% if c.lm %}
+                    <div class="boite-blanche bloc-pdf">
+                        <h2>✉️ Lettre de motivation</h2>
+                        <embed src="/uploads/lm/{{ c.lm }}"
+                               type="application/pdf"
+                               width="100%" height="600px">
+                        <p class="hint-pdf">
+                            Si le PDF ne s'affiche pas,
+                            <a href="/uploads/lm/{{ c.lm }}" target="_blank">cliquez ici pour l'ouvrir</a>.
+                        </p>
+                    </div>
+                {% elseif c.lm_texte %}
+                    <div class="boite-blanche bloc-texte-lettre">
+                        <h2>✉️ Lettre de motivation</h2>
+                        <div class="lettre-texte">{{ c.lm_texte|nl2br }}</div>
+                    </div>
+                {% endif %}
+
+                {% if not c.cv and not c.lm and not c.lm_texte %}
+                    <div class="boite-blanche">
+                        <p>Aucun document joint à cette candidature.</p>
+                    </div>
+                {% endif %}
+
+            </section>
+
+        </div>
+    </div>
+</main>
+
+<footer class="pied-de-page">
+    <p>&copy; 2026 AlloStage. Tous droits réservés.</p>
+    <p class="liens-footer">
+        <a href="index.php?page=mentions">Mentions légales</a>
+    </p>
+</footer>
+
+<script>
+const openBtn  = document.getElementById('open-menu');
+const closeBtn = document.getElementById('close-menu');
+const menu     = document.getElementById('menu-burger');
+const overlay  = document.getElementById('menu-overlay');
+
+function openMenu()  { menu.classList.add('active');    overlay.classList.add('active'); }
+function closeMenu() { menu.classList.remove('active'); overlay.classList.remove('active'); }
+
+if (openBtn)  openBtn.addEventListener('click', openMenu);
+if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+if (overlay)  overlay.addEventListener('click', closeMenu);
+</script>
+
+</body>
+</html>

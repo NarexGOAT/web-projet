@@ -5,9 +5,15 @@ error_reporting(E_ALL);
 
 session_start();
 
+// ================= CONFIG =================
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/twig.php';
+
 // ================= ROLE CHECK =================
 function requireRole(array $roles)
 {
+    global $twig;
+
     if (!isset($_SESSION['user'])) {
         header('Location: index.php?page=connexion');
         exit;
@@ -15,14 +21,21 @@ function requireRole(array $roles)
 
     if (!in_array($_SESSION['user']['role'], $roles)) {
         http_response_code(403);
-        echo "⛔ Accès interdit";
+
+        // URL de retour : referer (si même domaine) sinon accueil
+        $retour = 'index.php';
+        if (!empty($_SERVER['HTTP_REFERER'])) {
+            $ref  = parse_url($_SERVER['HTTP_REFERER']);
+            $host = $_SERVER['HTTP_HOST'] ?? '';
+            if (!empty($ref['host']) && $ref['host'] === $host) {
+                $retour = $_SERVER['HTTP_REFERER'];
+            }
+        }
+
+        echo $twig->render('acces-refuse.html.twig', ['retour' => $retour]);
         exit;
     }
 }
-
-// ================= CONFIG =================
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../config/twig.php';
 
 // session dispo dans Twig
 $twig->addGlobal('session', $_SESSION);
@@ -36,6 +49,8 @@ require_once __DIR__ . '/../src/Controller/CandidatureController.php';
 require_once __DIR__ . '/../src/Controller/WishlistController.php';
 require_once __DIR__ . '/../src/Controller/MesCandidaturesController.php';
 require_once __DIR__ . '/../src/Controller/AdminController.php';
+require_once __DIR__ . '/../src/Controller/CompteController.php';
+require_once __DIR__ . '/../src/Controller/StatistiquesController.php';
 
 // ================= VARIABLES =================
 $page = $_GET['page'] ?? 'home';
@@ -62,6 +77,30 @@ switch ($page) {
         session_destroy();
         header('Location: index.php');
         exit;
+
+    case 'oubli':
+        (new AuthController($pdo, $twig))->oubli();
+        break;
+
+    case 'nouveau-mdp':
+        (new AuthController($pdo, $twig))->nouveauMdp();
+        break;
+
+    // ================= COMPTE =================
+    case 'compte':
+        requireRole(['etudiant', 'recruteur', 'admin']);
+        (new CompteController($pdo, $twig))->afficher();
+        break;
+
+    case 'compte-modifier':
+        requireRole(['etudiant', 'recruteur', 'admin']);
+        (new CompteController($pdo, $twig))->modifier();
+        break;
+
+    case 'compte-supprimer':
+        requireRole(['etudiant', 'recruteur', 'admin']);
+        (new CompteController($pdo, $twig))->supprimer();
+        break;
 
     // ================= OFFRES =================
     case 'offres':
@@ -124,12 +163,12 @@ switch ($page) {
         break;
         
     case 'entreprise-evaluer':
-        requireRole(['etudiant']);
+        requireRole(['admin', 'recruteur']);
         (new EntrepriseController($pdo, $twig))->evaluerForm();
         break;
 
     case 'entreprise-evaluer-submit':
-        requireRole(['etudiant']);
+        requireRole(['admin', 'recruteur']);
         (new EntrepriseController($pdo, $twig))->evaluerSubmit();
         break;
 
@@ -169,6 +208,24 @@ switch ($page) {
     case 'mes-candidatures':
         requireRole(['etudiant']);
         (new MesCandidaturesController($pdo, $twig))->liste();
+        break;
+
+    // SFx22 — candidatures des étudiants vues par le pilote
+    case 'candidatures-pilote':
+        requireRole(['recruteur']);
+        (new MesCandidaturesController($pdo, $twig))->listePilote();
+        break;
+
+    // SFx21/22 — Détail d'une candidature (étudiant proprio, pilote ou admin)
+    case 'candidature-detail':
+        requireRole(['etudiant', 'recruteur', 'admin']);
+        $id = (int) ($_GET['id'] ?? 0);
+        (new CandidatureController($pdo, $twig))->detail($id);
+        break;
+
+    // SFx11 — statistiques (tous, y compris anonyme)
+    case 'statistiques':
+        (new StatistiquesController($pdo, $twig))->index();
         break;
 
     // ================= ADMIN =================

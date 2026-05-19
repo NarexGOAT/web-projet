@@ -23,7 +23,11 @@ class OffreController
         }
 
         $stmt = $this->pdo->prepare("
-            SELECT o.*, e.nom_entreprise, e.ville, e.id_entreprise
+            SELECT o.*,
+                   e.nom_entreprise,
+                   e.ville,
+                   e.id_entreprise,
+                   (SELECT COUNT(*) FROM candidature c WHERE c.id_offre = o.id_offre) AS nb_candidatures
             FROM offre o
             JOIN entreprise e ON o.id_entreprise = e.id_entreprise
             WHERE o.id_offre = :id
@@ -181,6 +185,8 @@ class OffreController
             $description = trim($_POST['description'] ?? '');
             $competence = trim($_POST['competence'] ?? '');
             $dureeStage = trim($_POST['duree_stage'] ?? '');
+            $remuneration = $_POST['remuneration'] ?? '';
+            $remuneration = $remuneration === '' ? null : (float) $remuneration;
             $idEntreprise = (int) ($_POST['id_entreprise'] ?? 0);
 
             if (
@@ -191,12 +197,13 @@ class OffreController
                 $idEntreprise <= 0
             ) {
                 echo $this->twig->render('creer-offre.html.twig', [
-                    'erreur' => 'Tous les champs sont obligatoires.',
+                    'erreur' => 'Tous les champs obligatoires (*) doivent être remplis.',
                     'offre' => [
                         'titre' => $titre,
                         'description' => $description,
                         'competence' => $competence,
                         'duree_stage' => $dureeStage,
+                        'remuneration' => $remuneration,
                         'id_entreprise' => $idEntreprise
                     ],
                     'entreprises' => $entreprises
@@ -205,8 +212,8 @@ class OffreController
             }
 
             $sql = "
-                INSERT INTO offre (titre, description, competence, duree_stage, date_publication, id_entreprise)
-                VALUES (:titre, :description, :competence, :duree_stage, NOW(), :id_entreprise)
+                INSERT INTO offre (titre, description, competence, duree_stage, remuneration, date_publication, id_entreprise)
+                VALUES (:titre, :description, :competence, :duree_stage, :remuneration, NOW(), :id_entreprise)
             ";
 
             $stmt = $this->pdo->prepare($sql);
@@ -215,6 +222,7 @@ class OffreController
                 ':description' => $description,
                 ':competence' => $competence,
                 ':duree_stage' => $dureeStage,
+                ':remuneration' => $remuneration,
                 ':id_entreprise' => $idEntreprise
             ]);
 
@@ -264,6 +272,8 @@ class OffreController
             $description = trim($_POST['description'] ?? '');
             $competence = trim($_POST['competence'] ?? '');
             $dureeStage = trim($_POST['duree_stage'] ?? '');
+            $remuneration = $_POST['remuneration'] ?? '';
+            $remuneration = $remuneration === '' ? null : (float) $remuneration;
             $idEntreprise = (int) ($_POST['id_entreprise'] ?? 0);
 
             if (
@@ -274,13 +284,14 @@ class OffreController
                 $idEntreprise <= 0
             ) {
                 echo $this->twig->render('modifier-offre.html.twig', [
-                    'erreur' => 'Tous les champs sont obligatoires.',
+                    'erreur' => 'Tous les champs obligatoires (*) doivent être remplis.',
                     'offre' => [
                         'id_offre' => $id,
                         'titre' => $titre,
                         'description' => $description,
                         'competence' => $competence,
                         'duree_stage' => $dureeStage,
+                        'remuneration' => $remuneration,
                         'id_entreprise' => $idEntreprise
                     ],
                     'entreprises' => $entreprises
@@ -294,6 +305,7 @@ class OffreController
                     description = :description,
                     competence = :competence,
                     duree_stage = :duree_stage,
+                    remuneration = :remuneration,
                     id_entreprise = :id_entreprise
                 WHERE id_offre = :id_offre
             ";
@@ -304,6 +316,7 @@ class OffreController
                 ':description' => $description,
                 ':competence' => $competence,
                 ':duree_stage' => $dureeStage,
+                ':remuneration' => $remuneration,
                 ':id_entreprise' => $idEntreprise,
                 ':id_offre' => $id
             ]);
@@ -343,11 +356,10 @@ class OffreController
             exit;
         }
 
-        $stmt = $this->pdo->prepare("
-            DELETE FROM offre
-            WHERE id_offre = ?
-        ");
-        $stmt->execute([$id]);
+        $this->pdo->prepare("DELETE FROM candidature WHERE id_offre = ?")->execute([$id]);
+        $this->pdo->prepare("DELETE FROM wishlist WHERE id_offre = ?")->execute([$id]);
+
+        $this->pdo->prepare("DELETE FROM offre WHERE id_offre = ?")->execute([$id]);
 
         header('Location: index.php?page=gestion-offres&success=suppression');
         exit;

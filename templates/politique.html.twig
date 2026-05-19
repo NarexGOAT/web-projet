@@ -23,6 +23,7 @@
         <a href="index.php">🏠 Accueil</a>
         <a href="index.php?page=offres">💼 Offres de stages</a>
         <a href="index.php?page=entreprises">🏢 Entreprises</a>
+        <a href="index.php?page=statistiques">📊 Statistiques</a>
 
         {% if session.user is defined %}
 
@@ -62,6 +63,7 @@
             <li><a href="index.php" class="actif">Accueil</a></li>
             <li><a href="index.php?page=offres">Offres de stages</a></li>
             <li><a href="index.php?page=entreprises">Entreprises</a></li>
+            <li><a href="index.php?page=statistiques">Statistiques</a></li>
 
             {% if session.user is defined and session.user.role == 'etudiant' %}
                 <li><a href="index.php?page=wishlist">Ma Wish-list</a></li>

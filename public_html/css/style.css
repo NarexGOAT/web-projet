@@ -594,3 +594,33 @@ button {
 body {
     overflow-x: hidden;
 }
+
+/* Message "aucun résultat" pour la recherche dans les pages de gestion */
+.msg-aucun {
+    text-align: center;
+    color: #64748b;
+    font-style: italic;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+}
+/* ============ LIENS FOOTER (mentions légales, CGU, etc.) ============ */
+.pied-de-page .liens-footer {
+    margin-top: 8px;
+    font-size: 13px;
+    opacity: 0.85;
+}
+
+.pied-de-page .liens-footer a {
+    color: inherit;
+    text-decoration: none;
+    margin: 0 8px;
+    border-bottom: 1px dotted currentColor;
+    transition: opacity 0.2s, border-bottom-style 0.2s;
+}
+
+.pied-de-page .liens-footer a:hover {
+    opacity: 1;
+    border-bottom-style: solid;
+}

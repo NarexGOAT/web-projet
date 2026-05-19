@@ -23,6 +23,7 @@
         <a href="index.php">🏠 Accueil</a>
         <a href="index.php?page=offres">💼 Offres de stages</a>
         <a href="index.php?page=entreprises">🏢 Entreprises</a>
+        <a href="index.php?page=statistiques">📊 Statistiques</a>
 
         {% if session.user is defined %}
 
@@ -34,6 +35,7 @@
                 <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
                 <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
                 <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+                <a href="index.php?page=candidatures-pilote">📁 Candidatures</a>
             {% elseif session.user.role == 'admin' %}
                 <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
                 <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
@@ -64,6 +66,7 @@
             <li><a href="index.php">Accueil</a></li>
             <li><a href="index.php?page=offres">Offres de stages</a></li>
             <li><a href="index.php?page=entreprises">Entreprises</a></li>
+            <li><a href="index.php?page=statistiques">Statistiques</a></li>
         </ul>
     </nav>
 
@@ -88,8 +91,8 @@
         <h1>Gestion des entreprises</h1>
 
         <div class="barre-recherche">
-            <input type="text" placeholder="Rechercher une entreprise...">
-            <button class="btn-principal">Rechercher</button>
+            <input type="text" id="input-recherche" placeholder="Rechercher (nom, domaine, ville, email)...">
+            <button type="button" id="btn-reset-recherche" class="btn-principal">Réinitialiser</button>
         </div>
 
         <div class="ajout">
@@ -98,7 +101,7 @@
             </a>
         </div>
 
-        <table class="table-etudiants">
+        <table class="table-etudiants" id="table-recherche">
             <thead>
                 <tr>
                     <th>Nom</th>
@@ -111,7 +114,7 @@
 
             <tbody>
                 {% for entreprise in entreprises %}
-                    <tr>
+                    <tr data-search="{{ (entreprise.nom_entreprise ~ ' ' ~ entreprise.domaine ~ ' ' ~ (entreprise.ville ?? '') ~ ' ' ~ entreprise.email)|lower }}">
                         <td>{{ entreprise.nom_entreprise }}</td>
                         <td>{{ entreprise.domaine }}</td>
                         <td>{{ entreprise.ville ?? '-' }}</td>
@@ -140,6 +143,10 @@
             </tbody>
         </table>
 
+        <p id="msg-aucun-resultat" class="msg-aucun" style="display:none;">
+            Aucun résultat ne correspond à votre recherche.
+        </p>
+
     </div>
 
 </main>
@@ -147,6 +154,9 @@
 <!-- ================= FOOTER ================= -->
 <footer class="pied-de-page">
     <p>&copy; 2026 AlloStage</p>
+    <p class="liens-footer">
+        <a href="index.php?page=mentions">Mentions légales</a>
+    </p>
 </footer>
 
 <!-- ================= SCRIPT ================= -->
@@ -169,6 +179,31 @@ function closeMenu() {
 if (openBtn) openBtn.addEventListener('click', openMenu);
 if (closeBtn) closeBtn.addEventListener('click', closeMenu);
 if (overlay) overlay.addEventListener('click', closeMenu);
+
+// ============ RECHERCHE INSTANTANÉE ============
+(function() {
+    const input  = document.getElementById('input-recherche');
+    const btnRst = document.getElementById('btn-reset-recherche');
+    const table  = document.getElementById('table-recherche');
+    const msg    = document.getElementById('msg-aucun-resultat');
+    if (!input || !table) return;
+
+    const rows = table.querySelectorAll('tbody tr[data-search]');
+
+    function filtrer() {
+        const q = input.value.trim().toLowerCase();
+        let visible = 0;
+        rows.forEach(tr => {
+            const ok = !q || tr.dataset.search.includes(q);
+            tr.style.display = ok ? '' : 'none';
+            if (ok) visible++;
+        });
+        if (msg) msg.style.display = (rows.length > 0 && visible === 0) ? 'block' : 'none';
+    }
+
+    input.addEventListener('input', filtrer);
+    if (btnRst) btnRst.addEventListener('click', () => { input.value = ''; filtrer(); input.focus(); });
+})();
 </script>
 
 </body>

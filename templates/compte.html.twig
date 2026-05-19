@@ -43,7 +43,7 @@
 
         <div class="groupe-champ">
           <label for="role">Rôle</label>
-          <input type="text" id="role" value="{{ session.role ?? 'Utilisateur' }}" readonly class="champ-readonly">
+          <input type="text" id="role" value="{{ session.user.role_label ?? 'Utilisateur' }}" readonly class="champ-readonly">
         </div>
 
         <div class="grille-formulaire">

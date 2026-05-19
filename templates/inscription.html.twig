@@ -95,6 +95,49 @@
 
         </div>
 
+        <!-- PILOTE — admin : sélectionne / recruteur : auto (lui-même) -->
+        {% if session.user is defined and session.user.role == 'admin' %}
+            <div class="input-group" id="bloc-pilote">
+                <label for="id_pilote">
+                    Pilote rattaché <span style="color:#ff4757;">*</span>
+                </label>
+                <select name="id_pilote" id="id_pilote" class="champ-saisie"
+                        style="width: 100%; border: none; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; font-size: 14px; outline: none; background: transparent; color: #6c757d;">
+                    <option value="">— Choisir un pilote —</option>
+                    {% for p in pilotes ?? [] %}
+                        <option value="{{ p.id_user }}" {{ (old.id_pilote ?? '') == p.id_user ? 'selected' : '' }}>
+                            {{ p.prenom }} {{ p.nom }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <small style="display:block; margin-top:6px; color:#94a3b8; font-size:12px;">
+                    Obligatoire pour les étudiants — l'étudiant sera suivi par ce pilote.
+                </small>
+            </div>
+
+        {% elseif session.user is defined and session.user.role == 'recruteur' and pilote_actuel %}
+            <!-- Pilote auto-assigné (lui-même) - lecture seule -->
+            <div class="input-group">
+                <label>Pilote rattaché</label>
+                <div style="display:flex; align-items:center; gap:10px; padding: 10px 12px;
+                            background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px;
+                            color:#1e3a8a; font-size:14px;">
+                    <span style="width:32px; height:32px; border-radius:50%;
+                                 background:linear-gradient(135deg,#3b82f6,#1e3a8a); color:#fff;
+                                 display:inline-flex; align-items:center; justify-content:center;
+                                 font-weight:700; font-size:13px;">
+                        {{ (pilote_actuel.prenom|slice(0,1) ~ pilote_actuel.nom|slice(0,1))|upper }}
+                    </span>
+                    <span>
+                        <strong>{{ pilote_actuel.prenom }} {{ pilote_actuel.nom }}</strong> (vous)
+                        <small style="display:block; color:#64748b; font-size:12px; margin-top:2px;">
+                            L'étudiant sera automatiquement rattaché à votre suivi.
+                        </small>
+                    </span>
+                </div>
+            </div>
+        {% endif %}
+
         <!-- MOT DE PASSE -->
         <div class="input-group">
             <label for="mot_de_passe">Mot de passe</label>
@@ -157,6 +200,22 @@ function togglePassword(iconId, inputId) {
 
 togglePassword('icone-oeil-1', 'mot_de_passe');
 togglePassword('icone-oeil-2', 'confirm_mot_de_passe');
+
+// Cacher/afficher le bloc pilote selon le rôle choisi (côté admin uniquement)
+const selectRole  = document.getElementById('role');
+const blocPilote  = document.getElementById('bloc-pilote');
+const inputPilote = document.getElementById('id_pilote');
+
+function toggleBlocPilote() {
+    if (!blocPilote || !selectRole) return;
+    const estEtudiant = selectRole.value === 'etudiant';
+    blocPilote.style.display = estEtudiant ? '' : 'none';
+    if (inputPilote) inputPilote.required = estEtudiant;
+}
+if (selectRole) {
+    selectRole.addEventListener('change', toggleBlocPilote);
+    toggleBlocPilote();
+}
 </script>
 
 </body>

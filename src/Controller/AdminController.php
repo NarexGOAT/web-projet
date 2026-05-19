@@ -83,7 +83,7 @@ class AdminController
     public function formModifierEtudiant($id)
     {
         $stmt = $this->pdo->prepare("
-            SELECT id_user, nom, prenom, email
+            SELECT id_user, nom, prenom, email, id_pilote
             FROM utilisateur
             WHERE id_user = :id AND id_role = :role
         ");
@@ -98,8 +98,16 @@ class AdminController
             die("Étudiant introuvable");
         }
 
+        $pilotes = $this->pdo->query("
+            SELECT id_user, nom, prenom
+            FROM utilisateur
+            WHERE id_role = 2
+            ORDER BY nom, prenom
+        ")->fetchAll();
+
         echo $this->twig->render('modifier-etudiant.html.twig', [
-            'etudiant' => $etudiant
+            'etudiant' => $etudiant,
+            'pilotes'  => $pilotes
         ]);
     }
 
@@ -111,16 +119,19 @@ class AdminController
         $nom = $_POST['nom'] ?? '';
         $prenom = $_POST['prenom'] ?? '';
         $email = $_POST['email'] ?? '';
+        $idPilote = $_POST['id_pilote'] ?? '';
+        $idPilote = $idPilote === '' ? null : (int) $idPilote;
 
         $stmt = $this->pdo->prepare("
             UPDATE utilisateur
-            SET nom = :nom, prenom = :prenom, email = :email
+            SET nom = :nom, prenom = :prenom, email = :email, id_pilote = :id_pilote
             WHERE id_user = :id AND id_role = :role
         ");
 
         $stmt->bindValue(':nom', $nom);
         $stmt->bindValue(':prenom', $prenom);
         $stmt->bindValue(':email', $email);
+        $stmt->bindValue(':id_pilote', $idPilote, $idPilote === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->bindValue(':role', self::ROLE_ETUDIANT, PDO::PARAM_INT);
 

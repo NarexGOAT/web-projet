@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlloStage - Statistiques</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/statistiques.css">
+</head>
+
+<body>
+
+<div id="menu-overlay" class="menu-overlay"></div>
+
+<div id="menu-burger" class="menu-burger">
+    <button id="close-menu" class="close-btn">✕</button>
+    <div class="menu-content">
+        <a href="index.php">🏠 Accueil</a>
+        <a href="index.php?page=offres">💼 Offres de stages</a>
+        <a href="index.php?page=entreprises">🏢 Entreprises</a>
+        <a href="index.php?page=statistiques">📊 Statistiques</a>
+        {% if session.user is defined %}
+            {% if session.user.role == 'etudiant' %}
+                <a href="index.php?page=wishlist">❤️ Ma Wish-list</a>
+                <a href="index.php?page=mes-candidatures">📄 Mes candidatures</a>
+            {% elseif session.user.role == 'recruteur' %}
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+                <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+                <a href="index.php?page=candidatures-pilote">📁 Candidatures</a>
+            {% elseif session.user.role == 'admin' %}
+                <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
+                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+                <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+                <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+            {% endif %}
+        {% endif %}
+    </div>
+    <a href="index.php?page=logout" class="btn-logout">🔴 Déconnexion</a>
+</div>
+
+<header class="entete">
+    <div class="logo">
+        <a href="index.php">
+            <img src="/images/allostage.png" alt="Accueil AlloStage" class="logo-img">
+        </a>
+    </div>
+
+    <nav class="navigation">
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="index.php?page=offres">Offres de stages</a></li>
+            <li><a href="index.php?page=entreprises">Entreprises</a></li>
+            <li><a href="index.php?page=statistiques" class="actif">Statistiques</a></li>
+        </ul>
+    </nav>
+
+    <div class="actions-entete">
+        {% if session.user is defined %}
+            <button id="open-menu" class="btn-principal">
+                Espace {{ session.user.role_label ?? session.user.role|capitalize }} ▾
+            </button>
+        {% else %}
+            <a href="index.php?page=connexion" class="btn-connexion">Se connecter</a>
+        {% endif %}
+    </div>
+</header>
+
+<main class="contenu fond-gris">
+
+    <section class="stats-hero">
+        <h1>📊 Statistiques des offres</h1>
+        <p>Une vue d'ensemble des stages disponibles sur AlloStage.</p>
+    </section>
+
+    <section class="carrousel-section">
+
+        <div class="carrousel" id="carrousel">
+
+            <button class="carrousel-btn carrousel-prev" id="prevBtn" aria-label="Précédent">‹</button>
+
+            <div class="carrousel-viewport">
+                <div class="carrousel-track" id="track">
+
+                    {# ============ Carte 1 — Total offres ============ #}
+                    <article class="carrousel-slide slide-total">
+                        <div class="slide-icon">📋</div>
+                        <h2>Total des offres disponibles</h2>
+                        <p class="big-number" data-target="{{ total_offres }}">0</p>
+                        <p class="subtitle">offres publiées sur la plateforme</p>
+                    </article>
+
+                    {# ============ Carte 2 — Moyenne candidatures ============ #}
+                    <article class="carrousel-slide slide-moyenne">
+                        <div class="slide-icon">📨</div>
+                        <h2>Candidatures moyennes par offre</h2>
+                        <p class="big-number" data-target="{{ moyenne_candidatures }}" data-decimals="2">0</p>
+                        <p class="subtitle">candidatures reçues en moyenne par offre</p>
+                    </article>
+
+                    {# ============ Carte 3 — Répartition durée ============ #}
+                    <article class="carrousel-slide slide-duree">
+                        <div class="slide-icon">⏱️</div>
+                        <h2>Répartition par durée de stage</h2>
+                        {% set total_reparti = 0 %}
+                        {% for r in repartition_duree %}{% set total_reparti = total_reparti + r.nb %}{% endfor %}
+
+                        {% if total_reparti == 0 %}
+                            <p class="empty-state">Aucune offre avec une durée renseignée.</p>
+                        {% else %}
+                            <ul class="bar-list">
+                                {% for r in repartition_duree %}
+                                    {% set pct = max_duree > 0 ? (r.nb / max_duree * 100) : 0 %}
+                                    <li>
+                                        <span class="bar-label">{{ r.label }}</span>
+                                        <span class="bar">
+                                            <span class="bar-fill" style="--target-width: {{ pct }}%"></span>
+                                        </span>
+                                        <span class="bar-value">{{ r.nb }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </article>
+
+                    {# ============ Carte 4 — Top wishlist ============ #}
+                    <article class="carrousel-slide slide-wishlist">
+                        <div class="slide-icon">❤️</div>
+                        <h2>Top 5 des offres les plus en wish-list</h2>
+                        {% if top_wishlist is empty %}
+                            <p class="empty-state">Aucune offre n'est encore dans une wish-list.</p>
+                        {% else %}
+                            <ol class="top-list">
+                                {% for o in top_wishlist %}
+                                    <li>
+                                        <div class="top-info">
+                                            <strong>{{ o.titre }}</strong>
+                                            {% if o.nom_entreprise %}
+                                                <span class="top-ent">{{ o.nom_entreprise }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <span class="badge">❤ {{ o.nb }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        {% endif %}
+                    </article>
+
+                </div>
+            </div>
+
+            <button class="carrousel-btn carrousel-next" id="nextBtn" aria-label="Suivant">›</button>
+
+            <div class="carrousel-progress"><span class="carrousel-progress-bar" id="progBar"></span></div>
+
+        </div>
+
+        <div class="carrousel-dots" id="dots"></div>
+
+        <p class="carrousel-hint">Utilisez ← → ou glissez pour naviguer</p>
+
+    </section>
+
+</main>
+
+<footer class="pied-de-page">
+    <p>&copy; 2026 AlloStage. Tous droits réservés.</p>
+    <p class="liens-footer">
+        <a href="index.php?page=mentions">Mentions légales</a>
+    </p>
+</footer>
+
+<script>
+const openBtn  = document.getElementById('open-menu');
+const closeBtn = document.getElementById('close-menu');
+const menu     = document.getElementById('menu-burger');
+const overlay  = document.getElementById('menu-overlay');
+
+function openMenu()  { menu.classList.add('active');    overlay.classList.add('active'); }
+function closeMenu() { menu.classList.remove('active'); overlay.classList.remove('active'); }
+
+if (openBtn)  openBtn.addEventListener('click', openMenu);
+if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+if (overlay)  overlay.addEventListener('click', closeMenu);
+
+// ============= CARROUSEL =============
+const carrousel = document.getElementById('carrousel');
+const track     = document.getElementById('track');
+const slides    = track ? track.querySelectorAll('.carrousel-slide') : [];
+const prevBtn   = document.getElementById('prevBtn');
+const nextBtn   = document.getElementById('nextBtn');
+const dotsCt    = document.getElementById('dots');
+const progBar   = document.getElementById('progBar');
+
+let index = 0;
+let autoTimer = null;
+const AUTO_MS = 6000;
+
+function goTo(i) {
+    index = (i + slides.length) % slides.length;
+    track.style.transform = `translateX(-${index * 100}%)`;
+    [...dotsCt.children].forEach((d, k) => d.classList.toggle('active', k === index));
+    slides.forEach((s, k) => s.classList.toggle('current', k === index));
+    animateCurrentSlide();
+    restartAuto();
+}
+function next() { goTo(index + 1); }
+function prev() { goTo(index - 1); }
+
+function startAuto() {
+    stopAuto();
+    progBar.style.transition = 'none';
+    progBar.style.width = '0%';
+    // force reflow
+    void progBar.offsetWidth;
+    progBar.style.transition = `width ${AUTO_MS}ms linear`;
+    progBar.style.width = '100%';
+    autoTimer = setTimeout(next, AUTO_MS);
+}
+function stopAuto() {
+    if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+    progBar.style.transition = 'none';
+    progBar.style.width = '0%';
+}
+function restartAuto() {
+    if (autoTimer !== null || !carrousel.classList.contains('paused')) {
+        startAuto();
+    }
+}
+
+// ===== Animations carte courante =====
+function animateCurrentSlide() {
+    const slide = slides[index];
+    if (!slide) return;
+
+    // count-up des big-numbers
+    slide.querySelectorAll('.big-number').forEach(el => {
+        const target   = parseFloat(el.dataset.target || '0');
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        const duration = 900;
+        const startTs  = performance.now();
+        function tick(now) {
+            const p = Math.min(1, (now - startTs) / duration);
+            const eased = 1 - Math.pow(1 - p, 3);
+            const v = target * eased;
+            el.textContent = decimals > 0 ? v.toFixed(decimals) : Math.round(v).toString();
+            if (p < 1) requestAnimationFrame(tick);
+            else el.textContent = decimals > 0 ? target.toFixed(decimals) : Math.round(target).toString();
+        }
+        requestAnimationFrame(tick);
+    });
+
+    // remplissage des barres
+    slide.querySelectorAll('.bar-fill').forEach((el, i) => {
+        const target = el.style.getPropertyValue('--target-width') || '0%';
+        el.style.width = '0%';
+        setTimeout(() => { el.style.width = target; }, 80 + i * 60);
+    });
+
+    // apparition des items top-list
+    slide.querySelectorAll('.top-list li').forEach((el, i) => {
+        el.style.animation = 'none';
+        void el.offsetWidth;
+        el.style.animation = `slideInUp 0.45s ease ${i * 80}ms both`;
+    });
+}
+
+if (slides.length) {
+    // dots
+    slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'dot';
+        dot.setAttribute('aria-label', 'Aller au slide ' + (i + 1));
+        dot.addEventListener('click', () => goTo(i));
+        dotsCt.appendChild(dot);
+    });
+
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next);
+
+    // clavier
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft')  prev();
+        if (e.key === 'ArrowRight') next();
+    });
+
+    // touch / swipe
+    let touchX = null;
+    track.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, {passive:true});
+    track.addEventListener('touchend',   e => {
+        if (touchX === null) return;
+        const dx = e.changedTouches[0].clientX - touchX;
+        if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); }
+        touchX = null;
+    });
+
+    // pause au survol
+    carrousel.addEventListener('mouseenter', () => { carrousel.classList.add('paused'); stopAuto(); });
+    carrousel.addEventListener('mouseleave', () => { carrousel.classList.remove('paused'); startAuto(); });
+
+    // init
+    goTo(0);
+}
+</script>
+
+</body>
+</html>

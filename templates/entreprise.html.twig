@@ -23,6 +23,7 @@
         <a href="index.php">🏠 Accueil</a>
         <a href="index.php?page=offres">💼 Offres de stages</a>
         <a href="index.php?page=entreprises">🏢 Entreprises</a>
+        <a href="index.php?page=statistiques">📊 Statistiques</a>
 
         {% if session.user is defined %}
 
@@ -34,6 +35,7 @@
                 <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
                 <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
                 <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+                <a href="index.php?page=candidatures-pilote">📁 Candidatures</a>
             {% elseif session.user.role == 'admin' %}
                 <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
                 <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
@@ -64,6 +66,7 @@
             <li><a href="index.php">Accueil</a></li>
             <li><a href="index.php?page=offres">Offres de stages</a></li>
             <li><a href="index.php?page=entreprises" class="actif">Entreprises</a></li>
+            <li><a href="index.php?page=statistiques">Statistiques</a></li>
 
             {% if session.user is defined and session.user.role == 'etudiant' %}
                 <li><a href="index.php?page=wishlist">Ma Wish-list</a></li>
@@ -104,18 +107,28 @@
                 <p class="secteur-activite">{{ entreprise.domaine }}</p>
 
                 <div class="evaluation">
-                    ⭐⭐⭐⭐☆
-                    <span class="note-chiffre">4/5</span>
+                    {% set moy = evaluation.moyenne ?? 0 %}
+                    {% if moy > 0 %}
+                        {% set pleines = moy|round(0, 'floor') %}
+                        {% for i in 1..5 %}
+                            {% if i <= pleines %}⭐{% else %}☆{% endif %}
+                        {% endfor %}
+                        <span class="note-chiffre">{{ moy }}/5</span>
+                        <span class="note-total">({{ evaluation.total }} avis)</span>
+                    {% else %}
+                        ☆☆☆☆☆
+                        <span class="note-chiffre">Pas encore évaluée</span>
+                    {% endif %}
                 </div>
+
+                <p class="stat-stagiaires">
+                    👥 <strong>{{ nb_stagiaires }}</strong> stagiaire(s) ont postulé à cette entreprise
+                </p>
             </div>
 
             <div class="action-profil">
-                {% if session.user is defined and session.user.role == 'etudiant' %}
+                {% if session.user is defined and session.user.role in ['admin', 'recruteur'] %}
                     <a href="index.php?page=entreprise-evaluer&id={{ entreprise.id_entreprise }}" class="btn-principal">
-                        Évaluer
-                    </a>
-                {% else %}
-                    <a href="index.php?page=connexion" class="btn-principal">
                         Évaluer
                     </a>
                 {% endif %}
@@ -182,6 +195,9 @@
 
 <footer class="pied-de-page">
     <p>&copy; 2026 AlloStage</p>
+    <p class="liens-footer">
+        <a href="index.php?page=mentions">Mentions légales</a>
+    </p>
 </footer>
 <script>
 const openBtn  = document.getElementById('open-menu');

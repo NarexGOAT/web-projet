@@ -1,8 +1,8 @@
 <?php
 
 $host = 'localhost';
-$dbname = 'u593710153_allostagedb';
-$username = 'u593710153_allostage';
+$dbname = 'u593710153_allostagetest';
+$username = 'u593710153_allostagetest';
 $password = 'PourandeePrime2017!';
 
 try {

@@ -23,7 +23,7 @@
       <a class="navigation-menu__lien" href="index.php?page=offres">Offres</a>
       <a class="navigation-menu__lien" href="index.php?page=entreprises">Entreprises</a>
       <a class="navigation-menu__lien2" href="index.php?page=wishlist">Wishlist</a>
-      <a class="navigation-menu__lien" href="index.php?page=candidatures">Candidatures</a>
+      <a class="navigation-menu__lien" href="index.php?page=mes-candidatures">Candidatures</a>
 
       {% if session.role is defined and session.role in ['admin', 'recruteur'] %}
         <a class="navigation-menu__lien" href="index.php?page=entreprise-creer">Créer une entreprise</a>
@@ -35,9 +35,9 @@
     </nav>
 
     <div class="actions-menu">
-      {% if session.user_id is defined %}
+      {% if session.user is defined %}
         <p class="bonjour-texte">
-          Bonjour {{ session.user_prenom|e }}
+          Bonjour {{ session.user.prenom|e }}
         </p>
 
         <a class="navigation-menu__lien" href="index.php?page=compte">

@@ -34,6 +34,20 @@
                 <input type="email" name="email" value="{{ etudiant.email }}" required>
             </div>
 
+            {% if session.user is defined and session.user.role == 'admin' %}
+                <div class="groupe">
+                    <label>Pilote rattaché</label>
+                    <select name="id_pilote">
+                        <option value="">— Aucun —</option>
+                        {% for p in pilotes ?? [] %}
+                            <option value="{{ p.id_user }}" {{ etudiant.id_pilote == p.id_user ? 'selected' : '' }}>
+                                {{ p.prenom }} {{ p.nom }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+
             <div class="actions">
                 <a href="index.php?page=gestion-etudiants" class="btn-annuler">
                     Annuler

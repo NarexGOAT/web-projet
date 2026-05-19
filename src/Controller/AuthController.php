@@ -144,16 +144,28 @@ class AuthController
                 }
             }
 
+            // 🎯 Admin créant un étudiant → pilote obligatoire
+            if (empty($erreurs)
+                && isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin'
+                && $idRole === 1
+                && empty($_POST['id_pilote'])
+            ) {
+                $erreurs[] = "Vous devez rattacher l'étudiant à un pilote.";
+            }
+
             if (!empty($erreurs)) {
                 echo $this->twig->render('inscription.html.twig', [
                     'erreurs' => $erreurs,
                     'old' => [
-                        'nom'    => $nom,
-                        'prenom' => $prenom,
-                        'email'  => $email,
-                        'role'   => $_POST['role'] ?? 'etudiant'
+                        'nom'       => $nom,
+                        'prenom'    => $prenom,
+                        'email'     => $email,
+                        'role'      => $_POST['role'] ?? 'etudiant',
+                        'id_pilote' => $_POST['id_pilote'] ?? ''
                     ],
-                    'redirect' => $redirect
+                    'redirect'        => $redirect,
+                    'pilotes'         => $this->getPilotes(),
+                    'pilote_actuel'   => $this->getPiloteActuel(),
                 ]);
                 return;
             }
@@ -161,10 +173,21 @@ class AuthController
             // 🔐 HASH MDP
             $hash = password_hash($mdp, PASSWORD_DEFAULT);
 
+            // 👨‍✈️ pilote rattaché : si pilote inscrit un étudiant → lui-même
+            //                       si admin → valeur du formulaire si fournie
+            $idPilote = null;
+            if ($idRole === 1 && isset($_SESSION['user'])) {
+                if ($_SESSION['user']['role'] === 'recruteur') {
+                    $idPilote = (int) $_SESSION['user']['id'];
+                } elseif ($_SESSION['user']['role'] === 'admin' && !empty($_POST['id_pilote'])) {
+                    $idPilote = (int) $_POST['id_pilote'];
+                }
+            }
+
             // 💾 INSERT
             $stmt = $this->pdo->prepare("
-                INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, id_role)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, id_role, id_pilote)
+                VALUES (?, ?, ?, ?, ?, ?)
             ");
 
             $stmt->execute([
@@ -172,7 +195,8 @@ class AuthController
                 $prenom,
                 $email,
                 $hash,
-                $idRole
+                $idRole,
+                $idPilote
             ]);
 
             // 🔁 REDIRECTION INTELLIGENTE
@@ -182,8 +206,38 @@ class AuthController
 
         // GET
         echo $this->twig->render('inscription.html.twig', [
-            'redirect' => $_GET['redirect'] ?? null
+            'redirect'      => $_GET['redirect'] ?? null,
+            'pilotes'       => $this->getPilotes(),
+            'pilote_actuel' => $this->getPiloteActuel(),
         ]);
+    }
+
+    private function getPilotes(): array
+    {
+        $stmt = $this->pdo->query("
+            SELECT id_user, nom, prenom
+            FROM utilisateur
+            WHERE id_role = 2
+            ORDER BY nom, prenom
+        ");
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Retourne les infos du pilote actuellement connecté (recruteur),
+     * sinon null. Sert à afficher "Pilote rattaché : Prénom Nom" dans
+     * le formulaire d'inscription côté pilote.
+     */
+    private function getPiloteActuel(): ?array
+    {
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'recruteur') {
+            return null;
+        }
+        return [
+            'id'     => (int) $_SESSION['user']['id'],
+            'nom'    => $_SESSION['user']['nom']    ?? '',
+            'prenom' => $_SESSION['user']['prenom'] ?? '',
+        ];
     }
 
     // =========================

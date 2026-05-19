@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mes candidatures - AlloStage</title>
+    <title>Candidatures de mes étudiants - AlloStage</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/mes-candidatures.css">
 </head>
@@ -18,19 +18,10 @@
         <a href="index.php?page=offres">💼 Offres de stages</a>
         <a href="index.php?page=entreprises">🏢 Entreprises</a>
         <a href="index.php?page=statistiques">📊 Statistiques</a>
-
-        {% if session.user is defined %}
-            {% if session.user.role == 'etudiant' %}
-                <a href="index.php?page=wishlist">❤️ Ma Wish-list</a>
-                <a href="index.php?page=mes-candidatures">📄 Mes candidatures</a>
-            {% elseif session.user.role == 'recruteur' %}
-                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
-                <a href="index.php?page=candidatures-pilote">📁 Candidatures</a>
-            {% elseif session.user.role == 'admin' %}
-                <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
-                <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
-            {% endif %}
-        {% endif %}
+        <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
+        <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
+        <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+        <a href="index.php?page=candidatures-pilote">📁 Candidatures</a>
     </div>
     <a href="index.php?page=logout" class="btn-logout">🔴 Déconnexion</a>
 </div>
@@ -48,11 +39,7 @@
             <li><a href="index.php?page=offres">Offres de stages</a></li>
             <li><a href="index.php?page=entreprises">Entreprises</a></li>
             <li><a href="index.php?page=statistiques">Statistiques</a></li>
-
-            {% if session.user is defined and session.user.role == 'etudiant' %}
-                <li><a href="index.php?page=wishlist">Ma Wish-list</a></li>
-                <li><a href="index.php?page=mes-candidatures" class="actif">Mes candidatures</a></li>
-            {% endif %}
+            <li><a href="index.php?page=candidatures-pilote" class="actif">Candidatures</a></li>
         </ul>
     </nav>
 
@@ -70,31 +57,55 @@
 <main class="contenu fond-gris">
 
     <section class="en-tete-recherche">
-        <h1>📄 Mes candidatures</h1>
-        <p>Retrouvez ici l'historique de toutes vos candidatures envoyées
-           ({{ candidatures|length }} au total).</p>
+        <h1>📁 Candidatures de mes étudiants</h1>
+        <p>Liste des offres auxquelles vos étudiants ont postulé
+           ({{ total }} candidature{{ total > 1 ? 's' : '' }}).</p>
     </section>
 
-    {% if flash_ok %}<div class="flash flash-ok">✅ {{ flash_ok }}</div>{% endif %}
-    {% if flash_err %}<div class="flash flash-err">⚠️ {{ flash_err }}</div>{% endif %}
-
-    <section class="conteneur-liste">
-
-        {% if candidatures is empty %}
+    {% if candidatures is empty %}
+        <section class="conteneur-liste">
             <div class="empty-box">
-                <p>Tu n'as encore postulé à aucune offre 😕</p>
-                <a href="index.php?page=offres" class="btn-primary">Découvrir les offres</a>
+                <p>Aucun de vos étudiants n'a encore postulé à une offre.</p>
             </div>
-        {% else %}
-            <div class="list">
+        </section>
+    {% else %}
+
+        <section class="filtres-candidatures">
+            <div class="filtre-group">
+                <label for="filtre-etudiant">👤 Étudiant :</label>
+                <select id="filtre-etudiant">
+                    <option value="">— Tous —</option>
+                    {% for e in etudiants %}
+                        <option value="{{ e.id }}">{{ e.nom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filtre-group">
+                <label for="filtre-recherche">🔍 Rechercher :</label>
+                <input type="text" id="filtre-recherche" placeholder="Titre, entreprise...">
+            </div>
+        </section>
+
+        <section class="conteneur-liste">
+            <div class="list" id="liste-candidatures">
                 {% for c in candidatures %}
-                    <div class="card">
+                    <div class="card carte-cand"
+                         data-etudiant="{{ c.etudiant_id }}"
+                         data-search="{{ (c.titre ~ ' ' ~ c.nom_entreprise ~ ' ' ~ c.etudiant_prenom ~ ' ' ~ c.etudiant_nom)|lower }}">
 
                         <div class="left">
+                            <div class="ligne-etudiant">
+                                <span class="avatar-mini">{{ (c.etudiant_prenom|slice(0,1) ~ c.etudiant_nom|slice(0,1))|upper }}</span>
+                                <span>
+                                    <strong>{{ c.etudiant_prenom }} {{ c.etudiant_nom }}</strong>
+                                    <span class="mail">{{ c.etudiant_email }}</span>
+                                </span>
+                            </div>
+
                             <h3 class="titre-offre">{{ c.titre }}</h3>
                             <p class="entreprise-offre">
-                                <strong>{{ c.nom_entreprise }}</strong>
-                                {% if c.ville %} • {{ c.ville }}{% endif %}
+                                <strong>{{ c.nom_entreprise }}</strong>{% if c.ville %} • {{ c.ville }}{% endif %}
                             </p>
                             <p class="tags-mini">
                                 {% if c.duree_stage %}📅 {{ c.duree_stage }} sem.{% endif %}
@@ -106,6 +117,8 @@
                         <div class="right">
                             {% if c.cv %}
                                 <a href="/uploads/cv/{{ c.cv }}" target="_blank" class="btn">📄 CV</a>
+                            {% else %}
+                                <span class="btn btn-disabled" title="Aucun CV joint">CV ✕</span>
                             {% endif %}
 
                             {% if c.lm %}
@@ -114,6 +127,8 @@
                                 <button type="button" class="btn btn-lettre"
                                         onclick="ouvrirLettre({{ c.id_candidature }})">✉️ Voir lettre</button>
                                 <template id="lettre-{{ c.id_candidature }}">{{ c.lm_texte }}</template>
+                            {% else %}
+                                <span class="btn btn-disabled" title="Pas de lettre">Lettre ✕</span>
                             {% endif %}
 
                             <a href="index.php?page=candidature-detail&id={{ c.id_candidature }}"
@@ -122,8 +137,12 @@
                     </div>
                 {% endfor %}
             </div>
-        {% endif %}
-    </section>
+
+            <p id="aucun-resultat" class="empty-filtre" style="display:none;">
+                Aucune candidature ne correspond à votre recherche.
+            </p>
+        </section>
+    {% endif %}
 </main>
 
 <!-- Modal lettre texte -->
@@ -154,6 +173,29 @@ function closeMenu() { menu.classList.remove('active'); overlay.classList.remove
 if (openBtn)  openBtn.addEventListener('click', openMenu);
 if (closeBtn) closeBtn.addEventListener('click', closeMenu);
 if (overlay)  overlay.addEventListener('click', closeMenu);
+
+// Filtre étudiant + recherche
+const selEt   = document.getElementById('filtre-etudiant');
+const inputQ  = document.getElementById('filtre-recherche');
+const cartes  = document.querySelectorAll('.carte-cand');
+const aucun   = document.getElementById('aucun-resultat');
+
+function appliquerFiltres() {
+    const eid = selEt ? selEt.value : '';
+    const q   = inputQ ? inputQ.value.trim().toLowerCase() : '';
+    let visibles = 0;
+    cartes.forEach(c => {
+        const okE = !eid || c.dataset.etudiant === eid;
+        const okQ = !q   || c.dataset.search.includes(q);
+        const show = okE && okQ;
+        c.style.display = show ? '' : 'none';
+        if (show) visibles++;
+    });
+    if (aucun) aucun.style.display = visibles === 0 ? 'block' : 'none';
+}
+
+if (selEt)  selEt.addEventListener('change', appliquerFiltres);
+if (inputQ) inputQ.addEventListener('input',  appliquerFiltres);
 
 // Modal lettre
 const modalLettre  = document.getElementById('modal-lettre');

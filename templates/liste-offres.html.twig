@@ -25,6 +25,7 @@
         <a href="index.php">🏠 Accueil</a>
         <a href="index.php?page=offres">💼 Offres de stages</a>
         <a href="index.php?page=entreprises">🏢 Entreprises</a>
+        <a href="index.php?page=statistiques">📊 Statistiques</a>
 
         {% if session.user is defined %}
 
@@ -36,6 +37,7 @@
                 <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
                 <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
                 <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
+                <a href="index.php?page=candidatures-pilote">📁 Candidatures</a>
             {% elseif session.user.role == 'admin' %}
                 <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
                 <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
@@ -66,6 +68,7 @@
             <li><a href="index.php">Accueil</a></li>
             <li><a href="index.php?page=offres" class="actif">Offres de stages</a></li>
             <li><a href="index.php?page=entreprises">Entreprises</a></li>
+            <li><a href="index.php?page=statistiques">Statistiques</a></li>
 
             {% if session.user is defined and session.user.role == 'etudiant' %}
                 <li><a href="index.php?page=wishlist">Ma Wish-list</a></li>
@@ -134,12 +137,12 @@
             {% for offre in offres %}
             <article class="carte-offre">
                 <div class="en-tete-carte">
-                    {% if session.user is defined %}
-                        <a href="index.php?page=wishlist-ajouter&id={{ offre.id_offre }}" 
+                    {% if session.user is defined and session.user.role == 'etudiant' %}
+                        <a href="index.php?page=wishlist-ajouter&id={{ offre.id_offre }}"
                            class="btn-favori {{ (ids_wishlist is defined and offre.id_offre in ids_wishlist) ? 'actif' : '' }}">
                             <i class="fas fa-heart"></i>
                         </a>
-                    {% else %}
+                    {% elseif session.user is not defined %}
                         <a href="index.php?page=connexion" class="btn-favori">
                             <i class="fas fa-heart"></i>
                         </a>
@@ -215,6 +218,9 @@
 
 <footer class="pied-de-page">
     <p>&copy; 2026 AlloStage</p>
+    <p class="liens-footer">
+        <a href="index.php?page=mentions">Mentions légales</a>
+    </p>
 </footer>
 <script>
 const openBtn  = document.getElementById('open-menu');

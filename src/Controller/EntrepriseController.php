@@ -23,9 +23,9 @@ class EntrepriseController
         if (
             empty($_SESSION['user']) ||
             empty($_SESSION['user']['role']) ||
-            !in_array($_SESSION['user']['role'], ['admin', 'pilote'])
+            !in_array($_SESSION['user']['role'], ['admin', 'recruteur'])
         ) {
-            header('Location: index.php?page=accueil');
+            header('Location: index.php');
             exit;
         }
     }
@@ -50,7 +50,7 @@ class EntrepriseController
         $offres = $stmt->fetchAll();
 
         $stmt = $this->pdo->prepare("
-            SELECT 
+            SELECT
                 ROUND(AVG(note),1) as moyenne,
                 COUNT(*) as total
             FROM evaluation
@@ -66,10 +66,21 @@ class EntrepriseController
             ];
         }
 
+        // SFx2 — nombre de stagiaires ayant postulé à une offre de cette entreprise
+        $stmt = $this->pdo->prepare("
+            SELECT COUNT(DISTINCT c.id_user) AS nb
+            FROM candidature c
+            JOIN offre o ON o.id_offre = c.id_offre
+            WHERE o.id_entreprise = ?
+        ");
+        $stmt->execute([$id]);
+        $nbStagiaires = (int) $stmt->fetchColumn();
+
         echo $this->twig->render('entreprise.html.twig', [
-            'entreprise' => $entreprise,
-            'offres' => $offres,
-            'evaluation' => $evaluation
+            'entreprise'    => $entreprise,
+            'offres'        => $offres,
+            'evaluation'    => $evaluation,
+            'nb_stagiaires' => $nbStagiaires
         ]);
     }
 
@@ -362,8 +373,19 @@ class EntrepriseController
             exit;
         }
 
-        $stmt = $this->pdo->prepare("DELETE FROM entreprise WHERE id_entreprise = ?");
-        $stmt->execute([$id]);
+        $stmtIds = $this->pdo->prepare("SELECT id_offre FROM offre WHERE id_entreprise = ?");
+        $stmtIds->execute([$id]);
+        $offreIds = $stmtIds->fetchAll(PDO::FETCH_COLUMN);
+
+        if (!empty($offreIds)) {
+            $placeholders = implode(',', array_fill(0, count($offreIds), '?'));
+            $this->pdo->prepare("DELETE FROM candidature WHERE id_offre IN ($placeholders)")->execute($offreIds);
+            $this->pdo->prepare("DELETE FROM wishlist WHERE id_offre IN ($placeholders)")->execute($offreIds);
+        }
+
+        $this->pdo->prepare("DELETE FROM offre WHERE id_entreprise = ?")->execute([$id]);
+        $this->pdo->prepare("DELETE FROM evaluation WHERE id_entreprise = ?")->execute([$id]);
+        $this->pdo->prepare("DELETE FROM entreprise WHERE id_entreprise = ?")->execute([$id]);
 
         header('Location: index.php?page=entreprises&success=suppression');
         exit;

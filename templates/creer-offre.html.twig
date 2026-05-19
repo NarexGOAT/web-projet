@@ -20,6 +20,7 @@
         <a href="index.php">🏠 Accueil</a>
         <a href="index.php?page=offres">💼 Offres de stages</a>
         <a href="index.php?page=entreprises">🏢 Entreprises</a>
+        <a href="index.php?page=statistiques">📊 Statistiques</a>
 
         {% if session.user is defined %}
             {% if session.user.role == 'etudiant' %}
@@ -31,6 +32,7 @@
                 <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
                 <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
 
+                <a href="index.php?page=candidatures-pilote">📁 Candidatures</a>
             {% elseif session.user.role == 'admin' %}
                 <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
                 <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
@@ -57,6 +59,7 @@
             <li><a href="index.php">Accueil</a></li>
             <li><a href="index.php?page=offres" class="actif">Offres de stages</a></li>
             <li><a href="index.php?page=entreprises">Entreprises</a></li>
+            <li><a href="index.php?page=statistiques">Statistiques</a></li>
         </ul>
     </nav>
 
@@ -117,15 +120,30 @@
                     </div>
 
                     <div class="groupe-champ">
-                        <label for="duree_stage">Durée du stage *</label>
+                        <label for="duree_stage">Durée du stage (en semaines) *</label>
                         <input
-                            type="text"
+                            type="number"
                             id="duree_stage"
                             name="duree_stage"
                             class="champ-saisie"
-                            placeholder="Ex: 6 mois"
+                            placeholder="Ex: 12"
+                            min="1"
                             value="{{ offre.duree_stage|default('') }}"
                             required
+                        >
+                    </div>
+
+                    <div class="groupe-champ">
+                        <label for="remuneration">Rémunération (€/mois)</label>
+                        <input
+                            type="number"
+                            id="remuneration"
+                            name="remuneration"
+                            class="champ-saisie"
+                            placeholder="Ex: 850"
+                            min="0"
+                            step="0.01"
+                            value="{{ offre.remuneration|default('') }}"
                         >
                     </div>
 
@@ -172,6 +190,9 @@
 
 <footer class="pied-de-page">
     <p>&copy; 2026 AlloStage. Tous droits réservés.</p>
+    <p class="liens-footer">
+        <a href="index.php?page=mentions">Mentions légales</a>
+    </p>
 </footer>
 
 <script>

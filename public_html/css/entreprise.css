@@ -88,6 +88,18 @@
     color: var(--texte-sombre);
 }
 
+.note-total {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-left: 0.3rem;
+}
+
+.stat-stagiaires {
+    margin: 0.8rem 0 0 0;
+    color: #475569;
+    font-size: 0.95rem;
+}
+
 .lien-avis {
     color: var(--bleu-clair-allostage);
     font-size: 0.95rem;

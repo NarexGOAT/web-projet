@@ -110,8 +110,270 @@
 }
 
 /* =========================
+   FLASH MESSAGES
+========================= */
+.flash {
+    max-width: 1100px;
+    margin: 0 auto 1rem auto;
+    padding: 0.9rem 1.2rem;
+    border-radius: 0.6rem;
+    font-weight: 500;
+}
+.flash-ok  { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+.flash-err { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+/* =========================
+   EMPTY / FILTRES
+========================= */
+.empty-box {
+    background: #fff;
+    border: 1px dashed #cbd5e1;
+    border-radius: 1rem;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: #64748b;
+}
+.empty-box .btn-primary {
+    display: inline-block;
+    margin-top: 1rem;
+    background: var(--bleu-allostage, #1e3a8a);
+    color: #fff;
+    padding: 0.7rem 1.4rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.filtres-candidatures {
+    max-width: 1100px;
+    margin: 0 auto 1.5rem auto;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    background: #fff;
+    padding: 1rem 1.2rem;
+    border-radius: 0.8rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.filtre-group { display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 220px; }
+.filtre-group label { font-weight: 600; color: #475569; white-space: nowrap; }
+.filtre-group select,
+.filtre-group input {
+    flex: 1;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+}
+.filtre-group select:focus,
+.filtre-group input:focus {
+    outline: 2px solid #93c5fd;
+    border-color: #3b82f6;
+}
+.empty-filtre {
+    text-align: center;
+    color: #64748b;
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* =========================
+   LIGNE ÉTUDIANT (vue pilote)
+========================= */
+.ligne-etudiant {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #f1f5f9;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.7rem;
+}
+.avatar-mini {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+.ligne-etudiant .mail {
+    display: block;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+.tags-mini {
+    color: #64748b;
+    font-size: 0.88rem;
+    margin: 0.3rem 0;
+}
+
+/* =========================
+   BTN DÉSACTIVÉ
+========================= */
+.btn-disabled {
+    background: #f1f5f9;
+    color: #94a3b8;
+    border: 1px dashed #cbd5e1;
+    cursor: not-allowed;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* =========================
+   MODAL LETTRE TEXTE
+========================= */
+.modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 1rem;
+}
+.modal-bg.active { display: flex; animation: fadeIn 0.2s ease; }
+.modal-box {
+    background: #fff;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 680px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideUp 0.25s ease;
+}
+.modal-box h2 { margin-top: 0; color: #1e3a8a; }
+.modal-close {
+    position: absolute;
+    top: 10px; right: 14px;
+    background: none; border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #64748b;
+}
+.modal-close:hover { color: #1e3a8a; }
+.modal-contenu {
+    white-space: pre-wrap;
+    line-height: 1.6;
+    color: #1e293b;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 0.6rem;
+    margin-top: 1rem;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* =========================
+   PAGE DÉTAIL CANDIDATURE
+========================= */
+.conteneur-detail-cand {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+.lien-retour {
+    display: inline-block;
+    margin-bottom: 1.2rem;
+    color: #1e3a8a;
+    text-decoration: none;
+    font-weight: 600;
+}
+.lien-retour:hover { text-decoration: underline; }
+
+.cand-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+.cand-header h1 { margin: 0 0 0.4rem 0; color: #1e3a8a; }
+.cand-meta { color: #475569; margin: 0.3rem 0; }
+
+.boite-blanche {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.grille-detail-cand {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 1.5rem;
+}
+
+.bloc-etudiant { text-align: center; }
+.avatar-grand {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.6rem;
+    margin: 0.5rem 0;
+}
+.liste-docs {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+}
+.liste-docs li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+.liste-docs li:last-child { border-bottom: none; }
+.liste-docs a { color: #1e3a8a; font-weight: 600; text-decoration: none; }
+.liste-docs a:hover { text-decoration: underline; }
+.liste-docs .manquant { color: #94a3b8; font-style: italic; }
+
+.zone-visualiseur { display: flex; flex-direction: column; gap: 1.5rem; }
+.bloc-pdf h2,
+.bloc-texte-lettre h2 { margin-top: 0; color: #1e3a8a; }
+.bloc-pdf embed {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    background: #f8fafc;
+}
+.hint-pdf {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #64748b;
+    text-align: center;
+}
+.lettre-texte {
+    line-height: 1.7;
+    color: #1e293b;
+    padding: 1rem;
+    background: #f8fafc;
+    border-left: 4px solid #3b82f6;
+    border-radius: 0.4rem;
+    white-space: pre-wrap;
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
+@media (max-width: 900px) {
+    .grille-detail-cand { grid-template-columns: 1fr; }
+}
 @media (max-width: 768px) {
     .card {
         flex-direction: column;

@@ -23,6 +23,7 @@
         <a href="index.php">🏠 Accueil</a>
         <a href="index.php?page=offres">💼 Offres de stages</a>
         <a href="index.php?page=entreprises">🏢 Entreprises</a>
+        <a href="index.php?page=statistiques">📊 Statistiques</a>
 
         {% if session.user is defined %}
 
@@ -35,6 +36,7 @@
                 <a href="index.php?page=gestion-entreprises">🏢 Gestion des entreprises</a>
                 <a href="index.php?page=gestion-offres">💼 Gestion des offres</a>
 
+                <a href="index.php?page=candidatures-pilote">📁 Candidatures</a>
             {% elseif session.user.role == 'admin' %}
                 <a href="index.php?page=gestion-pilotes">👨‍✈️ Gestion des pilotes</a>
                 <a href="index.php?page=gestion-etudiants">🎓 Gestion des étudiants</a>
@@ -66,6 +68,7 @@
             <li><a href="index.php">Accueil</a></li>
             <li><a href="index.php?page=offres" class="actif">Offres de stages</a></li>
             <li><a href="index.php?page=entreprises">Entreprises</a></li>
+            <li><a href="index.php?page=statistiques">Statistiques</a></li>
 
             {% if session.user is defined and session.user.role == 'etudiant' %}
                 <li><a href="index.php?page=wishlist">Ma Wish-list</a></li>
@@ -111,15 +114,7 @@
                         <span>📅</span>
                         <div>
                             <strong>Durée</strong>
-                            <span>{{ offre.duree_stage }} mois</span>
-                        </div>
-                    </div>
-
-                    <div class="critere">
-                        <span>🎓</span>
-                        <div>
-                            <strong>Niveau</strong>
-                            <span>Stage</span>
+                            <span>{{ offre.duree_stage }} semaines</span>
                         </div>
                     </div>
 
@@ -134,8 +129,30 @@
                     <div class="critere">
                         <span>💰</span>
                         <div>
-                            <strong>Gratification</strong>
-                            <span>{{ offre.remuneration }} € / mois</span>
+                            <strong>Rémunération</strong>
+                            <span>
+                                {% if offre.remuneration %}
+                                    {{ offre.remuneration }} € / mois
+                                {% else %}
+                                    Non précisée
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="critere">
+                        <span>🗓️</span>
+                        <div>
+                            <strong>Date de l'offre</strong>
+                            <span>{{ offre.date_publication|date("d/m/Y") }}</span>
+                        </div>
+                    </div>
+
+                    <div class="critere">
+                        <span>👥</span>
+                        <div>
+                            <strong>Candidatures</strong>
+                            <span>{{ offre.nb_candidatures }} étudiant(s) ont postulé</span>
                         </div>
                     </div>
                 </div>
@@ -162,11 +179,11 @@
                         </button>
                     {% endif %}
 
-                    {% if session.user is defined %}
+                    {% if session.user is defined and session.user.role == 'etudiant' %}
                         <a href="index.php?page=wishlist-ajouter&id={{ offre.id_offre }}" class="btn-wishlist-secondaire">
                             Ajouter à la wish-list
                         </a>
-                    {% else %}
+                    {% elseif session.user is not defined %}
                         <a href="index.php?page=connexion" class="btn-wishlist-secondaire">
                             Ajouter à la wish-list
                         </a>
@@ -192,6 +209,9 @@
 
 <footer class="pied-de-page">
     <p>&copy; 2026 AlloStage</p>
+    <p class="liens-footer">
+        <a href="index.php?page=mentions">Mentions légales</a>
+    </p>
 </footer>
 <script>
 const openBtn  = document.getElementById('open-menu');

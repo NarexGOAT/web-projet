@@ -22,6 +22,7 @@
         <a href="index.php">🏠 Accueil</a>
         <a href="index.php?page=offres">💼 Offres de stages</a>
         <a href="index.php?page=entreprises">🏢 Entreprises</a>
+        <a href="index.php?page=statistiques">📊 Statistiques</a>
 
         {% if session.user is defined %}
 
@@ -61,6 +62,7 @@
             <li><a href="index.php">Accueil</a></li>
             <li><a href="index.php?page=offres">Offres de stages</a></li>
             <li><a href="index.php?page=entreprises">Entreprises</a></li>
+            <li><a href="index.php?page=statistiques">Statistiques</a></li>
 
             {% if session.user is defined and session.user.role == 'etudiant' %}
                 <li><a href="index.php?page=wishlist" class="actif">Ma Wish-list</a></li>
@@ -146,6 +148,9 @@
 
     <footer class="pied-de-page">
         <p>&copy; 2026 BHStage. Tous droits réservés.</p>
+        <p class="liens-footer">
+            <a href="index.php?page=mentions">Mentions légales</a>
+        </p>
     </footer>
     <script>
 const openBtn  = document.getElementById('open-menu');

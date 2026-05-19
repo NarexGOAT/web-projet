@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirection… - AlloStage</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .popup-acces {
+            background: #fff;
+            border-radius: 16px;
+            padding: 36px 32px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px -15px rgba(30, 58, 138, 0.25);
+            border: 1px solid #e2e8f0;
+            animation: pop-in 0.35s ease;
+        }
+        @keyframes pop-in {
+            from { opacity: 0; transform: scale(0.92) translateY(10px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .icone-acces {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 18px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+        .popup-acces h2 {
+            font-size: 20px;
+            color: #0f172a;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .popup-acces p {
+            color: #64748b;
+            font-size: 14.5px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+        .barre-progres {
+            width: 100%;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+        .barre-progres-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #1e3a8a);
+            width: 0;
+            animation: avancer 2.5s linear forwards;
+        }
+        @keyframes avancer { to { width: 100%; } }
+        .btn-retour {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-retour:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -4px rgba(30, 58, 138, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+<div class="popup-acces">
+    <div class="icone-acces">🔒</div>
+    <h2>Accès non autorisé</h2>
+    <p>
+        Vous n'avez pas les permissions nécessaires pour accéder à cette page.<br>
+        Redirection en cours…
+    </p>
+    <div class="barre-progres">
+        <div class="barre-progres-fill"></div>
+    </div>
+    <a href="{{ retour|default('index.php') }}" class="btn-retour">Retour à l'accueil</a>
+</div>
+
+<script>
+    setTimeout(() => {
+        window.location.href = {{ retour|default('index.php')|json_encode|raw }};
+    }, 2500);
+</script>
+
+</body>
+</html>
