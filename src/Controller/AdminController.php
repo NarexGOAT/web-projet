@@ -2,244 +2,99 @@
 
 class AdminController
 {
-    private $pdo;
-    private $twig;
+    private \PDO $pdo;
+    private \Twig\Environment $twig;
+    private UtilisateurModel $utilisateurModel;
 
-    //  constantes propres (important)
-    private const ROLE_ETUDIANT = 1;
-    private const ROLE_RECRUTEUR = 2; // = pilotes
-    private const ROLE_ADMIN = 3;
-
-    public function __construct($pdo, $twig)
+    public function __construct(\PDO $pdo, \Twig\Environment $twig)
     {
-        $this->pdo = $pdo;
-        $this->twig = $twig;
+        $this->pdo              = $pdo;
+        $this->twig             = $twig;
+        $this->utilisateurModel = new UtilisateurModel($pdo);
     }
 
     // =========================
-    //  GESTION ETUDIANTS
+    // 🎓 GESTION ETUDIANTS
     // =========================
-    public function gestionEtudiants()
+
+    public function gestionEtudiants(): void
     {
         $recherche = $_GET['recherche'] ?? '';
-
-        $sql = "
-            SELECT id_user, nom, prenom, email
-            FROM utilisateur
-            WHERE id_role = :role
-        ";
-
-        $params = [
-            ':role' => self::ROLE_ETUDIANT
-        ];
-
-        if (!empty($recherche)) {
-            $sql .= " AND (nom LIKE :recherche OR prenom LIKE :recherche)";
-            $params[':recherche'] = "%$recherche%";
-        }
-
-        $sql .= " ORDER BY nom ASC";
-
-        $stmt = $this->pdo->prepare($sql);
-
-        foreach ($params as $key => $value) {
-            $stmt->bindValue($key, $value);
-        }
-
-        $stmt->execute();
-        $etudiants = $stmt->fetchAll();
+        $etudiants = $this->utilisateurModel->listerParRole(UtilisateurModel::ROLE_ETUDIANT, $recherche);
 
         echo $this->twig->render('gestion-etudiants.html.twig', [
             'etudiants' => $etudiants,
-            'recherche' => $recherche
+            'recherche' => $recherche,
         ]);
     }
 
-    // =========================
-    //  SUPPRIMER ETUDIANT
-    // =========================
-    public function supprimerEtudiant()
+    public function supprimerEtudiant(): void
     {
         $id = (int) ($_GET['id'] ?? 0);
-
         if ($id > 0) {
-            $stmt = $this->pdo->prepare("
-                DELETE FROM utilisateur
-                WHERE id_user = :id AND id_role = :role
-            ");
-
-            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-            $stmt->bindValue(':role', self::ROLE_ETUDIANT, PDO::PARAM_INT);
-            $stmt->execute();
+            $this->utilisateurModel->supprimer($id, UtilisateurModel::ROLE_ETUDIANT);
         }
+        header('Location: index.php?page=gestion-etudiants');
+        exit;
+    }
 
+    public function formModifierEtudiant(int $id): void
+    {
+        $etudiant = $this->utilisateurModel->findByIdEtRole($id, UtilisateurModel::ROLE_ETUDIANT);
+        if (!$etudiant) die("Étudiant introuvable");
+
+        echo $this->twig->render('modifier-etudiant.html.twig', ['etudiant' => $etudiant]);
+    }
+
+    public function updateEtudiant(int $id): void
+    {
+        $this->utilisateurModel->modifier(
+            $id, UtilisateurModel::ROLE_ETUDIANT,
+            $_POST['nom'] ?? '', $_POST['prenom'] ?? '', $_POST['email'] ?? ''
+        );
         header('Location: index.php?page=gestion-etudiants');
         exit;
     }
 
     // =========================
-    //  FORM MODIFIER ETUDIANT
+    // 👨‍✈️ GESTION PILOTES
     // =========================
-    public function formModifierEtudiant($id)
-    {
-        $stmt = $this->pdo->prepare("
-            SELECT id_user, nom, prenom, email
-            FROM utilisateur
-            WHERE id_user = :id AND id_role = :role
-        ");
 
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt->bindValue(':role', self::ROLE_ETUDIANT, PDO::PARAM_INT);
-        $stmt->execute();
-
-        $etudiant = $stmt->fetch();
-
-        if (!$etudiant) {
-            die("Étudiant introuvable");
-        }
-
-        echo $this->twig->render('modifier-etudiant.html.twig', [
-            'etudiant' => $etudiant
-        ]);
-    }
-
-    // =========================
-    //  UPDATE ETUDIANT
-    // =========================
-    public function updateEtudiant($id)
-    {
-        $nom = $_POST['nom'] ?? '';
-        $prenom = $_POST['prenom'] ?? '';
-        $email = $_POST['email'] ?? '';
-
-        $stmt = $this->pdo->prepare("
-            UPDATE utilisateur
-            SET nom = :nom, prenom = :prenom, email = :email
-            WHERE id_user = :id AND id_role = :role
-        ");
-
-        $stmt->bindValue(':nom', $nom);
-        $stmt->bindValue(':prenom', $prenom);
-        $stmt->bindValue(':email', $email);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt->bindValue(':role', self::ROLE_ETUDIANT, PDO::PARAM_INT);
-
-        $stmt->execute();
-
-        header('Location: index.php?page=gestion-etudiants');
-        exit;
-    }
-
-    // =========================
-    //  GESTION PILOTES
-    // =========================
-    public function gestionPilotes()
+    public function gestionPilotes(): void
     {
         $recherche = $_GET['recherche'] ?? '';
-
-        $sql = "
-            SELECT id_user, nom, prenom, email
-            FROM utilisateur
-            WHERE id_role = :role
-        ";
-
-        $params = [
-            ':role' => self::ROLE_RECRUTEUR 
-        ];
-
-        if (!empty($recherche)) {
-            $sql .= " AND (nom LIKE :recherche OR prenom LIKE :recherche)";
-            $params[':recherche'] = "%$recherche%";
-        }
-
-        $sql .= " ORDER BY nom ASC";
-
-        $stmt = $this->pdo->prepare($sql);
-
-        foreach ($params as $key => $value) {
-            $stmt->bindValue($key, $value);
-        }
-
-        $stmt->execute();
-        $pilotes = $stmt->fetchAll();
+        $pilotes   = $this->utilisateurModel->listerParRole(UtilisateurModel::ROLE_RECRUTEUR, $recherche);
 
         echo $this->twig->render('gestion-pilotes.html.twig', [
-            'pilotes' => $pilotes,
-            'recherche' => $recherche
+            'pilotes'   => $pilotes,
+            'recherche' => $recherche,
         ]);
     }
 
-    // =========================
-    //  SUPPRIMER PILOTE
-    // =========================
-    public function supprimerPilote()
+    public function supprimerPilote(): void
     {
         $id = (int) ($_GET['id'] ?? 0);
-
         if ($id > 0) {
-            $stmt = $this->pdo->prepare("
-                DELETE FROM utilisateur
-                WHERE id_user = :id AND id_role = :role
-            ");
-
-            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-            $stmt->bindValue(':role', self::ROLE_RECRUTEUR, PDO::PARAM_INT);
-            $stmt->execute();
+            $this->utilisateurModel->supprimer($id, UtilisateurModel::ROLE_RECRUTEUR);
         }
-
         header('Location: index.php?page=gestion-pilotes');
         exit;
     }
 
-    // =========================
-    //  FORM MODIFIER PILOTE
-    // =========================
-    public function formModifierPilote($id)
+    public function formModifierPilote(int $id): void
     {
-        $stmt = $this->pdo->prepare("
-            SELECT id_user, nom, prenom, email
-            FROM utilisateur
-            WHERE id_user = :id AND id_role = :role
-        ");
+        $pilote = $this->utilisateurModel->findByIdEtRole($id, UtilisateurModel::ROLE_RECRUTEUR);
+        if (!$pilote) die("Pilote introuvable");
 
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt->bindValue(':role', self::ROLE_RECRUTEUR, PDO::PARAM_INT);
-        $stmt->execute();
-
-        $pilote = $stmt->fetch();
-
-        if (!$pilote) {
-            die("Pilote introuvable");
-        }
-
-        echo $this->twig->render('modifier-pilote.html.twig', [
-            'pilote' => $pilote
-        ]);
+        echo $this->twig->render('modifier-pilote.html.twig', ['pilote' => $pilote]);
     }
 
-    // =========================
-    //  UPDATE PILOTE
-    // =========================
-    public function updatePilote($id)
+    public function updatePilote(int $id): void
     {
-        $nom = $_POST['nom'] ?? '';
-        $prenom = $_POST['prenom'] ?? '';
-        $email = $_POST['email'] ?? '';
-
-        $stmt = $this->pdo->prepare("
-            UPDATE utilisateur
-            SET nom = :nom, prenom = :prenom, email = :email
-            WHERE id_user = :id AND id_role = :role
-        ");
-
-        $stmt->bindValue(':nom', $nom);
-        $stmt->bindValue(':prenom', $prenom);
-        $stmt->bindValue(':email', $email);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt->bindValue(':role', self::ROLE_RECRUTEUR, PDO::PARAM_INT);
-
-        $stmt->execute();
-
+        $this->utilisateurModel->modifier(
+            $id, UtilisateurModel::ROLE_RECRUTEUR,
+            $_POST['nom'] ?? '', $_POST['prenom'] ?? '', $_POST['email'] ?? ''
+        );
         header('Location: index.php?page=gestion-pilotes');
         exit;
     }
